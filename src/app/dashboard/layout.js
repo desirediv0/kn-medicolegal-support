@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
     const [sidebarWidth, setSidebarWidth] = useState(224)
 
     return (
-        <div className="flex h-screen bg-gray-50 overflow-hidden">
+        <div className="flex h-[100dvh] bg-gray-50 overflow-hidden">
             <AdminSidebar onWidthChange={setSidebarWidth} />
             <main
                 className="flex-1 overflow-y-auto transition-all duration-300"

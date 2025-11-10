@@ -45,7 +45,7 @@ const AdminAuth = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-gray-100">
             <Card className="mx-auto w-full max-w-sm shadow-md">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold text-center">Admin Login</CardTitle>

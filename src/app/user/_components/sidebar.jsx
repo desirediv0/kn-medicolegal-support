@@ -88,7 +88,7 @@ export function UserSidebar({ onWidthChange }) {
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 className={cn(
-                    "fixed lg:static top-0 left-0 h-screen bg-white border-r border-gray-200 z-50 flex flex-col px-3 py-4 overflow-y-auto transition-all duration-300",
+                    "fixed lg:static top-0 left-0 h-[100dvh] bg-white border-r border-gray-200 z-50 flex flex-col px-3 py-4 overflow-y-auto transition-all duration-300",
                     isCollapsed ? "w-20" : "w-60"
                 )}
             >

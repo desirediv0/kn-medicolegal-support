@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import ProfileDropdown from "@/components/kokonutui/profile-dropdown"
 
 export function UserSidebar({ onWidthChange }) {
     const [isOpen, setIsOpen] = useState(false)
@@ -177,40 +178,9 @@ export function UserSidebar({ onWidthChange }) {
                 </div>
 
                 {/* Bottom Profile + Logout */}
-                <div className="flex flex-col gap-2 pt-3 border-t border-gray-200">
-                    <button
-                        onClick={() => router.push("/user/profile")}
-                        className={cn(
-                            "w-full flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-gray-100 transition-colors text-xs",
-                            isCollapsed && "justify-center"
-                        )}
-                    >
-                        <Avatar className="h-8 w-8">
-                            <AvatarImage src="https://github.com/shadcn.png" alt="User" />
-                            <AvatarFallback>UU</AvatarFallback>
-                        </Avatar>
-                        {!isCollapsed && (
-                            <div className="flex flex-col items-start">
-                                <span className="text-xs font-semibold text-black truncate">
-                                    User Name
-                                </span>
-                                <span className="text-xs text-gray-500 truncate">
-                                    user@example.com
-                                </span>
-                            </div>
-                        )}
-                    </button>
 
-                    <button
-                        className={cn(
-                            "flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors font-medium text-xs",
-                            isCollapsed && "px-2"
-                        )}
-                    >
-                        <LogOut size={16} />
-                        {!isCollapsed && <span>Logout</span>}
-                    </button>
-                </div>
+                <ProfileDropdown isCollapsed={isCollapsed} />
+
             </motion.aside>
         </>
     )

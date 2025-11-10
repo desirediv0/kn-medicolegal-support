@@ -1,7 +1,7 @@
 "use client";;
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Settings, CreditCard, FileText, LogOut, User } from "lucide-react";
+import { FileText, LogOut, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -11,8 +11,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Gemini from "./gemini";
-
 const SAMPLE_PROFILE_DATA = {
     name: "Eugene An",
     email: "eugene@kokonutui.com",

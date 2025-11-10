@@ -15,8 +15,6 @@ const SAMPLE_PROFILE_DATA = {
     name: "Eugene An",
     email: "eugene@kokonutui.com",
     avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/profile-mjss82WnWBRO86MHHGxvJ2TVZuyrDv.jpeg",
-    subscription: "PRO",
-    model: "Gemini 2.0 Flash",
 };
 
 export default function ProfileDropdown({

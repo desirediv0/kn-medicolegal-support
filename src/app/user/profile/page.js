@@ -1,13 +1,12 @@
-import { Card } from '@/components/ui/card'
-import React from 'react'
+import { AccountProfile } from "@/components/profile/account-profile";
 
-const UesrProfile = () => {
-    return (
-        <Card className="p-6">
-            User Profile Page
-
-        </Card>
-    )
+export default function UserProfile() {
+  return (
+    <div className="p-6">
+      <AccountProfile
+        heading="My Profile"
+        description="Update your personal details, profile picture, and secure your account."
+      />
+    </div>
+  );
 }
-
-export default UesrProfile

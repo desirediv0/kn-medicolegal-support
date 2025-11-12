@@ -1,0 +1,1128 @@
+"use client";
+
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+} from "react";
+import { useDropzone } from "react-dropzone";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Paperclip,
+  Loader2,
+  X,
+  UserCircle2,
+  UploadCloud,
+  Download,
+} from "lucide-react";
+import imageCompression from "browser-image-compression";
+import { formatDistanceToNow } from "date-fns";
+import Image from "next/image";
+
+const POLL_INTERVAL = 8000;
+
+const IMAGE_COMPRESSION_OPTIONS = {
+  maxSizeMB: 1,
+  maxWidthOrHeight: 1600,
+  useWebWorker: true,
+};
+
+async function processFileForUpload(file) {
+  if (!file?.type?.startsWith("image/")) {
+    return file;
+  }
+
+  try {
+    const compressed = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
+    return new File([compressed], file.name, {
+      type: compressed.type,
+      lastModified: Date.now(),
+    });
+  } catch (error) {
+    console.warn("Image compression failed, using original file", error);
+    return file;
+  }
+}
+
+const formatFileSize = (bytes) => {
+  if (typeof bytes !== "number" || Number.isNaN(bytes)) {
+    return "";
+  }
+  const units = ["B", "KB", "MB", "GB"];
+  let value = bytes;
+  let unitIndex = 0;
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+  const precision = value < 10 && unitIndex > 0 ? 1 : 0;
+  return `${value.toFixed(precision)} ${units[unitIndex]}`;
+};
+
+const isImageMimeType = (mime) =>
+  typeof mime === "string" && mime.toLowerCase().startsWith("image/");
+
+const isVideoMimeType = (mime) =>
+  typeof mime === "string" && mime.toLowerCase().startsWith("video/");
+
+const getAttachmentName = (file) =>
+  file?.fileName || file?.name || "attachment";
+
+const StatusChip = ({ status }) => {
+  const map = useMemo(
+    () => ({
+      PENDING: "bg-yellow-100 text-yellow-800",
+      ACTIVE: "bg-green-100 text-green-800",
+      CLOSED: "bg-gray-200 text-gray-700",
+    }),
+    []
+  );
+  return (
+    <span
+      className={`px-2 py-1 rounded-full text-xs font-medium ${map[status] || "bg-gray-200 text-gray-700"
+        }`}
+    >
+      {status}
+    </span>
+  );
+};
+
+function AdminQuestionsContent() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentQuestionId = searchParams.get("question");
+  const currencyFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        minimumFractionDigits: 2,
+      }),
+    []
+  );
+
+  const [questions, setQuestions] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [attachments, setAttachments] = useState([]);
+  const [dropzoneExpanded, setDropzoneExpanded] = useState(false);
+  const [messageInput, setMessageInput] = useState("");
+  const [sending, setSending] = useState(false);
+  const [readCounts, setReadCounts] = useState({});
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingConversation, setDeletingConversation] = useState(false);
+  const selectedQuestionRef = useRef(null);
+
+  const fetchQuestions = useCallback(async () => {
+    if (status !== "authenticated") return;
+    setLoadingQuestions(true);
+    try {
+      const response = await fetch("/api/questions?limit=15", { cache: "no-store" });
+      if (!response.ok) throw new Error("Failed to fetch questions");
+      const data = await response.json();
+      let fetched = data.questions ?? [];
+
+      const currentSelected = selectedQuestionRef.current;
+      if (currentSelected) {
+        const match = fetched.find((q) => q.id === currentSelected.id);
+        if (match) {
+          setSelectedQuestion((prev) => {
+            if (!prev) return prev;
+            const prevLatestId = prev.latestMessage?.id ?? null;
+            const nextLatestId = match.latestMessage?.id ?? null;
+            if (
+              prev.messageCount === (match.messageCount ?? prev.messageCount) &&
+              prevLatestId === nextLatestId &&
+              prev.status === match.status &&
+              prev.paymentStatus === match.paymentStatus &&
+              prev.adminId === match.adminId
+            ) {
+              return prev;
+            }
+            return { ...prev, ...match };
+          });
+        } else {
+          try {
+            const detailRes = await fetch(`/api/questions/${currentSelected.id}`, {
+              cache: "no-store",
+            });
+            if (detailRes.ok) {
+              const detailData = await detailRes.json();
+              const detail = detailData.question;
+              if (detail) {
+                const latest = detail.chats?.[detail.chats.length - 1] ?? null;
+                const hydrated = {
+                  id: detail.id,
+                  title: detail.title,
+                  description: detail.description,
+                  status: detail.status,
+                  paymentStatus: detail.paymentStatus,
+                  price: detail.price != null ? Number(detail.price) : null,
+                  userId: detail.userId,
+                  adminId: detail.adminId,
+                  createdAt: detail.createdAt,
+                  updatedAt: detail.updatedAt,
+                  closedAt: detail.closedAt,
+                  user: detail.user,
+                  admin: detail.admin,
+                  messageCount: detail.chats?.length ?? 0,
+                  latestMessage: latest,
+                };
+                fetched = [hydrated, ...fetched].slice(0, 15);
+                setSelectedQuestion((prev) => {
+                  if (!prev || prev.id !== hydrated.id) return prev;
+                  const prevLatestId = prev.latestMessage?.id ?? null;
+                  const nextLatestId = hydrated.latestMessage?.id ?? null;
+                  if (
+                    prev.messageCount === hydrated.messageCount &&
+                    prevLatestId === nextLatestId &&
+                    prev.status === hydrated.status &&
+                    prev.paymentStatus === hydrated.paymentStatus &&
+                    prev.adminId === hydrated.adminId
+                  ) {
+                    return prev;
+                  }
+                  return { ...prev, ...hydrated };
+                });
+              }
+            }
+          } catch (err) {
+            console.error("Failed to hydrate selected question", err);
+          }
+        }
+      }
+
+      setQuestions(fetched);
+      setReadCounts((prev) => {
+        const next = { ...prev };
+        fetched.forEach((question) => {
+          if (next[question.id] == null) {
+            next[question.id] = question.messageCount ?? 0;
+          }
+        });
+        return next;
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to load questions");
+    } finally {
+      setLoadingQuestions(false);
+    }
+  }, [status]);
+
+  const fetchMessages = useCallback(async (questionId) => {
+    if (!questionId) return;
+    setLoadingMessages(true);
+    try {
+      const response = await fetch(`/api/questions/${questionId}/messages`, {
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Failed to fetch messages");
+      const data = await response.json();
+      setMessages(data.messages ?? []);
+      setReadCounts((prev) => ({
+        ...prev,
+        [questionId]: data.messages?.length ?? 0,
+      }));
+      const latest = data.messages?.[data.messages.length - 1] ?? null;
+      setQuestions((prevQuestions) =>
+        prevQuestions.map((q) =>
+          q.id === questionId
+            ? {
+              ...q,
+              messageCount: data.messages?.length ?? q.messageCount ?? 0,
+              latestMessage: latest ?? q.latestMessage,
+            }
+            : q
+        )
+      );
+      setSelectedQuestion((prev) => {
+        if (!prev || prev.id !== questionId) return prev;
+        const nextMessageCount = data.messages?.length ?? prev.messageCount ?? 0;
+        const prevLatestId = prev.latestMessage?.id ?? null;
+        const nextLatestId = latest?.id ?? null;
+        if (
+          prev.messageCount === nextMessageCount &&
+          prevLatestId === nextLatestId
+        ) {
+          return prev;
+        }
+        return {
+          ...prev,
+          messageCount: nextMessageCount,
+          latestMessage: latest ?? prev.latestMessage,
+        };
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to load messages");
+    } finally {
+      setLoadingMessages(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchQuestions();
+    } else if (status === "unauthenticated") {
+      setQuestions([]);
+      setSelectedQuestion(null);
+    }
+  }, [status, fetchQuestions]);
+
+  useEffect(() => {
+    if (loadingQuestions) return;
+    if (!questions.length) {
+      if (selectedQuestion) setSelectedQuestion(null);
+      if (currentQuestionId)
+        router.replace("/dashboard/questions", { scroll: false });
+      return;
+    }
+
+    if (currentQuestionId) {
+      const match = questions.find((q) => q.id === currentQuestionId);
+      if (match) {
+        if (!selectedQuestion || selectedQuestion.id !== match.id) {
+          setSelectedQuestion(match);
+        }
+        return;
+      }
+      router.replace("/dashboard/questions", { scroll: false });
+      setSelectedQuestion(null);
+    }
+  }, [questions, currentQuestionId, router, selectedQuestion, loadingQuestions]);
+
+  useEffect(() => {
+    if (!selectedQuestion?.id) {
+      setMessages([]);
+      return;
+    }
+    fetchMessages(selectedQuestion.id);
+    const interval = setInterval(
+      () => fetchMessages(selectedQuestion.id),
+      POLL_INTERVAL
+    );
+    return () => clearInterval(interval);
+  }, [selectedQuestion, fetchMessages]);
+
+  useEffect(() => {
+    selectedQuestionRef.current = selectedQuestion;
+  }, [selectedQuestion]);
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const mapped = acceptedFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+      id: `${file.name}-${file.size}-${file.lastModified}`,
+    }));
+    setAttachments((prev) => [...prev, ...mapped]);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+    onDrop,
+    multiple: true,
+    maxSize: 25 * 1024 * 1024,
+    accept: {
+      "application/pdf": [".pdf"],
+      "image/*": [".png", ".jpg", ".jpeg", ".webp"],
+      "application/msword": [".doc"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [".docx"],
+      "video/*": [".mp4", ".mov", ".m4v", ".webm"],
+    },
+  });
+
+  const shouldShowExpandedDropzone =
+    dropzoneExpanded || isDragActive || attachments.length > 0;
+
+  const removeAttachment = useCallback((id) => {
+    setAttachments((prev) => {
+      const target = prev.find((item) => item.id === id);
+      if (target?.preview) {
+        URL.revokeObjectURL(target.preview);
+      }
+      return prev.filter((item) => item.id !== id);
+    });
+  }, []);
+
+  const ensureAssignment = async () => {
+    if (!session?.user?.id || !selectedQuestion?.id) return;
+    if (selectedQuestion.adminId === session.user.id) return;
+    try {
+      const res = await fetch(`/api/questions/${selectedQuestion.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ adminId: session.user.id }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to claim question");
+      }
+      const { question } = await res.json();
+      setQuestions((prev) =>
+        prev.map((q) => (q.id === question.id ? question : q))
+      );
+      setSelectedQuestion(question);
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to claim question");
+    }
+  };
+
+  const uploadAttachment = async ({ file, originalName }) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("fileName", originalName);
+
+    const uploadRes = await fetch("/api/uploads", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!uploadRes.ok) {
+      const data = await uploadRes.json().catch(() => ({}));
+      throw new Error(data.error || `Upload failed for ${originalName}`);
+    }
+
+    const data = await uploadRes.json();
+
+    return {
+      fileName: data.fileName ?? originalName,
+      fileSize: data.fileSize ?? file.size,
+      mimeType: data.mimeType ?? file.type,
+      url: data.url,
+      key: data.key,
+    };
+  };
+
+  const sendMessage = async () => {
+    if (!selectedQuestion?.id) {
+      toast.error("Select a question first");
+      return;
+    }
+    if (selectedQuestion.status === "CLOSED") {
+      toast.error("Conversation closed");
+      return;
+    }
+    if (!messageInput.trim() && attachments.length === 0) {
+      return;
+    }
+
+    setSending(true);
+    try {
+      await ensureAssignment();
+      let uploaded = [];
+      if (attachments.length) {
+        uploaded = await Promise.all(
+          attachments.map(async (item) => {
+            const processedFile = await processFileForUpload(item.file);
+            return uploadAttachment({
+              file: processedFile,
+              originalName: item.file.name,
+            });
+          })
+        );
+      }
+
+      const res = await fetch(
+        `/api/questions/${selectedQuestion.id}/messages`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: messageInput.trim(),
+            attachments: uploaded,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      const { message } = await res.json();
+      setMessages((prev) => {
+        const next = [...prev, message];
+        setReadCounts((counts) => ({
+          ...counts,
+          [selectedQuestion.id]: next.length,
+        }));
+        setQuestions((prevQuestions) =>
+          prevQuestions.map((q) =>
+            q.id === selectedQuestion.id
+              ? {
+                ...q,
+                latestMessage: message,
+                messageCount: next.length,
+              }
+              : q
+          )
+        );
+        setSelectedQuestion((prevSelected) =>
+          prevSelected && prevSelected.id === selectedQuestion.id
+            ? {
+              ...prevSelected,
+              latestMessage: message,
+              messageCount: next.length,
+            }
+            : prevSelected
+        );
+        return next;
+      });
+      setMessageInput("");
+      attachments.forEach((item) => item.preview && URL.revokeObjectURL(item.preview));
+      setAttachments([]);
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to send message");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const closeConversation = async () => {
+    if (!selectedQuestion?.id) return;
+    try {
+      const res = await fetch(`/api/questions/${selectedQuestion.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "CLOSED" }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to close conversation");
+      }
+      const { question } = await res.json();
+      setQuestions((prev) =>
+        prev.map((q) => (q.id === question.id ? question : q))
+      );
+      setSelectedQuestion(question);
+      toast.success("Conversation closed.");
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to close conversation");
+    }
+  };
+
+  const reopenConversation = async () => {
+    if (!selectedQuestion?.id) return;
+    try {
+      const res = await fetch(`/api/questions/${selectedQuestion.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "ACTIVE" }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to reopen conversation");
+      }
+      const { question } = await res.json();
+      setQuestions((prev) =>
+        prev.map((q) => (q.id === question.id ? question : q))
+      );
+      setSelectedQuestion(question);
+      toast.success("Conversation reopened.");
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to reopen conversation");
+    }
+  };
+
+  const handleDeleteConversation = async (deleteAttachments) => {
+    if (!selectedQuestion?.id || deletingConversation) return;
+    setDeletingConversation(true);
+    try {
+      const response = await fetch(`/api/questions/${selectedQuestion.id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deleteAttachments }),
+      });
+      let payload = {};
+      try {
+        payload = await response.json();
+      } catch (error) {
+        payload = {};
+      }
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to delete conversation");
+      }
+      attachments.forEach((item) => item.preview && URL.revokeObjectURL(item.preview));
+      setAttachments([]);
+      setQuestions((prev) => prev.filter((q) => q.id !== selectedQuestion.id));
+      setReadCounts((prev) => {
+        const next = { ...prev };
+        delete next[selectedQuestion.id];
+        return next;
+      });
+      setSelectedQuestion(null);
+      setMessages([]);
+      setMessageInput("");
+      setDeleteDialogOpen(false);
+      const deletedAttachments = payload.deletedAttachments ?? 0;
+      toast.success(
+        deleteAttachments
+          ? deletedAttachments
+            ? `Conversation and ${deletedAttachments} attachment${deletedAttachments === 1 ? "" : "s"
+            } deleted.`
+            : "Conversation deleted. No attachments found to remove."
+          : "Conversation deleted."
+      );
+      if (currentQuestionId) {
+        router.replace(`/dashboard/questions`, { scroll: false });
+      }
+      setTimeout(() => fetchQuestions(), 0);
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to delete conversation");
+    } finally {
+      setDeletingConversation(false);
+    }
+  };
+
+  return (
+    <div className="flex h-[100dvh] bg-gray-50 text-gray-900">
+      <aside className="w-80 border-r border-gray-200 bg-white flex flex-col">
+        <div className="p-4 flex items-center justify-between gap-2">
+          <h2 className="text-lg font-semibold">Questions</h2>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/dashboard/questions/history">History</Link>
+            </Button>
+            <Button size="sm" variant="outline" onClick={fetchQuestions}>
+              Refresh
+            </Button>
+          </div>
+        </div>
+        <Separator />
+        <div className="flex-1 overflow-y-auto">
+          {loadingQuestions ? (
+            <p className="p-4 text-sm text-gray-500">Loading questions...</p>
+          ) : questions.length === 0 ? (
+            <p className="p-4 text-sm text-gray-500">No questions yet.</p>
+          ) : (
+            <ul className="divide-y divide-gray-100">
+              {questions.map((question) => {
+                const lastActivity =
+                  question.latestMessage?.createdAt || question.updatedAt;
+                const lastMessagePreview =
+                  question.latestMessage?.body?.trim() || "No messages yet";
+                const amountText =
+                  question.price != null
+                    ? currencyFormatter.format(Number(question.price))
+                    : "—";
+                const unread = Math.max(
+                  0,
+                  (question.messageCount ?? 0) - (readCounts[question.id] ?? 0)
+                );
+
+                return (
+                  <li
+                    key={question.id}
+                    className={`px-4 py-3 space-y-1 cursor-pointer transition hover:bg-gray-100 border-l-4 ${selectedQuestion?.id === question.id
+                        ? "bg-gray-100 border-green-600"
+                        : unread > 0
+                          ? "bg-green-50 border-green-500"
+                          : "border-transparent"
+                      }`}
+                    onClick={() => {
+                      setSelectedQuestion(question);
+                      setReadCounts((prev) => ({
+                        ...prev,
+                        [question.id]: question.messageCount ?? 0,
+                      }));
+                      if (currentQuestionId !== question.id) {
+                        router.replace(
+                          `/dashboard/questions?question=${question.id}`,
+                          { scroll: false }
+                        );
+                      }
+                      fetchMessages(question.id);
+                    }}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium truncate">{question.title}</p>
+                          {unread > 0 && (
+                            <span className="inline-flex items-center justify-center rounded-full bg-green-500 px-2 text-[10px] font-semibold text-white">
+                              {unread > 99 ? "99+" : unread}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[11px] text-gray-400">
+                          {lastActivity
+                            ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
+                              addSuffix: true,
+                            })}`
+                            : "No activity yet"}
+                        </span>
+                      </div>
+                      <StatusChip status={question.status} />
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-500 truncate">
+                      <UserCircle2 className="h-3 w-3" />
+                      <span>{question.user?.email ?? "Unknown"}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                      <span>Amount: {amountText}</span>
+                      <span className="hidden sm:inline text-gray-300">•</span>
+                      <span className="capitalize">
+                        Payment: {question.paymentStatus?.toLowerCase()}
+                      </span>
+                    </p>
+                    <p className="text-xs text-gray-400 italic truncate">
+                      {question.latestMessage?.sender?.role
+                        ? `${question.latestMessage.sender.role === "ADMIN"
+                          ? "You"
+                          : "User"
+                        }: `
+                        : ""}
+                      {lastMessagePreview}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </aside>
+
+      <main className="flex-1 flex flex-col min-h-[60vh]">
+        {!selectedQuestion ? (
+          <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center text-gray-500 p-6">
+            <p>Select a question from the list to review or respond.</p>
+            <Button variant="outline" onClick={fetchQuestions}>
+              Refresh Questions
+            </Button>
+          </div>
+        ) : (
+          <>
+            <header className="p-4 border-b border-gray-200 flex flex-col gap-3 md:gap-0 md:flex-row md:items-center md:justify-between bg-white">
+              <div>
+                <h3 className="text-xl font-semibold">{selectedQuestion.title}</h3>
+                {selectedQuestion.description && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    {selectedQuestion.description}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500 mt-2">
+                  From: {selectedQuestion.user?.name ?? "Anonymous"} (
+                  {selectedQuestion.user?.email ?? "N/A"})
+                </p>
+                <p className="text-xs text-gray-500">
+                  Amount:{" "}
+                  {selectedQuestion.price != null
+                    ? currencyFormatter.format(Number(selectedQuestion.price))
+                    : "—"}{" "}
+                  • Payment: {selectedQuestion.paymentStatus?.toLowerCase()}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                {selectedQuestion.adminId !== session?.user?.id && (
+                  <Button variant="outline" onClick={ensureAssignment}>
+                    Claim Conversation
+                  </Button>
+                )}
+                {selectedQuestion.status === "CLOSED" ? (
+                  <Button variant="secondary" onClick={reopenConversation}>
+                    Reopen
+                  </Button>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    onClick={closeConversation}
+                    disabled={!selectedQuestion}
+                  >
+                    Close Conversation
+                  </Button>
+                )}
+                <Button
+                  variant="destructive"
+                  onClick={() => setDeleteDialogOpen(true)}
+                  disabled={deletingConversation}
+                >
+                  Delete Conversation
+                </Button>
+              </div>
+            </header>
+
+            <section className="flex-1 overflow-y-auto p-4 space-y-4">
+              {loadingMessages ? (
+                <p className="text-sm text-gray-500">Loading messages...</p>
+              ) : messages.length === 0 ? (
+                <p className="text-sm text-gray-500">
+                  No messages yet. Reply to start the conversation.
+                </p>
+              ) : (
+                messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.sender?.role === "ADMIN" ? "justify-end" : "justify-start"
+                      }`}
+                  >
+                    <div
+                      className={`max-w-lg rounded-2xl px-4 py-2 shadow ${msg.sender?.role === "ADMIN" ? "bg-green-50" : "bg-white"
+                        }`}
+                    >
+                      <p className="text-xs font-semibold text-gray-500 mb-1">
+                        {msg.sender?.role === "ADMIN" ? "You" : "User"}
+                      </p>
+                      {msg.body && (
+                        <p className="text-sm whitespace-pre-line">{msg.body}</p>
+                      )}
+                      {msg.files?.length > 0 && (
+                        <div className="mt-3 space-y-3">
+                          {msg.files.map((file) => {
+                            const key =
+                              file.id ?? file.key ?? file.url ?? file.fileName;
+                            const mime =
+                              file.mimeType || file.mediaType || file.type || "";
+                            const fileName = getAttachmentName(file);
+                            const fileSizeLabel = file.fileSize
+                              ? formatFileSize(Number(file.fileSize))
+                              : "";
+
+                            if (isImageMimeType(mime)) {
+                              return (
+                                <figure
+                                  key={key}
+                                  className="overflow-hidden rounded-xl border border-gray-200 bg-white"
+                                >
+                                  <a
+                                    href={file.url}
+                                    download={fileName}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="block"
+                                  >
+                                    <Image
+                                      width={256}
+                                      height={256}
+                                      src={file.url}
+                                      alt={fileName}
+                                      className="max-h-64 w-full object-cover"
+                                    />
+                                  </a>
+                                  <figcaption className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-gray-600">
+                                    <span className="truncate font-medium text-gray-700">
+                                      {fileName}
+                                    </span>
+                                    <a
+                                      href={file.url}
+                                      download={fileName}
+                                      className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-2 py-1 text-[11px] font-semibold text-green-600 hover:border-green-500 hover:text-green-700"
+                                    >
+                                      <Download className="h-3 w-3" />
+                                      Download
+                                    </a>
+                                  </figcaption>
+                                </figure>
+                              );
+                            }
+
+                            if (isVideoMimeType(mime)) {
+                              return (
+                                <div
+                                  key={key}
+                                  className="overflow-hidden rounded-xl border border-gray-200 bg-white"
+                                >
+                                  <div className="bg-black">
+                                    <video
+                                      controls
+                                      className="max-h-72 w-full"
+                                      preload="metadata"
+                                    >
+                                      <source src={file.url} type={mime} />
+                                      Your browser does not support embedded
+                                      videos.{" "}
+                                      <a href={file.url} download={fileName}>
+                                        Download instead.
+                                      </a>
+                                    </video>
+                                  </div>
+                                  <div className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-gray-600">
+                                    <div className="min-w-0">
+                                      <p className="truncate font-medium text-gray-700">
+                                        {fileName}
+                                      </p>
+                                      {fileSizeLabel && (
+                                        <p className="text-[11px] text-gray-400">
+                                          {fileSizeLabel}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <a
+                                      href={file.url}
+                                      download={fileName}
+                                      className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-2 py-1 text-[11px] font-semibold text-green-600 hover:border-green-500 hover:text-green-700"
+                                    >
+                                      <Download className="h-3 w-3" />
+                                      Download
+                                    </a>
+                                  </div>
+                                </div>
+                              );
+                            }
+
+                            return (
+                              <a
+                                key={key}
+                                href={file.url}
+                                download={fileName}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs text-gray-600 transition hover:border-green-400 hover:bg-green-50"
+                              >
+                                <span className="flex items-center gap-2">
+                                  <Paperclip className="h-3 w-3 text-green-600" />
+                                  <span className="truncate font-medium text-gray-700">
+                                    {fileName}
+                                  </span>
+                                </span>
+                                {fileSizeLabel && (
+                                  <span className="text-[11px] text-gray-400">
+                                    {fileSizeLabel}
+                                  </span>
+                                )}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </section>
+
+            <footer className="border-t border-gray-200 bg-white p-4">
+              <div
+                {...getRootProps({
+                  className: `${shouldShowExpandedDropzone
+                      ? "relative flex w-full flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-5 text-center transition sm:p-6"
+                      : "group relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-gray-50 text-gray-400 transition hover:border-green-400 hover:text-green-600"
+                    } ${isDragActive
+                      ? "border-green-500 bg-green-50"
+                      : shouldShowExpandedDropzone
+                        ? "border-gray-200 bg-gray-50 hover:border-green-400 hover:bg-white"
+                        : ""
+                    }`,
+                  onClick: () => {
+                    if (!shouldShowExpandedDropzone) {
+                      setDropzoneExpanded(true);
+                    }
+                  },
+                })}
+              >
+                <input {...getInputProps()} />
+                {shouldShowExpandedDropzone ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        if (!attachments.length && !isDragActive) {
+                          setDropzoneExpanded(false);
+                        }
+                      }}
+                      className="absolute right-3 top-3 rounded-full bg-white/80 p-1 text-gray-400 shadow hover:text-gray-600"
+                      aria-label="Collapse uploader"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                    <UploadCloud className="h-8 w-8 text-green-500 sm:h-10 sm:w-10" />
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-700 sm:text-base">
+                        Drag & drop attachments here
+                      </p>
+                      <p className="text-xs text-gray-500 sm:text-sm">
+                        or{" "}
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            open();
+                          }}
+                          className="font-semibold text-green-600 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                        >
+                          browse your device
+                        </button>
+                      </p>
+                    </div>
+                    <p className="text-xs text-gray-400 sm:text-sm">
+                      PDF, DOC, DOCX, PNG, JPG, MP4 up to 25 MB
+                    </p>
+                  </>
+                ) : (
+                  <UploadCloud className="h-6 w-6 transition group-hover:scale-110" />
+                )}
+              </div>
+              {attachments.length > 0 && (
+                <div className="mb-4 mt-3 grid gap-2 sm:grid-cols-2">
+                  {attachments.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                          <Paperclip className="h-4 w-4 text-green-600" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="max-w-[160px] truncate font-medium text-gray-700 sm:max-w-[220px]">
+                            {item.file.name}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {formatFileSize(item.file.size)}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeAttachment(item.id)}
+                        className="rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                <Textarea
+                  rows={2}
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      if (selectedQuestion.status !== "CLOSED" && !sending) {
+                        sendMessage();
+                      }
+                    }
+                  }}
+                  className="w-full resize-none sm:flex-1"
+                  placeholder="Type your reply..."
+                  disabled={selectedQuestion.status === "CLOSED"}
+                />
+                <Button
+                  onClick={sendMessage}
+                  disabled={selectedQuestion.status === "CLOSED" || sending}
+                  className="w-full sm:w-auto sm:self-auto"
+                >
+                  {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send"}
+                </Button>
+              </div>
+              {selectedQuestion.status === "CLOSED" && (
+                <p className="text-xs text-red-500 mt-2">
+                  This conversation is closed.
+                </p>
+              )}
+            </footer>
+          </>
+        )}
+      </main>
+      <Dialog
+        open={deleteDialogOpen}
+        onOpenChange={(open) => {
+          if (deletingConversation) return;
+          setDeleteDialogOpen(open);
+        }}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete this conversation?</DialogTitle>
+            <DialogDescription>
+              This will remove the entire chat for {selectedQuestion?.user?.email ?? "the user"}.
+              You can also delete any files that were uploaded in this thread.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 text-sm text-gray-600">
+            <p>
+              Deleting the conversation cannot be undone. If you also remove the media, the files
+              will be permanently deleted from DigitalOcean Spaces.
+            </p>
+            <p className="text-xs text-gray-500">
+              Tip: choose “Delete chat only” to keep the files available in the media library.
+            </p>
+          </div>
+          <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+              disabled={deletingConversation}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => handleDeleteConversation(false)}
+              disabled={deletingConversation}
+            >
+              {deletingConversation ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Deleting…
+                </span>
+              ) : (
+                "Delete chat only"
+              )}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => handleDeleteConversation(true)}
+              disabled={deletingConversation}
+            >
+              {deletingConversation ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Deleting files…
+                </span>
+              ) : (
+                "Delete chat & media"
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+function QuestionsFallback() {
+  return (
+    <div className="flex h-[100dvh] items-center justify-center bg-gray-50 text-sm text-gray-500">
+      Loading questions workspace…
+    </div>
+  );
+}
+
+export default function AdminQuestionsPage() {
+  return (
+    <Suspense fallback={<QuestionsFallback />}>
+      <AdminQuestionsContent />
+    </Suspense>
+  );
+}

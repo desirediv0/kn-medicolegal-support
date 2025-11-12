@@ -2,8 +2,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { FileText, LogOut, User } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,33 +11,40 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 const SAMPLE_PROFILE_DATA = {
-  name: "Eugene An",
-  email: "eugene@kokonutui.com",
-  avatar:
-    "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/profile-mjss82WnWBRO86MHHGxvJ2TVZuyrDv.jpeg",
+  name: "Guest User",
+  email: "guest@example.com",
+  avatar: "",
 };
+
+const DEFAULT_MENU_ITEMS = [
+  {
+    label: "Profile",
+    href: "/user/profile",
+    icon: <User className="w-4 h-4" />,
+  },
+  {
+    label: "Terms & Policies",
+    href: "/user/terms-policies",
+    icon: <FileText className="w-4 h-4" />,
+    external: true,
+  },
+];
 
 export default function ProfileDropdown({
   data = SAMPLE_PROFILE_DATA,
   className,
   isCollapsed,
+  menuItems = DEFAULT_MENU_ITEMS,
+  signOutRedirect = "/user/auth",
   ...props
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const menuItems = [
-    {
-      label: "Profile",
-      href: "/user/profile",
-      icon: <User className="w-4 h-4" />,
-    },
-    {
-      label: "Terms & Policies",
-      href: "/user/terms-policies",
-      icon: <FileText className="w-4 h-4" />,
-      external: true,
-    },
-  ];
 
   return (
     <div className={cn("relative", className)} {...props}>
@@ -46,9 +53,8 @@ export default function ProfileDropdown({
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className={`flex items-center gap-3  w-full rounded-2xl bg-white  border border-zinc-200/60   hover:bg-zinc-50/80  hover:shadow-sm transition-all duration-200 focus:outline-none ${
-                isCollapsed ? "p-2" : "p-3"
-              }`}
+              className={`flex items-center gap-3  w-full rounded-2xl bg-white  border border-zinc-200/60   hover:bg-zinc-50/80  hover:shadow-sm transition-all duration-200 focus:outline-none ${isCollapsed ? "p-2" : "p-3"
+                }`}
             >
               {!isCollapsed && (
                 <div className="text-left flex-1">
@@ -62,15 +68,20 @@ export default function ProfileDropdown({
               )}
               <div className="relative">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-0.5">
-                  <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                    <Image
-                      src={data.avatar}
-                      alt={data.name}
-                      width={36}
-                      height={36}
-                      className="w-full h-full object-cover rounded-full select-none"
-                    />
-                  </div>
+                  <Avatar className="w-full h-full rounded-full bg-white text-xs font-semibold text-gray-600">
+                    {data.avatar ? (
+                      <AvatarImage
+                        src={data.avatar}
+                        alt={data.name || data.email || "Profile"}
+                        className="object-cover"
+                      />
+                    ) : null}
+                    <AvatarFallback>
+                      {(data.name || data.email || "U")
+                        .charAt(0)
+                        .toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
               </div>
             </button>
@@ -127,6 +138,7 @@ export default function ProfileDropdown({
             <DropdownMenuItem asChild>
               <button
                 type="button"
+                onClick={() => signOut({ callbackUrl: signOutRedirect })}
                 className="w-full flex items-center gap-3 p-3 duration-200 bg-red-500/10 rounded-xl hover:bg-red-500/20 cursor-pointer border border-transparent hover:border-red-500/30 hover:shadow-sm transition-all group"
               >
                 <LogOut className="w-4 h-4 text-red-500 group-hover:text-red-600" />

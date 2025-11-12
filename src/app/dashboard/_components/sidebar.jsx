@@ -1,40 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
   Home,
-  BarChart3,
+  MessageSquare,
   Users,
   Settings,
-  LogOut,
   Crown,
   PanelLeft,
   FileText,
   Shield,
+  HardDrive,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import ProfileDropdown from "@/components/kokonutui/profile-dropdown";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const mainNavItems = [
-  { label: "Dashboard", icon: <Home size={18} />, href: "#" },
-  { label: "Analytics", icon: <BarChart3 size={18} />, href: "#" },
-  { label: "Users", icon: <Users size={18} />, href: "#" },
-  { label: "Reports", icon: <FileText size={18} />, href: "#" },
+  { label: "Overview", icon: <Home size={18} />, href: "/dashboard" },
+  {
+    label: "Questions",
+    icon: <MessageSquare size={18} />,
+    href: "/dashboard/questions",
+  },
+  { label: "Users", icon: <Users size={18} />, href: "/dashboard/users" },
+  { label: "Reports", icon: <FileText size={18} />, href: "/dashboard/reports" },
 ];
 
 const adminNavItems = [
   {
     label: "Admin Panel",
     icon: <Shield size={18} />,
-    href: "#",
-    badge: "Admin",
+    href: "/dashboard/profile",
   },
-  { label: "Settings", icon: <Settings size={18} />, href: "#" },
+  { label: "Storage", icon: <HardDrive size={18} />, href: "/dashboard/storage" },
+  { label: "Settings", icon: <Settings size={18} />, href: "/dashboard/settings" },
 ];
 
 export function AdminSidebar({ onWidthChange }) {
@@ -42,6 +47,27 @@ export function AdminSidebar({ onWidthChange }) {
   const [isAdminExpanded, setIsAdminExpanded] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const profileMenu = useMemo(
+    () => [
+      { label: "Profile", href: "/dashboard/profile", icon: <Shield className="w-4 h-4" /> },
+      { label: "Storage", href: "/dashboard/storage", icon: <HardDrive className="w-4 h-4" /> },
+      { label: "Settings", href: "/dashboard/settings", icon: <Settings className="w-4 h-4" /> },
+    ],
+    []
+  );
+
+  const profileData = useMemo(
+    () => ({
+      name: session?.user?.name ?? "Administrator",
+      email: session?.user?.email ?? "admin@example.com",
+      avatar: session?.user?.image ?? "",
+    }),
+    [session]
+  );
 
   // detect screen width
   useEffect(() => {
@@ -143,7 +169,12 @@ export function AdminSidebar({ onWidthChange }) {
 
         {/* Nav Links */}
         <nav className="flex flex-col gap-1 flex-1">
-          {mainNavItems.map((item, i) => (
+          {mainNavItems.map((item, i) => {
+            const isActive =
+              item.href === "/dashboard"
+                ? pathname === "/dashboard"
+                : pathname.startsWith(item.href);
+            return (
             <motion.button
               key={item.label}
               custom={i}
@@ -152,10 +183,16 @@ export function AdminSidebar({ onWidthChange }) {
               animate="open"
               whileHover={{ x: 2, backgroundColor: "#f3f4f6" }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => !isLargeScreen && setIsOpen(false)}
+              onClick={() => {
+                router.push(item.href);
+                if (!isLargeScreen) setIsOpen(false);
+              }}
               className={cn(
                 "w-full flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-black hover:bg-gray-100 group",
-                isCollapsed && "justify-center"
+                isCollapsed && "justify-center",
+                isActive && !isCollapsed
+                  ? "bg-gray-100 font-semibold"
+                  : ""
               )}
               title={isCollapsed ? item.label : ""}
             >
@@ -166,7 +203,8 @@ export function AdminSidebar({ onWidthChange }) {
                 </span>
               )}
             </motion.button>
-          ))}
+            );
+          })}
 
           {/* Admin Section */}
           <div className="mt-4 pt-4 border-t border-gray-200">
@@ -174,7 +212,12 @@ export function AdminSidebar({ onWidthChange }) {
               onClick={() => setIsAdminExpanded(!isAdminExpanded)}
               className={cn(
                 "w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-black hover:bg-gray-100",
-                isCollapsed && "justify-center"
+                isCollapsed && "justify-center",
+                adminNavItems.some((item) =>
+                  pathname.startsWith(item.href)
+                ) && !isCollapsed
+                  ? "bg-gray-100 font-semibold"
+                  : ""
               )}
             >
               <div className="flex items-center gap-2">
@@ -202,7 +245,10 @@ export function AdminSidebar({ onWidthChange }) {
                   {adminNavItems.map((item) => (
                     <button
                       key={item.label}
-                      onClick={() => !isLargeScreen && setIsOpen(false)}
+                      onClick={() => {
+                        router.push(item.href);
+                        if (!isLargeScreen) setIsOpen(false);
+                      }}
                       className="w-full flex items-center gap-2 px-3 py-1.5 ml-1 rounded-md text-gray-700 hover:bg-gray-100 text-xs"
                     >
                       <span className="text-gray-600">{item.icon}</span>
@@ -216,7 +262,12 @@ export function AdminSidebar({ onWidthChange }) {
         </nav>
 
         {/* User Section */}
-        <ProfileDropdown isCollapsed={isCollapsed} />
+        <ProfileDropdown
+          isCollapsed={isCollapsed}
+          menuItems={profileMenu}
+          data={profileData}
+          signOutRedirect="/dashboard/auth"
+        />
       </motion.aside>
     </>
   );

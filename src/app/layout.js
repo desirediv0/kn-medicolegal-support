@@ -1,6 +1,8 @@
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/components/session-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,7 +17,8 @@ const geistMono = localFont({
 
 export const metadata = {
   title: "KN Medicolegal Support",
-  description: "Providing expert medicolegal services with professionalism and integrity.",
+  description:
+    "Providing expert medicolegal services with professionalism and integrity.",
 };
 
 export default function RootLayout({ children }) {
@@ -24,8 +27,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster />
-        {children}
+        <AuthProvider>
+          <Script
+            src="https://checkout.razorpay.com/v1/checkout.js"
+            strategy="beforeInteractive"
+          />
+          <Toaster />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

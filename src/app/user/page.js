@@ -22,14 +22,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import {
   Paperclip,
-  Send,
   X,
   Loader2,
-  UploadCloud,
   Download,
+  Plus,
+  SendHorizontal,
 } from "lucide-react";
 import imageCompression from "browser-image-compression";
-import { formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -73,9 +73,7 @@ const getActivityTimestamp = (question) => {
 };
 
 const sortQuestionsByRecent = (list = []) =>
-  [...list].sort(
-    (a, b) => getActivityTimestamp(b) - getActivityTimestamp(a)
-  );
+  [...list].sort((a, b) => getActivityTimestamp(b) - getActivityTimestamp(a));
 
 const IMAGE_COMPRESSION_OPTIONS = {
   maxSizeMB: 1,
@@ -123,6 +121,15 @@ const isVideoMimeType = (mime) =>
 
 const getAttachmentName = (file) =>
   file?.fileName || file?.name || "attachment";
+
+const formatMessageTime = (timestamp) => {
+  if (!timestamp) return "";
+  try {
+    return format(new Date(timestamp), "hh:mm a");
+  } catch (error) {
+    return "";
+  }
+};
 
 const QuestionList = ({
   questions,
@@ -174,7 +181,9 @@ const QuestionList = ({
             <div className="flex items-center justify-between gap-2">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <p className="font-medium truncate text-foreground">{question.title}</p>
+                  <p className="font-medium truncate text-foreground">
+                    {question.title}
+                  </p>
                   {unread > 0 && (
                     <span className="inline-flex items-center justify-center rounded-full bg-primary px-2 text-[10px] font-semibold text-primary-foreground">
                       {unread > 99 ? "99+" : unread}
@@ -198,7 +207,9 @@ const QuestionList = ({
                   ? currencyFormatter.format(Number(question.price))
                   : "—"}
               </span>
-              <span className="hidden sm:inline text-muted-foreground/60">•</span>
+              <span className="hidden sm:inline text-muted-foreground/60">
+                •
+              </span>
               <span className="capitalize">
                 Status: {question.paymentStatus?.toLowerCase()}
               </span>
@@ -281,7 +292,6 @@ function UserContent() {
   });
   const [messageInput, setMessageInput] = useState("");
   const [attachments, setAttachments] = useState([]);
-  const [dropzoneExpanded, setDropzoneExpanded] = useState(false);
   const [sending, setSending] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
   const [payImmediately, setPayImmediately] = useState(true);
@@ -289,6 +299,9 @@ function UserContent() {
   const selectedQuestionRef = useRef(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [questionPrice, setQuestionPrice] = useState(null);
+  const messagesContainerRef = useRef(null);
+  const shouldStickToBottomRef = useRef(true);
+  const initialMessagesRenderRef = useRef(true);
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentQuestionId = searchParams.get("question");
@@ -408,9 +421,11 @@ function UserContent() {
   }, [status]);
 
   const fetchMessages = useCallback(
-    async (questionId) => {
+    async (questionId, { silent = false } = {}) => {
       if (!questionId) return;
-      setLoadingMessages(true);
+      if (!silent) {
+        setLoadingMessages(true);
+      }
       try {
         const res = await fetch(`/api/questions/${questionId}/messages`, {
           cache: "no-store",
@@ -429,10 +444,10 @@ function UserContent() {
           const updated = prevQuestions.map((q) =>
             q.id === questionId
               ? {
-                  ...q,
-                  messageCount: data.messages?.length ?? q.messageCount ?? 0,
-                  latestMessage: latest ?? q.latestMessage,
-                }
+                ...q,
+                messageCount: data.messages?.length ?? q.messageCount ?? 0,
+                latestMessage: latest ?? q.latestMessage,
+              }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -459,7 +474,9 @@ function UserContent() {
         console.error(error);
         toast.error(error?.message || "Unable to fetch messages");
       } finally {
-        setLoadingMessages(false);
+        if (!silent) {
+          setLoadingMessages(false);
+        }
       }
     },
     [setMessages]
@@ -525,7 +542,7 @@ function UserContent() {
     if (!selectedQuestion?.id || status !== "authenticated") return;
     fetchMessages(selectedQuestion.id);
     const interval = setInterval(
-      () => fetchMessages(selectedQuestion.id),
+      () => fetchMessages(selectedQuestion.id, { silent: true }),
       POLL_INTERVAL
     );
     return () => clearInterval(interval);
@@ -534,6 +551,43 @@ function UserContent() {
   useEffect(() => {
     selectedQuestionRef.current = selectedQuestion;
   }, [selectedQuestion]);
+
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    const handleScroll = () => {
+      const threshold = 120;
+      const distanceFromBottom =
+        container.scrollHeight - (container.scrollTop + container.clientHeight);
+      shouldStickToBottomRef.current = distanceFromBottom <= threshold;
+    };
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollMessagesToBottom = useCallback((behavior = "smooth") => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (initialMessagesRenderRef.current) {
+      initialMessagesRenderRef.current = false;
+      scrollMessagesToBottom("auto");
+      return;
+    }
+    if (!shouldStickToBottomRef.current) {
+      return;
+    }
+    scrollMessagesToBottom();
+  }, [messages, scrollMessagesToBottom]);
 
   const onDrop = useCallback((acceptedFiles) => {
     const mapped = acceptedFiles.map((file) => ({
@@ -548,6 +602,8 @@ function UserContent() {
     onDrop,
     multiple: true,
     maxSize: 25 * 1024 * 1024,
+    noClick: true,
+    noKeyboard: true,
     accept: {
       "application/pdf": [".pdf"],
       "image/*": [".png", ".jpg", ".jpeg", ".webp"],
@@ -557,9 +613,6 @@ function UserContent() {
       "video/*": [".mp4", ".mov", ".m4v", ".webm"],
     },
   });
-
-  const shouldShowExpandedDropzone =
-    dropzoneExpanded || isDragActive || attachments.length > 0;
 
   const removeAttachment = useCallback((id) => {
     setAttachments((prev) => {
@@ -806,6 +859,7 @@ function UserContent() {
       }
 
       const { message } = await res.json();
+      shouldStickToBottomRef.current = true;
       setMessages((prev) => {
         const next = [...prev, message];
         setReadCounts((counts) => ({
@@ -816,10 +870,10 @@ function UserContent() {
           const updated = prevQuestions.map((q) =>
             q.id === selectedQuestion.id
               ? {
-                  ...q,
-                  latestMessage: message,
-                  messageCount: next.length,
-                }
+                ...q,
+                latestMessage: message,
+                messageCount: next.length,
+              }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -882,8 +936,8 @@ function UserContent() {
     selectedQuestion.paymentStatus === "SUCCESS";
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:gap-6 min-h-[calc(100dvh-4rem)] text-foreground">
-      <div className="md:hidden sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-white/90 px-4 py-3 shadow-sm backdrop-blur">
+    <div className="flex flex-col gap-4 md:flex-row md:gap-6 min-h-[calc(100svh-4rem)] md:min-h-[calc(100dvh-4rem)] text-foreground">
+      <div className="md:hidden sticky top-0 z-30 flex  items-center justify-between gap-3 rounded-xl border border-primary/20 bg-white/90 px-4 py-3 shadow-sm backdrop-blur">
         <div className="min-w-0">
           <h2 className="text-base font-semibold">My Questions</h2>
           <p className="text-xs text-muted-foreground">
@@ -928,6 +982,8 @@ function UserContent() {
             readCounts={readCounts}
             onSelect={(question) => {
               setSelectedQuestion(question);
+              shouldStickToBottomRef.current = true;
+              initialMessagesRenderRef.current = true;
               setReadCounts((prev) => ({
                 ...prev,
                 [question.id]: question.messageCount ?? 0,
@@ -954,6 +1010,8 @@ function UserContent() {
         readCounts={readCounts}
         onSelect={(question) => {
           setSelectedQuestion(question);
+          shouldStickToBottomRef.current = true;
+          initialMessagesRenderRef.current = true;
           setReadCounts((prev) => ({
             ...prev,
             [question.id]: question.messageCount ?? 0,
@@ -966,7 +1024,7 @@ function UserContent() {
         }}
       />
 
-      <div className="flex-1 flex flex-col rounded-xl border border-muted/40 bg-white/95 shadow-sm">
+      <div className="flex-1 flex min-h-0 flex-col rounded-xl border border-muted/40 bg-white/95 shadow-sm">
         {!selectedQuestion ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6 text-center text-muted-foreground">
             <p>Select a question from the queue to view the conversation.</p>
@@ -983,7 +1041,9 @@ function UserContent() {
           <>
             <header className="rounded-t-xl border-b border-muted/40 bg-white/95 p-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div className="space-y-1">
-                <h3 className="text-xl font-semibold">{selectedQuestion.title}</h3>
+                <h3 className="text-xl font-semibold">
+                  {selectedQuestion.title}
+                </h3>
                 {selectedQuestion.description && (
                   <p className="text-sm text-muted-foreground">
                     {selectedQuestion.description}
@@ -1018,9 +1078,17 @@ function UserContent() {
               </div>
             </header>
 
-            <section className="flex-1 overflow-y-auto p-4 space-y-4">
+            <section
+              ref={messagesContainerRef}
+              className="flex-1 overflow-y-auto p-4 pb-20 sm:pb-24 space-y-4 scroll-smooth"
+            >
               {loadingMessages ? (
-                <p className="text-sm text-muted-foreground">Loading messages...</p>
+                <div className="flex h-full min-h-[160px] items-center justify-center text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-muted/50 px-3 py-1">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    Syncing conversation…
+                  </span>
+                </div>
               ) : messages.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
                   No messages yet.{" "}
@@ -1029,223 +1097,219 @@ function UserContent() {
                     : "Complete payment to enable messaging."}
                 </p>
               ) : (
-                messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={cn(
-                      "flex",
-                      msg.sender?.role === "ADMIN" ? "justify-start" : "justify-end"
-                    )}
-                  >
+                messages.map((msg) => {
+                  const isUserMessage = msg.sender?.role !== "ADMIN";
+                  const senderLabel = isUserMessage
+                    ? "You"
+                    : msg.sender?.name || "Admin";
+                  const messageTime = formatMessageTime(msg.createdAt);
+
+                  return (
                     <div
+                      key={msg.id}
                       className={cn(
-                        "max-w-lg rounded-2xl px-4 py-3 shadow-sm",
-                        msg.sender?.role === "ADMIN"
-                          ? "bg-muted/30 text-foreground"
-                          : "bg-primary/10 text-foreground"
+                        "flex",
+                        isUserMessage ? "justify-end" : "justify-start"
                       )}
                     >
-                      <p className="text-xs font-semibold text-muted-foreground mb-1">
-                        {msg.sender?.role === "ADMIN"
-                          ? msg.sender?.name || "Admin"
-                          : "You"}
-                      </p>
-                      {msg.body && (
-                        <p className="text-sm whitespace-pre-line">{msg.body}</p>
-                      )}
-                      {msg.files?.length > 0 && (
-                        <div className="mt-3 space-y-3">
-                          {msg.files.map((file) => {
-                            const key =
-                              file.id ?? file.key ?? file.url ?? file.fileName;
-                            const mime =
-                              file.mimeType ||
-                              file.mediaType ||
-                              file.type ||
-                              "";
-                            const fileName = getAttachmentName(file);
-                            const fileSizeLabel = file.fileSize
-                              ? formatFileSize(Number(file.fileSize))
-                              : "";
+                      <div
+                        className={cn(
+                          "max-w-lg rounded-2xl px-4 py-3 shadow-sm space-y-2",
+                          isUserMessage
+                            ? "bg-primary/10 text-foreground"
+                            : "bg-muted/30 text-foreground"
+                        )}
+                      >
+                        <div>
+                          <span className="inline-flex select-none items-center rounded-full bg-muted/70 px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                            {senderLabel}
+                          </span>
+                        </div>
+                        {msg.body && (
+                          <p className="text-sm whitespace-pre-line leading-relaxed">
+                            {msg.body}
+                          </p>
+                        )}
+                        {msg.files?.length > 0 && (
+                          <div className="space-y-3 pt-1">
+                            {msg.files.map((file, index) => {
+                              const key =
+                                file?.id ??
+                                file?.key ??
+                                file?.url ??
+                                file?.fileName ??
+                                `file-${index}`;
+                              const mime =
+                                file?.mimeType ||
+                                file?.mediaType ||
+                                file?.type ||
+                                "";
+                              const fileName = getAttachmentName(file);
+                              const fileSizeLabel = file?.fileSize
+                                ? formatFileSize(Number(file.fileSize))
+                                : "";
 
-                            if (isImageMimeType(mime)) {
-                              return (
-                                <figure
-                                  key={key}
-                                  className="overflow-hidden rounded-xl border border-muted/40 bg-white"
-                                >
-                                  <a
-                                    href={file.url}
-                                    download={fileName}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="block"
+                              if (!file?.url) {
+                                return (
+                                  <div
+                                    key={key}
+                                    className="rounded-lg border border-muted/40 bg-muted/20 px-3 py-2 text-xs italic text-muted-foreground"
                                   >
-                                    <Image
-                                      src={file.url}
-                                      alt={fileName}
-                                      width={384}
-                                      height={256}
-                                      className="max-h-64 w-full object-cover"
-                                    />
-                                  </a>
-                                  <figcaption className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-muted-foreground">
+                                    Attachment removed by admin.
+                                  </div>
+                                );
+                              }
+
+                              if (isImageMimeType(mime)) {
+                                return (
+                                  <figure
+                                    key={key}
+                                    className="overflow-hidden rounded-xl border border-muted/40 bg-white"
+                                  >
+                                    <a
+                                      href={file.url}
+                                      download={fileName}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="block"
+                                    >
+                                      <Image
+                                        src={file.url}
+                                        alt={fileName}
+                                        width={384}
+                                        height={256}
+                                        className="max-h-64 w-full object-cover"
+                                      />
+                                    </a>
+                                    <figcaption className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-muted-foreground">
+                                      <span className="truncate font-medium text-foreground">
+                                        {fileName}
+                                      </span>
+                                      <a
+                                        href={file.url}
+                                        download={fileName}
+                                        className="inline-flex items-center gap-1 rounded-full border border-primary/30 px-2 py-1 text-[11px] font-semibold text-primary hover:border-primary/50 hover:text-primary"
+                                      >
+                                        <Download className="h-3 w-3" />
+                                        Download
+                                      </a>
+                                    </figcaption>
+                                  </figure>
+                                );
+                              }
+
+                              if (isVideoMimeType(mime)) {
+                                return (
+                                  <div
+                                    key={key}
+                                    className="overflow-hidden rounded-xl border border-muted/40 bg-white"
+                                  >
+                                    <div className="bg-black">
+                                      <video
+                                        controls
+                                        className="max-h-72 w-full"
+                                        preload="metadata"
+                                      >
+                                        <source src={file.url} type={mime} />
+                                        Your browser does not support embedded
+                                        videos.{" "}
+                                        <a href={file.url} download={fileName}>
+                                          Download instead.
+                                        </a>
+                                      </video>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-muted-foreground">
+                                      <div className="min-w-0">
+                                        <p className="truncate font-medium text-foreground">
+                                          {fileName}
+                                        </p>
+                                        {fileSizeLabel && (
+                                          <p className="text-[11px] text-muted-foreground/70">
+                                            {fileSizeLabel}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <a
+                                        href={file.url}
+                                        download={fileName}
+                                        className="inline-flex items-center gap-1 rounded-full border border-primary/30 px-2 py-1 text-[11px] font-semibold text-primary hover:border-primary/50 hover:text-primary"
+                                      >
+                                        <Download className="h-3 w-3" />
+                                        Download
+                                      </a>
+                                    </div>
+                                  </div>
+                                );
+                              }
+
+                              return (
+                                <a
+                                  key={key}
+                                  href={file.url}
+                                  download={fileName}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="flex items-center justify-between gap-3 rounded-lg border border-muted/50 bg-white px-3 py-2 text-xs text-muted-foreground transition hover:border-primary/40 hover:bg-primary/5"
+                                >
+                                  <span className="flex items-center gap-2">
+                                    <Paperclip className="h-3 w-3 text-primary" />
                                     <span className="truncate font-medium text-foreground">
                                       {fileName}
                                     </span>
-                                    <a
-                                      href={file.url}
-                                      download={fileName}
-                                      className="inline-flex items-center gap-1 rounded-full border border-primary/30 px-2 py-1 text-[11px] font-semibold text-primary hover:border-primary/50 hover:text-primary"
-                                    >
-                                      <Download className="h-3 w-3" />
-                                      Download
-                                    </a>
-                                  </figcaption>
-                                </figure>
-                              );
-                            }
-
-                            if (isVideoMimeType(mime)) {
-                              return (
-                                <div
-                                  key={key}
-                                  className="overflow-hidden rounded-xl border border-muted/40 bg-white"
-                                >
-                                  <div className="bg-black">
-                                    <video
-                                      controls
-                                      className="max-h-72 w-full"
-                                      preload="metadata"
-                                    >
-                                      <source src={file.url} type={mime} />
-                                      Your browser does not support embedded videos.{" "}
-                                      <a href={file.url} download={fileName}>
-                                        Download instead.
-                                      </a>
-                                    </video>
-                                  </div>
-                                  <div className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-muted-foreground">
-                                    <div className="min-w-0">
-                                      <p className="truncate font-medium text-foreground">
-                                        {fileName}
-                                      </p>
-                                      {fileSizeLabel && (
-                                        <p className="text-[11px] text-muted-foreground/70">
-                                          {fileSizeLabel}
-                                        </p>
-                                      )}
-                                    </div>
-                                    <a
-                                      href={file.url}
-                                      download={fileName}
-                                      className="inline-flex items-center gap-1 rounded-full border border-primary/30 px-2 py-1 text-[11px] font-semibold text-primary hover:border-primary/50 hover:text-primary"
-                                    >
-                                      <Download className="h-3 w-3" />
-                                      Download
-                                    </a>
-                                  </div>
-                                </div>
-                              );
-                            }
-
-                            return (
-                              <a
-                                key={key}
-                                href={file.url}
-                                download={fileName}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex items-center justify-between gap-3 rounded-lg border border-muted/50 bg-white px-3 py-2 text-xs text-muted-foreground transition hover:border-primary/40 hover:bg-primary/5"
-                              >
-                                <span className="flex items-center gap-2">
-                                  <Paperclip className="h-3 w-3 text-primary" />
-                                  <span className="truncate font-medium text-foreground">
-                                    {fileName}
                                   </span>
-                                </span>
-                                {fileSizeLabel && (
-                                  <span className="text-[11px] text-muted-foreground/70">
-                                    {fileSizeLabel}
-                                  </span>
-                                )}
-                              </a>
-                            );
-                          })}
-                        </div>
-                      )}
+                                  {fileSizeLabel && (
+                                    <span className="text-[11px] text-muted-foreground/70">
+                                      {fileSizeLabel}
+                                    </span>
+                                  )}
+                                </a>
+                              );
+                            })}
+                          </div>
+                        )}
+                        {messageTime && (
+                          <div className="flex justify-end text-[11px] font-medium text-muted-foreground/70">
+                            {messageTime}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </section>
 
-            <footer className="rounded-b-xl border-t border-muted/40 bg-white/95 p-4">
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-3 md:grid md:grid-cols-[auto,1fr,auto] md:items-end md:gap-4">
-                  <div
-                    {...getRootProps({
-                      className: cn(
-                        "group relative flex items-center justify-center rounded-full border-2 border-dashed border-muted/60 bg-muted/20 text-muted-foreground transition hover:border-primary/60 hover:text-primary md:col-span-1",
-                        shouldShowExpandedDropzone
-                          ? "w-full flex-col gap-3 rounded-xl p-5 text-center md:col-span-3"
-                          : "h-12 w-12",
-                        isDragActive && "border-primary bg-primary/10"
-                      ),
-                      onClick: () => {
-                        if (!shouldShowExpandedDropzone) {
-                          setDropzoneExpanded(true);
-                        }
-                      },
-                    })}
+            <footer
+              {...getRootProps({
+                className: cn(
+                  "sticky bottom-0 border-t border-muted/40 bg-white/90 p-2 backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-colors",
+                  isDragActive && "border-primary/40 bg-primary/10"
+                ),
+              })}
+            >
+              <input {...getInputProps()} />
+              <div className="flex flex-col gap-3">
+                <div
+                  className={cn(
+                    "flex items-end gap-2 rounded-full border border-muted/40 bg-white/95 px-3 py-2 shadow-sm transition focus-within:border-primary",
+                    isDragActive && "border-primary bg-primary/10",
+                    !canSendMessages && "opacity-90"
+                  )}
+                >
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      open();
+                    }}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-muted/40 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground my-auto"
+                    aria-label="Add attachments"
                   >
-                    <input {...getInputProps()} />
-                    {shouldShowExpandedDropzone ? (
-                      <>
-                        <button
-                          type="button"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            if (!attachments.length && !isDragActive) {
-                              setDropzoneExpanded(false);
-                            }
-                          }}
-                          className="absolute right-3 top-3 rounded-full bg-white/80 p-1 text-muted-foreground shadow hover:text-foreground"
-                          aria-label="Collapse uploader"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                        <UploadCloud className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
-                        <div className="space-y-1">
-                          <p className="text-sm font-medium text-foreground sm:text-base">
-                            Drag & drop files here
-                          </p>
-                          <p className="text-xs text-muted-foreground sm:text-sm">
-                            or{" "}
-                            <button
-                              type="button"
-                              onClick={(event) => {
-                                event.preventDefault();
-                                event.stopPropagation();
-                                open();
-                              }}
-                              className="font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                            >
-                              browse your device
-                            </button>
-                          </p>
-                        </div>
-                        <p className="text-xs text-muted-foreground/80 sm:text-sm">
-                          PDF, DOC, DOCX, PNG, JPG, MP4 up to 25 MB
-                        </p>
-                      </>
-                    ) : (
-                      <UploadCloud className="h-6 w-6 transition group-hover:scale-110" />
-                    )}
-                  </div>
-                  <Textarea
-                    rows={2}
+                    <Plus className="h-5 w-5" />
+                  </button>
+                  <Input
+
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
                     onKeyDown={(e) => {
@@ -1256,41 +1320,40 @@ function UserContent() {
                         }
                       }
                     }}
-                    className={cn(
-                      "w-full resize-none md:row-span-1",
-                      shouldShowExpandedDropzone ? "md:col-span-2" : "md:col-span-1"
-                    )}
-                    placeholder="Type your message..."
+                    className="flex-1 resize-none border-none bg-transparent px-0 py-2 text-sm leading-6 focus-visible:ring-0 focus-visible:ring-offset-0"
+                    placeholder="Ask anything..."
                     disabled={!canSendMessages}
                   />
-                  <Button
-                    onClick={sendMessage}
-                    disabled={!canSendMessages || sending}
-                    className="w-full md:w-auto md:justify-self-end md:h-12"
-                  >
-                    {sending ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        <Send className="h-4 w-4" />
-                        Send
-                      </span>
-                    )}
-                  </Button>
+                  <div className="flex items-center gap-2">
+
+                    <Button
+                      type="button"
+                      onClick={sendMessage}
+                      disabled={!canSendMessages || sending}
+                      className="h-11 w-11 rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 my-auto"
+                      size="icon"
+                    >
+                      {sending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <SendHorizontal className="h-5 w-5" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
                 {attachments.length > 0 && (
-                  <div className="grid gap-2 sm:grid-cols-2">
+                  <div className="space-y-2">
                     {attachments.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center justify-between rounded-lg border border-muted/50 bg-white px-3 py-2 text-sm shadow-sm"
+                        className="flex items-center justify-between rounded-xl border border-muted/50 bg-white/90 px-3 py-2 text-sm shadow-sm"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                             <Paperclip className="h-4 w-4 text-primary" />
                           </div>
                           <div className="flex flex-col">
-                            <span className="max-w-[180px] truncate font-medium text-foreground sm:max-w-[220px]">
+                            <span className="max-w-[200px] truncate font-medium text-foreground sm:max-w-[280px]">
                               {item.file.name}
                             </span>
                             <span className="text-xs text-muted-foreground">
@@ -1300,8 +1363,13 @@ function UserContent() {
                         </div>
                         <button
                           type="button"
-                          onClick={() => removeAttachment(item.id)}
-                          className="rounded-full p-1 text-muted-foreground transition hover:bg-muted/40 hover:text-foreground"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            removeAttachment(item.id);
+                          }}
+                          className="rounded-full p-1.5 text-muted-foreground transition hover:bg-muted/40 hover:text-foreground"
+                          aria-label="Remove attachment"
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -1309,8 +1377,15 @@ function UserContent() {
                     ))}
                   </div>
                 )}
-                {!canSendMessages && (
-                  <p className="text-xs text-destructive">
+                {canSendMessages ? (
+                  <p className="text-[11px] text-muted-foreground/70 mx-auto">
+                    Enter sends
+                    {isDragActive
+                      ? " • Drop files to attach"
+                      : " • Drag files here to attach"}
+                  </p>
+                ) : (
+                  <p className="text-[11px] text-destructive">
                     {selectedQuestion.status === "CLOSED"
                       ? "This chat is closed."
                       : "Complete payment to enable messaging."}

@@ -37,7 +37,7 @@ const Layout = ({ children }) => {
             <AdminSidebar onWidthChange={setSidebarWidth} />
             <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
                 <header className="sticky top-0 z-30 flex h-16 w-full items-center border-b border-primary/20 bg-primary px-4 text-primary-foreground shadow-md backdrop-blur">
-                    <div>
+                    <div className="text-center md:text-left w-full">
                         <h1 className="text-lg font-semibold leading-tight">{currentTitle}</h1>
                         <p className="text-xs opacity-80">Medicolegal Support Admin Console</p>
                     </div>

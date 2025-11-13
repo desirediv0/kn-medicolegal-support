@@ -12,12 +12,13 @@ import {
   Loader2,
   Clock,
   User,
+  FileText,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
-import ProfileDropdown from "@/components/kokonutui/profile-dropdown";
+import { signOut, useSession } from "next-auth/react";
 
 export function UserSidebar({ onWidthChange }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -137,11 +138,13 @@ export function UserSidebar({ onWidthChange }) {
         <div className="flex items-center justify-between px-2 mb-6">
           {!isCollapsed && (
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-600 to-emerald-700 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-600 via-primary to-primary flex items-center justify-center">
                 <Crown size={18} className="text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-sm text-black">User Panel</span>
+                <span className="font-bold text-sm text-black">
+                  {profileData ? profileData.name : "User"}
+                </span>
 
               </div>
             </div>
@@ -162,13 +165,18 @@ export function UserSidebar({ onWidthChange }) {
 
         {/* Primary navigation */}
         {[
-          { label: "Dashboard", href: "/user", icon: <Home size={18} /> },
+          { label: "Profile", href: "/user/profile", icon: <User size={18} /> },
+          { label: "Message", href: "/user", icon: <Home size={18} /> },
           {
-            label: "History",
+            label: "Message History",
             href: "/user/history",
             icon: <Clock size={18} />,
           },
-          { label: "Profile", href: "/user/profile", icon: <User size={18} /> },
+          {
+            label: "Terms & Policies",
+            href: "/user/terms-policies",
+            icon: <FileText className="w-4 h-4" />,
+          }
         ].map((item) => {
           const isActive =
             item.href === "/user"
@@ -244,8 +252,20 @@ export function UserSidebar({ onWidthChange }) {
         </div>
 
         {/* Bottom Profile + Logout */}
+        <button
+          type="button"
+          onClick={() => signOut({ callbackUrl: "/user/auth" })}
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/10 rounded-xl hover:bg-red-500/20 cursor-pointer border border-transparent hover:border-red-500/30 hover:shadow-sm transition-all group mt-4 ${isCollapsed ? "justify-center" : ""}`}
+        >
+          <LogOut className="w-4 h-4 text-red-500 group-hover:text-red-600" />
+          {!isCollapsed && (
+            <span className="text-sm font-medium text-red-500 group-hover:text-red-600">
+              Sign Out
+            </span>
+          )}
+        </button>
 
-        <ProfileDropdown isCollapsed={isCollapsed} data={profileData} />
+
       </motion.aside>
     </>
   );

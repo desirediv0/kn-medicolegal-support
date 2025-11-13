@@ -150,8 +150,8 @@ export function AccountProfile({ heading, description, showRole = false }) {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image should be under 5 MB");
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Image should be under 2 MB");
       return;
     }
 
@@ -307,7 +307,7 @@ export function AccountProfile({ heading, description, showRole = false }) {
                     Profile picture
                   </Label>
                   <p className="text-xs text-gray-500">
-                    Upload a clear square image under 5 MB.
+                    Upload a clear square image under 2 MB.
                   </p>
                   <div className="flex flex-wrap items-center gap-3">
                     <Button

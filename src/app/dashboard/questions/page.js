@@ -639,10 +639,10 @@ function AdminQuestionsContent() {
                   <li
                     key={question.id}
                     className={`px-4 py-3 space-y-1 cursor-pointer transition hover:bg-gray-100 border-l-4 ${selectedQuestion?.id === question.id
-                        ? "bg-gray-100 border-green-600"
-                        : unread > 0
-                          ? "bg-green-50 border-green-500"
-                          : "border-transparent"
+                      ? "bg-gray-100 border-green-600"
+                      : unread > 0
+                        ? "bg-green-50 border-green-500"
+                        : "border-transparent"
                       }`}
                     onClick={() => {
                       setSelectedQuestion(question);
@@ -690,7 +690,7 @@ function AdminQuestionsContent() {
                         Payment: {question.paymentStatus?.toLowerCase()}
                       </span>
                     </p>
-                    <p className="text-xs text-gray-400 italic truncate">
+                    <p className="text-xs text-black italic truncate">
                       {question.latestMessage?.sender?.role
                         ? `${question.latestMessage.sender.role === "ADMIN"
                           ? "You"
@@ -919,8 +919,8 @@ function AdminQuestionsContent() {
               <div
                 {...getRootProps({
                   className: `${shouldShowExpandedDropzone
-                      ? "relative flex w-full flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-5 text-center transition sm:p-6"
-                      : "group relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-gray-50 text-gray-400 transition hover:border-green-400 hover:text-green-600"
+                    ? "relative flex w-full flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-5 text-center transition sm:p-6"
+                    : "group relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-gray-50 text-gray-400 transition hover:border-green-400 hover:text-green-600"
                     } ${isDragActive
                       ? "border-green-500 bg-green-50"
                       : shouldShowExpandedDropzone

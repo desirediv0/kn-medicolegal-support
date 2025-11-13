@@ -47,13 +47,7 @@ const quickSolutions = [
     background:
       "bg-white/10 text-primary-foreground border border-primary-foreground/40",
   },
-  {
-    label: "Onboard Your Hospital",
-    cta: "Schedule Demo",
-    href: "/dashboard/auth",
-    background:
-      "bg-primary-foreground/10 text-primary-foreground border border-primary-foreground/30",
-  },
+
 ];
 
 const partnershipPillars = [
@@ -172,12 +166,7 @@ export default function Home() {
                 >
                   Enter Client Portal
                 </Link>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center rounded-full border border-primary-foreground/60 px-6 py-3 text-base font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
-                >
-                  Request Consultation
-                </a>
+
               </div>
             </div>
             <div className="rounded-3xl border border-primary-foreground/40 bg-primary/20 p-6 shadow-[0_30px_120px_rgba(6,40,80,0.4)] backdrop-blur">

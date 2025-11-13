@@ -5,15 +5,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
-  Home,
   MessageSquare,
-  Crown,
   PanelLeft,
   Loader2,
   Clock,
   User,
   FileText,
   LogOut,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -102,7 +101,7 @@ export function UserSidebar({ onWidthChange }) {
         <Button
           variant="ghost"
           size="icon"
-          className="bg-white border border-gray-200 text-black hover:bg-gray-50"
+          className="bg-primary text-primary-foreground border border-primary/40 hover:bg-primary/90 hover:text-primary-foreground shadow-md"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -130,35 +129,33 @@ export function UserSidebar({ onWidthChange }) {
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className={cn(
-          "fixed lg:static top-0 left-0 h-[100dvh] bg-white border-r border-gray-200 z-50 flex flex-col px-3 py-4 overflow-y-auto transition-all duration-300",
-          isCollapsed ? "w-20" : "w-60"
+          "fixed lg:static top-0 left-0 h-[100dvh] bg-primary text-primary-foreground border-r border-primary/30 shadow-lg z-50 flex flex-col px-3 py-6 overflow-y-auto transition-all duration-300",
+          isCollapsed ? "w-20" : "w-52"
         )}
       >
         {/* Logo + Collapse */}
         <div className="flex items-center justify-between px-2 mb-6">
           {!isCollapsed && (
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-600 via-primary to-primary flex items-center justify-center">
-                <Crown size={18} className="text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-sm text-black">
-                  {profileData ? profileData.name : "User"}
-                </span>
+            <div className="flex items-center gap-1">
 
-              </div>
+              <span className="font-semibold text-sm text-primary-foreground/90">
+                Hello,{" "}
+                {profileData ? profileData.name.split(" ")[0]
+                  : "User"}
+              </span>
+
             </div>
           )}
           <motion.button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`flex p-1 hover:bg-gray-100 rounded-lg transition-colors ${isCollapsed ? "mx-auto" : ""
+            className={`flex p-1 hover:bg-primary-foreground/10 rounded-lg transition-colors ${isCollapsed ? "mx-auto" : ""
               }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <PanelLeft
               size={16}
-              className={cn("text-gray-600 transition-transform")}
+              className={cn("text-primary-foreground transition-transform")}
             />
           </motion.button>
         </div>
@@ -166,7 +163,7 @@ export function UserSidebar({ onWidthChange }) {
         {/* Primary navigation */}
         {[
           { label: "Profile", href: "/user/profile", icon: <User size={18} /> },
-          { label: "Message", href: "/user", icon: <Home size={18} /> },
+          { label: "Message", href: "/user", icon: <MessageCircle size={18} /> },
           {
             label: "Message History",
             href: "/user/history",
@@ -190,13 +187,13 @@ export function UserSidebar({ onWidthChange }) {
                 if (!isLargeScreen) setIsOpen(false);
               }}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 text-gray-800 transition-colors",
+                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-primary-foreground/80 transition-colors hover:bg-primary-foreground/10",
                 isCollapsed && "justify-center",
-                isActive && !isCollapsed ? "bg-gray-100" : ""
+                isActive && !isCollapsed ? "bg-primary-foreground/20 text-primary-foreground" : ""
               )}
               title={isCollapsed ? item.label : ""}
             >
-              <span className="text-gray-600">{item.icon}</span>
+              <span className="text-primary-foreground opacity-90">{item.icon}</span>
               {!isCollapsed && <span>{item.label}</span>}
             </button>
           );
@@ -205,18 +202,18 @@ export function UserSidebar({ onWidthChange }) {
         {/* Chat History Section */}
         <div className="mt-6 border-t border-gray-200 pt-4 flex-1 overflow-y-auto">
           {!isCollapsed && (
-            <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">
+            <h3 className="text-xs font-semibold text-primary-foreground/80 uppercase mb-2">
               Questions
             </h3>
           )}
           <div className="space-y-1 overflow-x-hidden">
             {loading ? (
-              <div className="flex items-center gap-2 text-sm text-gray-500 px-3 py-2">
+              <div className="flex items-center gap-2 text-sm text-primary-foreground/70 px-3 py-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 {!isCollapsed && <span>Loading...</span>}
               </div>
             ) : questions.length === 0 ? (
-              <p className="text-xs text-gray-500 px-3 py-2">
+              <p className="text-xs text-primary-foreground/70 px-3 py-2">
                 {!isCollapsed ? "No questions yet." : "No data"}
               </p>
             ) : (
@@ -226,10 +223,10 @@ export function UserSidebar({ onWidthChange }) {
                   onClick={() => handleSelectQuestion(question.id)}
                   whileHover={{ x: 2 }}
                   className={cn(
-                    "w-full text-left flex items-center gap-2 px-3 py-2 rounded-md text-sm hover:bg-gray-100 transition-all",
+                    "w-full text-left flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-all text-primary-foreground/80 hover:bg-primary-foreground/10",
                     activeQuestionId === question.id
-                      ? "bg-green-100 text-green-800"
-                      : "text-gray-700",
+                      ? "bg-primary-foreground/20 text-primary-foreground"
+                      : "text-primary-foreground/80",
                     isCollapsed && "justify-center"
                   )}
                   title={isCollapsed ? question.title : ""}
@@ -237,10 +234,10 @@ export function UserSidebar({ onWidthChange }) {
                   <MessageSquare size={16} />
                   {!isCollapsed && (
                     <div className="flex flex-col items-start">
-                      <span className="truncate text-xs font-medium">
+                      <span className="truncate text-xs font-medium text-primary-foreground">
                         {question.title}
                       </span>
-                      <span className="text-[10px] text-gray-500 capitalize">
+                      <span className="text-[10px] text-primary-foreground/70 capitalize">
                         {question.status.toLowerCase()}
                       </span>
                     </div>
@@ -255,11 +252,11 @@ export function UserSidebar({ onWidthChange }) {
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: "/user/auth" })}
-          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/10 rounded-xl hover:bg-red-500/20 cursor-pointer border border-transparent hover:border-red-500/30 hover:shadow-sm transition-all group mt-4 ${isCollapsed ? "justify-center" : ""}`}
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-4 text-red-500 ${isCollapsed ? "justify-center" : ""}`}
         >
-          <LogOut className="w-4 h-4 text-red-500 group-hover:text-red-600" />
+          <LogOut className="w-4 h-4" />
           {!isCollapsed && (
-            <span className="text-sm font-medium text-red-500 group-hover:text-red-600">
+            <span className="text-sm font-medium">
               Sign Out
             </span>
           )}

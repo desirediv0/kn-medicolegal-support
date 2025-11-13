@@ -9,7 +9,6 @@ import {
   MessageSquare,
   Users,
   Settings,
-  Crown,
   PanelLeft,
   FileText,
   Shield,
@@ -19,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const mainNavItems = [
   {
@@ -96,7 +95,7 @@ export function AdminSidebar({ onWidthChange }) {
         <Button
           variant="ghost"
           size="icon"
-          className="bg-white border border-gray-200 text-black hover:bg-gray-50"
+          className="bg-primary text-primary-foreground border border-primary/40 hover:bg-primary/90 hover:text-primary-foreground shadow-md"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -124,36 +123,33 @@ export function AdminSidebar({ onWidthChange }) {
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className={cn(
-          "fixed lg:static top-0 left-0 h-[100dvh] bg-white border-r border-gray-200 z-50 flex flex-col px-3 py-4 overflow-y-auto transition-all duration-300",
+          "fixed lg:static top-0 left-0 h-[100dvh] bg-primary text-primary-foreground border-r border-primary/30 shadow-lg z-50 flex flex-col px-3 py-6 overflow-y-auto transition-all duration-300",
           isCollapsed ? "w-20" : "w-56"
         )}
       >
         {/* Logo + Collapse */}
         <div className="flex items-center justify-between px-2 mb-6">
           {!isCollapsed && (
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 via-primary to-primary flex items-center justify-center">
-                <Crown size={18} className="text-white" />
-              </div>
-              <div className="flex flex-col">
-                {profileData && (
-                  <span className="font-bold text-sm text-black">
-                    {profileData.name}
-                  </span>
-                )}
-              </div>
+            <div className="flex items-center gap-1">
+
+              <span className="font-semibold text-sm text-primary-foreground/90">
+                Hello,{" "}
+                {profileData ? profileData.name.split(" ")[0]
+                  : "User"}
+              </span>
+
             </div>
           )}
           <motion.button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`flex p-1 hover:bg-gray-100 rounded-lg transition-colors ${isCollapsed ? "mx-auto" : ""
+            className={`flex p-1 hover:bg-primary-foreground/10 rounded-lg transition-colors ${isCollapsed ? "mx-auto" : ""
               }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <PanelLeft
               size={16}
-              className={cn("text-gray-600 transition-transform")}
+              className={cn("text-primary-foreground transition-transform")}
             />
           </motion.button>
         </div>
@@ -172,22 +168,24 @@ export function AdminSidebar({ onWidthChange }) {
                 variants={itemVariants}
                 initial={false}
                 animate="open"
-                whileHover={{ x: 2, backgroundColor: "#f3f4f6" }}
+                whileHover={{ x: 2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
                   router.push(item.href);
                   if (!isLargeScreen) setIsOpen(false);
                 }}
                 className={cn(
-                  "w-full flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-black hover:bg-gray-100 group",
+                  "w-full flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-primary-foreground/80 hover:bg-primary-foreground/10 group",
                   isCollapsed && "justify-center",
                   isActive && !isCollapsed
-                    ? "bg-gray-100 font-semibold"
+                    ? "bg-primary-foreground/20 font-semibold text-primary-foreground"
                     : ""
                 )}
                 title={isCollapsed ? item.label : ""}
               >
-                <span className="text-gray-600 flex-shrink-0">{item.icon}</span>
+                <span className="text-primary-foreground flex-shrink-0 opacity-90">
+                  {item.icon}
+                </span>
                 {!isCollapsed && (
                   <span className="text-xs font-medium truncate">
                     {item.label}
@@ -204,11 +202,11 @@ export function AdminSidebar({ onWidthChange }) {
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: "/dashboard/auth" })}
-          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/10 rounded-xl hover:bg-red-500/20 cursor-pointer border border-transparent hover:border-red-500/30 hover:shadow-sm transition-all group mt-4 ${isCollapsed ? "justify-center" : ""}`}
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-4 text-red-500 ${isCollapsed ? "justify-center" : ""}`}
         >
-          <LogOut className="w-4 h-4 text-red-500 group-hover:text-red-600" />
+          <LogOut className="w-4 h-4 text-red-500" />
           {!isCollapsed && (
-            <span className="text-sm font-medium text-red-500 group-hover:text-red-600">
+            <span className="text-sm font-medium">
               Sign Out
             </span>
           )}

@@ -134,14 +134,9 @@ export default function Home() {
                 href="/user/auth"
                 className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-5 py-2 text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl"
               >
-                Client Login
+                Sign In
               </Link>
-              <a
-                href="#contact"
-                className="hidden rounded-full border border-primary-foreground/60 px-5 py-2 text-sm font-semibold text-primary-foreground/80 transition hover:bg-primary-foreground/10 md:inline-flex md:items-center md:justify-center"
-              >
-                Contact
-              </a>
+
             </div>
           </nav>
 

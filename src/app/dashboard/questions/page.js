@@ -15,7 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -84,6 +84,25 @@ const isVideoMimeType = (mime) =>
 const getAttachmentName = (file) =>
   file?.fileName || file?.name || "attachment";
 
+const getActivityTimestamp = (question) => {
+  if (!question) return 0;
+  const latest = question.latestMessage?.createdAt;
+  const updated = question.updatedAt;
+  const created = question.createdAt;
+  return latest
+    ? new Date(latest).getTime()
+    : updated
+      ? new Date(updated).getTime()
+      : created
+        ? new Date(created).getTime()
+        : 0;
+};
+
+const sortQuestionsByRecent = (list = []) =>
+  [...list].sort(
+    (a, b) => getActivityTimestamp(b) - getActivityTimestamp(a)
+  );
+
 const StatusChip = ({ status }) => {
   const map = useMemo(
     () => ({
@@ -125,6 +144,7 @@ function AdminQuestionsContent() {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [attachments, setAttachments] = useState([]);
   const [dropzoneExpanded, setDropzoneExpanded] = useState(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [messageInput, setMessageInput] = useState("");
   const [sending, setSending] = useState(false);
   const [readCounts, setReadCounts] = useState({});
@@ -139,7 +159,7 @@ function AdminQuestionsContent() {
       const response = await fetch("/api/questions?limit=15", { cache: "no-store" });
       if (!response.ok) throw new Error("Failed to fetch questions");
       const data = await response.json();
-      let fetched = data.questions ?? [];
+      let fetched = sortQuestionsByRecent(data.questions ?? []);
 
       const currentSelected = selectedQuestionRef.current;
       if (currentSelected) {
@@ -187,7 +207,7 @@ function AdminQuestionsContent() {
                   messageCount: detail.chats?.length ?? 0,
                   latestMessage: latest,
                 };
-                fetched = [hydrated, ...fetched].slice(0, 15);
+                fetched = sortQuestionsByRecent([hydrated, ...fetched]).slice(0, 15);
                 setSelectedQuestion((prev) => {
                   if (!prev || prev.id !== hydrated.id) return prev;
                   const prevLatestId = prev.latestMessage?.id ?? null;
@@ -211,7 +231,7 @@ function AdminQuestionsContent() {
         }
       }
 
-      setQuestions(fetched);
+      setQuestions(sortQuestionsByRecent(fetched));
       setReadCounts((prev) => {
         const next = { ...prev };
         fetched.forEach((question) => {
@@ -244,17 +264,18 @@ function AdminQuestionsContent() {
         [questionId]: data.messages?.length ?? 0,
       }));
       const latest = data.messages?.[data.messages.length - 1] ?? null;
-      setQuestions((prevQuestions) =>
-        prevQuestions.map((q) =>
+      setQuestions((prevQuestions) => {
+        const updated = prevQuestions.map((q) =>
           q.id === questionId
             ? {
-              ...q,
-              messageCount: data.messages?.length ?? q.messageCount ?? 0,
-              latestMessage: latest ?? q.latestMessage,
-            }
+                ...q,
+                messageCount: data.messages?.length ?? q.messageCount ?? 0,
+                latestMessage: latest ?? q.latestMessage,
+              }
             : q
-        )
-      );
+        );
+        return sortQuestionsByRecent(updated);
+      });
       setSelectedQuestion((prev) => {
         if (!prev || prev.id !== questionId) return prev;
         const nextMessageCount = data.messages?.length ?? prev.messageCount ?? 0;
@@ -364,6 +385,120 @@ function AdminQuestionsContent() {
     });
   }, []);
 
+  const handleQuestionSelect = useCallback(
+    (question) => {
+      if (!question) return;
+      setSelectedQuestion(question);
+      setReadCounts((prev) => ({
+        ...prev,
+        [question.id]: question.messageCount ?? 0,
+      }));
+      if (currentQuestionId !== question.id) {
+        router.replace(`/dashboard/questions?question=${question.id}`, {
+          scroll: false,
+        });
+      }
+      fetchMessages(question.id);
+      setIsMobileDrawerOpen(false);
+    },
+    [currentQuestionId, fetchMessages, router]
+  );
+
+  const renderQuestionList = () => {
+    if (loadingQuestions) {
+      return (
+        <p className="p-4 text-sm text-muted-foreground">
+          Loading questions...
+        </p>
+      );
+    }
+
+    if (questions.length === 0) {
+      return (
+        <p className="p-4 text-sm text-muted-foreground">
+          No questions yet.
+        </p>
+      );
+    }
+
+    return (
+      <ul className="divide-y divide-white/10">
+        {questions.map((question) => {
+          const lastActivity =
+            question.latestMessage?.createdAt || question.updatedAt;
+          const lastMessagePreview =
+            question.latestMessage?.body?.trim() || "No messages yet";
+          const amountText =
+            question.price != null
+              ? currencyFormatter.format(Number(question.price))
+              : "—";
+          const unread = Math.max(
+            0,
+            (question.messageCount ?? 0) - (readCounts[question.id] ?? 0)
+          );
+
+          return (
+            <li
+              key={question.id}
+              className={cn(
+                "px-4 py-3 space-y-1 cursor-pointer transition rounded-lg border border-transparent hover:border-primary/40 hover:bg-primary/5",
+                selectedQuestion?.id === question.id
+                  ? "bg-primary/10 border-primary/50"
+                  : unread > 0
+                    ? "bg-primary/5 border-primary/30"
+                    : "bg-white/5"
+              )}
+              onClick={() => handleQuestionSelect(question)}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium truncate">{question.title}</p>
+                    {unread > 0 && (
+                      <span className="inline-flex items-center justify-center rounded-full bg-primary px-2 text-[10px] font-semibold text-primary-foreground">
+                        {unread > 99 ? "99+" : unread}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[11px] text-muted-foreground">
+                    {lastActivity
+                      ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
+                        addSuffix: true,
+                      })}`
+                      : "No activity yet"}
+                  </span>
+                </div>
+                <StatusChip status={question.status} />
+              </div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground truncate">
+                <UserCircle2 className="h-3 w-3" />
+                <span>{question.user?.email ?? "Unknown"}</span>
+              </div>
+              <p className="text-xs text-muted-foreground flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                <span>Amount: {amountText}</span>
+                <span className="hidden sm:inline text-muted-foreground/60">
+                  •
+                </span>
+                <span className="capitalize">
+                  Payment: {question.paymentStatus?.toLowerCase()}
+                </span>
+              </p>
+              <p className="text-xs text-foreground italic truncate">
+                {question.latestMessage?.sender?.role
+                  ? `${question.latestMessage.sender.role === "ADMIN"
+                    ? "You"
+                    : "User"
+                  }: `
+                  : ""}
+                {lastMessagePreview}
+              </p>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
   const ensureAssignment = async () => {
     if (!session?.user?.id || !selectedQuestion?.id) return;
     if (selectedQuestion.adminId === session.user.id) return;
@@ -379,7 +514,9 @@ function AdminQuestionsContent() {
       }
       const { question } = await res.json();
       setQuestions((prev) =>
-        prev.map((q) => (q.id === question.id ? question : q))
+        sortQuestionsByRecent(
+          prev.map((q) => (q.id === question.id ? question : q))
+        )
       );
       setSelectedQuestion(question);
     } catch (error) {
@@ -467,17 +604,18 @@ function AdminQuestionsContent() {
           ...counts,
           [selectedQuestion.id]: next.length,
         }));
-        setQuestions((prevQuestions) =>
-          prevQuestions.map((q) =>
+        setQuestions((prevQuestions) => {
+          const updated = prevQuestions.map((q) =>
             q.id === selectedQuestion.id
               ? {
-                ...q,
-                latestMessage: message,
-                messageCount: next.length,
-              }
+                  ...q,
+                  latestMessage: message,
+                  messageCount: next.length,
+                }
               : q
-          )
-        );
+          );
+          return sortQuestionsByRecent(updated);
+        });
         setSelectedQuestion((prevSelected) =>
           prevSelected && prevSelected.id === selectedQuestion.id
             ? {
@@ -514,7 +652,9 @@ function AdminQuestionsContent() {
       }
       const { question } = await res.json();
       setQuestions((prev) =>
-        prev.map((q) => (q.id === question.id ? question : q))
+        sortQuestionsByRecent(
+          prev.map((q) => (q.id === question.id ? question : q))
+        )
       );
       setSelectedQuestion(question);
       toast.success("Conversation closed.");
@@ -538,7 +678,9 @@ function AdminQuestionsContent() {
       }
       const { question } = await res.json();
       setQuestions((prev) =>
-        prev.map((q) => (q.id === question.id ? question : q))
+        sortQuestionsByRecent(
+          prev.map((q) => (q.id === question.id ? question : q))
+        )
       );
       setSelectedQuestion(question);
       toast.success("Conversation reopened.");
@@ -568,7 +710,9 @@ function AdminQuestionsContent() {
       }
       attachments.forEach((item) => item.preview && URL.revokeObjectURL(item.preview));
       setAttachments([]);
-      setQuestions((prev) => prev.filter((q) => q.id !== selectedQuestion.id));
+      setQuestions((prev) =>
+        sortQuestionsByRecent(prev.filter((q) => q.id !== selectedQuestion.id))
+      );
       setReadCounts((prev) => {
         const next = { ...prev };
         delete next[selectedQuestion.id];
@@ -600,136 +744,132 @@ function AdminQuestionsContent() {
   };
 
   return (
-    <div className="flex h-[100dvh] bg-gray-50 text-gray-900">
-      <aside className="w-80 border-r border-gray-200 bg-white flex flex-col">
-        <div className="p-4 flex items-center justify-between gap-2">
+    <div className="flex flex-col gap-4 md:flex-row md:gap-6 min-h-[calc(100dvh-4rem)] text-foreground">
+      <div className="md:hidden flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-white/80 px-4 py-3 shadow-sm">
+        <div className="min-w-0">
+          <h2 className="text-base font-semibold">Questions</h2>
+          <p className="text-xs text-muted-foreground">
+            {selectedQuestion?.title ?? "Select a conversation to get started"}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setIsMobileDrawerOpen(true)}
+          >
+            Queue
+          </Button>
+          <Button size="sm" variant="outline" asChild>
+            <Link href="/dashboard/questions/history">History</Link>
+          </Button>
+          <Button
+            size="sm"
+            onClick={fetchQuestions}
+            disabled={loadingQuestions}
+          >
+            {loadingQuestions ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              "Refresh"
+            )}
+          </Button>
+        </div>
+      </div>
+
+      <Dialog open={isMobileDrawerOpen} onOpenChange={setIsMobileDrawerOpen}>
+        <DialogContent className="max-w-lg w-[90vw] sm:w-[480px] p-0">
+          <DialogHeader className="px-4 pt-4 pb-2 text-left">
+            <DialogTitle className="text-lg font-semibold">
+              Questions Queue
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              Latest conversations appear first.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="px-4 pb-4 space-y-3">
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={fetchQuestions}
+                disabled={loadingQuestions}
+                className="flex-1"
+              >
+                {loadingQuestions ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  "Refresh"
+                )}
+              </Button>
+              <Button size="sm" variant="outline" asChild className="flex-1">
+                <Link href="/dashboard/questions/history">History</Link>
+              </Button>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto rounded-lg border border-primary/20 bg-white/70 p-2 shadow-inner">
+              {renderQuestionList()}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <aside className="hidden md:flex md:w-80 lg:w-96 flex-col rounded-xl border border-primary/20 bg-white/90 shadow-sm">
+        <div className="p-4 flex items-center justify-between gap-2 border-b border-primary/10">
           <h2 className="text-lg font-semibold">Questions</h2>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
               <Link href="/dashboard/questions/history">History</Link>
             </Button>
-            <Button size="sm" variant="outline" onClick={fetchQuestions}>
-              Refresh
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={fetchQuestions}
+              disabled={loadingQuestions}
+            >
+              {loadingQuestions ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Refresh"
+              )}
             </Button>
           </div>
         </div>
-        <Separator />
-        <div className="flex-1 overflow-y-auto">
-          {loadingQuestions ? (
-            <p className="p-4 text-sm text-gray-500">Loading questions...</p>
-          ) : questions.length === 0 ? (
-            <p className="p-4 text-sm text-gray-500">No questions yet.</p>
-          ) : (
-            <ul className="divide-y divide-gray-100">
-              {questions.map((question) => {
-                const lastActivity =
-                  question.latestMessage?.createdAt || question.updatedAt;
-                const lastMessagePreview =
-                  question.latestMessage?.body?.trim() || "No messages yet";
-                const amountText =
-                  question.price != null
-                    ? currencyFormatter.format(Number(question.price))
-                    : "—";
-                const unread = Math.max(
-                  0,
-                  (question.messageCount ?? 0) - (readCounts[question.id] ?? 0)
-                );
-
-                return (
-                  <li
-                    key={question.id}
-                    className={`px-4 py-3 space-y-1 cursor-pointer transition hover:bg-gray-100 border-l-4 ${selectedQuestion?.id === question.id
-                      ? "bg-gray-100 border-green-600"
-                      : unread > 0
-                        ? "bg-green-50 border-green-500"
-                        : "border-transparent"
-                      }`}
-                    onClick={() => {
-                      setSelectedQuestion(question);
-                      setReadCounts((prev) => ({
-                        ...prev,
-                        [question.id]: question.messageCount ?? 0,
-                      }));
-                      if (currentQuestionId !== question.id) {
-                        router.replace(
-                          `/dashboard/questions?question=${question.id}`,
-                          { scroll: false }
-                        );
-                      }
-                      fetchMessages(question.id);
-                    }}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium truncate">{question.title}</p>
-                          {unread > 0 && (
-                            <span className="inline-flex items-center justify-center rounded-full bg-green-500 px-2 text-[10px] font-semibold text-white">
-                              {unread > 99 ? "99+" : unread}
-                            </span>
-                          )}
-                        </div>
-                        <span className="text-[11px] text-gray-400">
-                          {lastActivity
-                            ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
-                              addSuffix: true,
-                            })}`
-                            : "No activity yet"}
-                        </span>
-                      </div>
-                      <StatusChip status={question.status} />
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500 truncate">
-                      <UserCircle2 className="h-3 w-3" />
-                      <span>{question.user?.email ?? "Unknown"}</span>
-                    </div>
-                    <p className="text-xs text-gray-500 flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                      <span>Amount: {amountText}</span>
-                      <span className="hidden sm:inline text-gray-300">•</span>
-                      <span className="capitalize">
-                        Payment: {question.paymentStatus?.toLowerCase()}
-                      </span>
-                    </p>
-                    <p className="text-xs text-black italic truncate">
-                      {question.latestMessage?.sender?.role
-                        ? `${question.latestMessage.sender.role === "ADMIN"
-                          ? "You"
-                          : "User"
-                        }: `
-                        : ""}
-                      {lastMessagePreview}
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+        <div className="flex-1 overflow-y-auto p-3 space-y-3">
+          {renderQuestionList()}
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col min-h-[60vh]">
+      <main className="flex-1 flex flex-col rounded-xl border border-muted/40 bg-white/95 shadow-sm">
         {!selectedQuestion ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center text-gray-500 p-6">
-            <p>Select a question from the list to review or respond.</p>
-            <Button variant="outline" onClick={fetchQuestions}>
-              Refresh Questions
+          <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6 text-center text-muted-foreground">
+            <p>Select a question from the queue to review or respond.</p>
+            <Button
+              variant="outline"
+              onClick={fetchQuestions}
+              disabled={loadingQuestions}
+            >
+              {loadingQuestions ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Refresh Queue"
+              )}
             </Button>
           </div>
         ) : (
           <>
-            <header className="p-4 border-b border-gray-200 flex flex-col gap-3 md:gap-0 md:flex-row md:items-center md:justify-between bg-white">
-              <div>
+            <header className="rounded-t-xl border-b border-muted/40 bg-white/95 p-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+              <div className="space-y-1">
                 <h3 className="text-xl font-semibold">{selectedQuestion.title}</h3>
                 {selectedQuestion.description && (
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-muted-foreground">
                     {selectedQuestion.description}
                   </p>
                 )}
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-muted-foreground">
                   From: {selectedQuestion.user?.name ?? "Anonymous"} (
                   {selectedQuestion.user?.email ?? "N/A"})
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   Amount:{" "}
                   {selectedQuestion.price != null
                     ? currencyFormatter.format(Number(selectedQuestion.price))
@@ -737,7 +877,7 @@ function AdminQuestionsContent() {
                   • Payment: {selectedQuestion.paymentStatus?.toLowerCase()}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {selectedQuestion.adminId !== session?.user?.id && (
                   <Button variant="outline" onClick={ensureAssignment}>
                     Claim Conversation
@@ -768,23 +908,29 @@ function AdminQuestionsContent() {
 
             <section className="flex-1 overflow-y-auto p-4 space-y-4">
               {loadingMessages ? (
-                <p className="text-sm text-gray-500">Loading messages...</p>
+                <p className="text-sm text-muted-foreground">Loading messages...</p>
               ) : messages.length === 0 ? (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   No messages yet. Reply to start the conversation.
                 </p>
               ) : (
                 messages.map((msg) => (
                   <div
                     key={msg.id}
-                    className={`flex ${msg.sender?.role === "ADMIN" ? "justify-end" : "justify-start"
-                      }`}
+                    className={cn(
+                      "flex",
+                      msg.sender?.role === "ADMIN" ? "justify-end" : "justify-start"
+                    )}
                   >
                     <div
-                      className={`max-w-lg rounded-2xl px-4 py-2 shadow ${msg.sender?.role === "ADMIN" ? "bg-green-50" : "bg-white"
-                        }`}
+                      className={cn(
+                        "max-w-lg rounded-2xl px-4 py-3 shadow-sm",
+                        msg.sender?.role === "ADMIN"
+                          ? "bg-primary/10 text-foreground"
+                          : "bg-muted/30 text-foreground"
+                      )}
                     >
-                      <p className="text-xs font-semibold text-gray-500 mb-1">
+                      <p className="text-xs font-semibold text-muted-foreground mb-1">
                         {msg.sender?.role === "ADMIN" ? "You" : "User"}
                       </p>
                       {msg.body && (
@@ -806,7 +952,7 @@ function AdminQuestionsContent() {
                               return (
                                 <figure
                                   key={key}
-                                  className="overflow-hidden rounded-xl border border-gray-200 bg-white"
+                                  className="overflow-hidden rounded-xl border border-muted/40 bg-white"
                                 >
                                   <a
                                     href={file.url}
@@ -823,14 +969,14 @@ function AdminQuestionsContent() {
                                       className="max-h-64 w-full object-cover"
                                     />
                                   </a>
-                                  <figcaption className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-gray-600">
-                                    <span className="truncate font-medium text-gray-700">
+                                  <figcaption className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-muted-foreground">
+                                    <span className="truncate font-medium text-foreground">
                                       {fileName}
                                     </span>
                                     <a
                                       href={file.url}
                                       download={fileName}
-                                      className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-2 py-1 text-[11px] font-semibold text-green-600 hover:border-green-500 hover:text-green-700"
+                                      className="inline-flex items-center gap-1 rounded-full border border-primary/30 px-2 py-1 text-[11px] font-semibold text-primary hover:border-primary/50 hover:text-primary"
                                     >
                                       <Download className="h-3 w-3" />
                                       Download
@@ -844,7 +990,7 @@ function AdminQuestionsContent() {
                               return (
                                 <div
                                   key={key}
-                                  className="overflow-hidden rounded-xl border border-gray-200 bg-white"
+                                  className="overflow-hidden rounded-xl border border-muted/40 bg-white"
                                 >
                                   <div className="bg-black">
                                     <video
@@ -853,20 +999,19 @@ function AdminQuestionsContent() {
                                       preload="metadata"
                                     >
                                       <source src={file.url} type={mime} />
-                                      Your browser does not support embedded
-                                      videos.{" "}
+                                      Your browser does not support embedded videos.{" "}
                                       <a href={file.url} download={fileName}>
                                         Download instead.
                                       </a>
                                     </video>
                                   </div>
-                                  <div className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-gray-600">
+                                  <div className="flex items-center justify-between gap-3 px-3 py-2 text-xs text-muted-foreground">
                                     <div className="min-w-0">
-                                      <p className="truncate font-medium text-gray-700">
+                                      <p className="truncate font-medium text-foreground">
                                         {fileName}
                                       </p>
                                       {fileSizeLabel && (
-                                        <p className="text-[11px] text-gray-400">
+                                        <p className="text-[11px] text-muted-foreground/70">
                                           {fileSizeLabel}
                                         </p>
                                       )}
@@ -874,7 +1019,7 @@ function AdminQuestionsContent() {
                                     <a
                                       href={file.url}
                                       download={fileName}
-                                      className="inline-flex items-center gap-1 rounded-full border border-gray-200 px-2 py-1 text-[11px] font-semibold text-green-600 hover:border-green-500 hover:text-green-700"
+                                      className="inline-flex items-center gap-1 rounded-full border border-primary/30 px-2 py-1 text-[11px] font-semibold text-primary hover:border-primary/50 hover:text-primary"
                                     >
                                       <Download className="h-3 w-3" />
                                       Download
@@ -891,16 +1036,16 @@ function AdminQuestionsContent() {
                                 download={fileName}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs text-gray-600 transition hover:border-green-400 hover:bg-green-50"
+                                className="flex items-center justify-between gap-3 rounded-lg border border-muted/50 bg-white px-3 py-2 text-xs text-muted-foreground transition hover:border-primary/40 hover:bg-primary/5"
                               >
                                 <span className="flex items-center gap-2">
-                                  <Paperclip className="h-3 w-3 text-green-600" />
-                                  <span className="truncate font-medium text-gray-700">
+                                  <Paperclip className="h-3 w-3 text-primary" />
+                                  <span className="truncate font-medium text-foreground">
                                     {fileName}
                                   </span>
                                 </span>
                                 {fileSizeLabel && (
-                                  <span className="text-[11px] text-gray-400">
+                                  <span className="text-[11px] text-muted-foreground/70">
                                     {fileSizeLabel}
                                   </span>
                                 )}
@@ -915,135 +1060,139 @@ function AdminQuestionsContent() {
               )}
             </section>
 
-            <footer className="border-t border-gray-200 bg-white p-4">
-              <div
-                {...getRootProps({
-                  className: `${shouldShowExpandedDropzone
-                    ? "relative flex w-full flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-5 text-center transition sm:p-6"
-                    : "group relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-gray-50 text-gray-400 transition hover:border-green-400 hover:text-green-600"
-                    } ${isDragActive
-                      ? "border-green-500 bg-green-50"
-                      : shouldShowExpandedDropzone
-                        ? "border-gray-200 bg-gray-50 hover:border-green-400 hover:bg-white"
-                        : ""
-                    }`,
-                  onClick: () => {
-                    if (!shouldShowExpandedDropzone) {
-                      setDropzoneExpanded(true);
-                    }
-                  },
-                })}
-              >
-                <input {...getInputProps()} />
-                {shouldShowExpandedDropzone ? (
-                  <>
-                    <button
-                      type="button"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        if (!attachments.length && !isDragActive) {
-                          setDropzoneExpanded(false);
+            <footer className="rounded-b-xl border-t border-muted/40 bg-white/95 p-4">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3 md:grid md:grid-cols-[auto,1fr,auto] md:items-end md:gap-4">
+                  <div
+                    {...getRootProps({
+                      className: cn(
+                        "group relative flex items-center justify-center rounded-full border-2 border-dashed border-muted/60 bg-muted/20 text-muted-foreground transition hover:border-primary/60 hover:text-primary md:col-span-1",
+                        shouldShowExpandedDropzone
+                          ? "w-full flex-col gap-3 rounded-xl p-5 text-center md:col-span-3"
+                          : "h-12 w-12",
+                        isDragActive && "border-primary bg-primary/10"
+                      ),
+                      onClick: () => {
+                        if (!shouldShowExpandedDropzone) {
+                          setDropzoneExpanded(true);
                         }
-                      }}
-                      className="absolute right-3 top-3 rounded-full bg-white/80 p-1 text-gray-400 shadow hover:text-gray-600"
-                      aria-label="Collapse uploader"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                    <UploadCloud className="h-8 w-8 text-green-500 sm:h-10 sm:w-10" />
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-gray-700 sm:text-base">
-                        Drag & drop attachments here
-                      </p>
-                      <p className="text-xs text-gray-500 sm:text-sm">
-                        or{" "}
+                      },
+                    })}
+                  >
+                    <input {...getInputProps()} />
+                    {shouldShowExpandedDropzone ? (
+                      <>
                         <button
                           type="button"
                           onClick={(event) => {
                             event.preventDefault();
                             event.stopPropagation();
-                            open();
+                            if (!attachments.length && !isDragActive) {
+                              setDropzoneExpanded(false);
+                            }
                           }}
-                          className="font-semibold text-green-600 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                          className="absolute right-3 top-3 rounded-full bg-white/80 p-1 text-muted-foreground shadow hover:text-foreground"
+                          aria-label="Collapse uploader"
                         >
-                          browse your device
+                          <X className="h-4 w-4" />
                         </button>
-                      </p>
-                    </div>
-                    <p className="text-xs text-gray-400 sm:text-sm">
-                      PDF, DOC, DOCX, PNG, JPG, MP4 up to 25 MB
-                    </p>
-                  </>
-                ) : (
-                  <UploadCloud className="h-6 w-6 transition group-hover:scale-110" />
+                        <UploadCloud className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-foreground sm:text-base">
+                            Drag & drop attachments here
+                          </p>
+                          <p className="text-xs text-muted-foreground sm:text-sm">
+                            or{" "}
+                            <button
+                              type="button"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                open();
+                              }}
+                              className="font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                            >
+                              browse your device
+                            </button>
+                          </p>
+                        </div>
+                        <p className="text-xs text-muted-foreground/80 sm:text-sm">
+                          PDF, DOC, DOCX, PNG, JPG, MP4 up to 25 MB
+                        </p>
+                      </>
+                    ) : (
+                      <UploadCloud className="h-6 w-6 transition group-hover:scale-110" />
+                    )}
+                  </div>
+                  <Textarea
+                    rows={2}
+                    value={messageInput}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        if (selectedQuestion.status !== "CLOSED" && !sending) {
+                          sendMessage();
+                        }
+                      }
+                    }}
+                    className={cn(
+                      "w-full resize-none md:row-span-1",
+                      shouldShowExpandedDropzone ? "md:col-span-2" : "md:col-span-1"
+                    )}
+                    placeholder="Type your reply..."
+                    disabled={selectedQuestion.status === "CLOSED"}
+                  />
+                  <Button
+                    onClick={sendMessage}
+                    disabled={selectedQuestion.status === "CLOSED" || sending}
+                    className="w-full md:w-auto md:justify-self-end md:h-12"
+                  >
+                    {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send"}
+                  </Button>
+                </div>
+                {attachments.length > 0 && (
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {attachments.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between rounded-lg border border-muted/50 bg-white px-3 py-2 text-sm shadow-sm"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                            <Paperclip className="h-4 w-4 text-primary" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="max-w-[180px] truncate font-medium text-foreground sm:max-w-[220px]">
+                              {item.file.name}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {formatFileSize(item.file.size)}
+                            </span>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeAttachment(item.id)}
+                          className="rounded-full p-1 text-muted-foreground transition hover:bg-muted/40 hover:text-foreground"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {selectedQuestion.status === "CLOSED" && (
+                  <p className="text-xs text-destructive">
+                    This conversation is closed.
+                  </p>
                 )}
               </div>
-              {attachments.length > 0 && (
-                <div className="mb-4 mt-3 grid gap-2 sm:grid-cols-2">
-                  {attachments.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
-                          <Paperclip className="h-4 w-4 text-green-600" />
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="max-w-[160px] truncate font-medium text-gray-700 sm:max-w-[220px]">
-                            {item.file.name}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            {formatFileSize(item.file.size)}
-                          </span>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeAttachment(item.id)}
-                        className="rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                <Textarea
-                  rows={2}
-                  value={messageInput}
-                  onChange={(e) => setMessageInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      if (selectedQuestion.status !== "CLOSED" && !sending) {
-                        sendMessage();
-                      }
-                    }
-                  }}
-                  className="w-full resize-none sm:flex-1"
-                  placeholder="Type your reply..."
-                  disabled={selectedQuestion.status === "CLOSED"}
-                />
-                <Button
-                  onClick={sendMessage}
-                  disabled={selectedQuestion.status === "CLOSED" || sending}
-                  className="w-full sm:w-auto sm:self-auto"
-                >
-                  {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send"}
-                </Button>
-              </div>
-              {selectedQuestion.status === "CLOSED" && (
-                <p className="text-xs text-red-500 mt-2">
-                  This conversation is closed.
-                </p>
-              )}
             </footer>
           </>
         )}
       </main>
+
       <Dialog
         open={deleteDialogOpen}
         onOpenChange={(open) => {
@@ -1059,12 +1208,12 @@ function AdminQuestionsContent() {
               You can also delete any files that were uploaded in this thread.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-3 text-sm text-gray-600">
+          <div className="space-y-3 text-sm text-muted-foreground">
             <p>
               Deleting the conversation cannot be undone. If you also remove the media, the files
               will be permanently deleted from DigitalOcean Spaces.
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground/80">
               Tip: choose “Delete chat only” to keep the files available in the media library.
             </p>
           </div>

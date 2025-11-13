@@ -1,5 +1,8 @@
+"use client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
 
 const navLinks = [
   { title: "Services", href: "#services" },
@@ -97,6 +100,15 @@ const stats = [
 ];
 
 export default function Home() {
+  const { data: session } = useSession();
+
+  const profileData = useMemo(
+    () => ({
+      name: session?.user?.name,
+      role: session?.user?.role,
+    }),
+    [session]
+  );
   return (
     <main className="min-h-svh bg-background text-foreground">
       <section className="relative overflow-hidden bg-primary text-primary-foreground">
@@ -104,7 +116,9 @@ export default function Home() {
         <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-16 px-6 pb-24 pt-10 sm:px-10 lg:px-16">
           <nav className="flex items-center justify-between gap-6 rounded-3xl border border-primary-foreground/30 bg-primary/20 px-6 py-4 backdrop-blur-lg">
             <div className="flex items-center gap-3">
-              <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center">
+              <Link
+                href="/"
+                className="relative h-12 md:h-16 w-12 md:w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center">
                 <Image
                   src="/logo.png"
                   alt="KN Medicolegal Support logo"
@@ -112,8 +126,8 @@ export default function Home() {
                   height={80}
                   priority
                 />
-              </div>
-              <div className="flex flex-col text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground">
+              </Link>
+              <div className="flex flex-col text-[10px] md:text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground">
                 <span>KN</span>
                 <span>Medicolegal Support</span>
               </div>
@@ -130,12 +144,20 @@ export default function Home() {
               ))}
             </div>
             <div className="flex items-center gap-3">
-              <Link
-                href="/user/auth"
-                className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-5 py-2 text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl"
-              >
-                Sign In
-              </Link>
+              {
+                profileData?.name ? (
+                  <Link
+                    href={profileData.role === "ADMIN" ? "/dashboard/profile" : "/user/profile"}
+                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-5 py-1 md:py-2 text-xs md:text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl">
+                    Welcome, {profileData && profileData?.name?.split(" ")[0]}
+                  </Link>
+                ) : (<Link
+                  href="/user/auth"
+                  className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-5 py-2 md:py-2 text-xs md:text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl text-nowrap"
+                >
+                  Sign In
+                </Link>)
+              }
 
             </div>
           </nav>
@@ -156,7 +178,7 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href="/user/auth"
+                  href={profileData?.name ? (profileData.role === "ADMIN" ? "/dashboard/profile" : "/user/profile") : "/user/auth"}
                   className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-6 py-3 text-base font-semibold text-primary shadow-lg shadow-black/20 transition hover:shadow-xl"
                 >
                   Enter Client Portal

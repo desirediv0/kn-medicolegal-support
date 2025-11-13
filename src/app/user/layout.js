@@ -33,7 +33,9 @@ const LayoutContent = ({ children }) => {
 
         <nav className="flex items-center justify-between gap-6  bg-[#1C2C36] text-foreground px-6 py-4 backdrop-blur-lg">
           <div className="flex items-center gap-3">
-            <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center">
+            <Link
+              href="/user/profile"
+              className="relative h-16 w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center">
               <Image
                 src="/logo.png"
                 alt="KN Medicolegal Support logo"
@@ -41,7 +43,7 @@ const LayoutContent = ({ children }) => {
                 height={80}
                 priority
               />
-            </div>
+            </Link>
             <div className="flex flex-col text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground">
               <span>KN</span>
               <span>Medicolegal Support</span>

@@ -89,7 +89,10 @@ const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = 
 
   return (
     <Component
-      className={cn("cursor-pointer hover:underline", className)}
+      className={cn(
+        shouldTruncate && "cursor-pointer hover:underline",
+        className
+      )}
       onClick={(e) => {
         e.stopPropagation();
         if (shouldTruncate) {
@@ -100,7 +103,7 @@ const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = 
     >
       {displayText}
       {shouldTruncate && (
-        <span className="text-primary ml-1 font-semibold">
+        <span className="text-primary ml-1 font-semibold text-sm">
           {isExpanded ? " (less)" : " (more)"}
         </span>
       )}
@@ -1088,13 +1091,19 @@ function UserContent() {
           <>
             <header className="rounded-t-xl border-b border-muted/40 bg-white/95 p-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div className="space-y-1">
-                <h3 className="text-xl font-semibold">
-                  {selectedQuestion.title}
-                </h3>
+                <ExpandableText
+                  text={selectedQuestion.title}
+                  maxLength={80}
+                  className="text-xl font-semibold block"
+                  as="h3"
+                />
                 {selectedQuestion.description && (
-                  <p className="text-sm text-muted-foreground">
-                    {selectedQuestion.description}
-                  </p>
+                  <ExpandableText
+                    text={selectedQuestion.description}
+                    maxLength={120}
+                    className="text-sm text-muted-foreground block"
+                    as="p"
+                  />
                 )}
                 <p className="text-xs text-muted-foreground">
                   Status: {selectedQuestion.status?.toLowerCase()} • Payment:{" "}

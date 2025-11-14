@@ -116,16 +116,25 @@ const truncateText = (text, maxLength = 60) => {
   return text.substring(0, maxLength) + "...";
 };
 
-const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = "span" }) => {
+const ExpandableText = ({
+  text,
+  maxLength = 60,
+  className = "",
+  as: Component = "span",
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const shouldTruncate = text && text.length > maxLength;
-  const displayText = isExpanded || !shouldTruncate ? text : truncateText(text, maxLength);
+  const displayText =
+    isExpanded || !shouldTruncate ? text : truncateText(text, maxLength);
 
   if (!text) return null;
 
   return (
     <Component
-      className={cn("cursor-pointer hover:underline", className)}
+      className={cn(
+        shouldTruncate && "cursor-pointer hover:underline",
+        className
+      )}
       onClick={(e) => {
         e.stopPropagation();
         if (shouldTruncate) {
@@ -136,7 +145,7 @@ const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = 
     >
       {displayText}
       {shouldTruncate && (
-        <span className="text-primary ml-1 font-semibold">
+        <span className="text-primary ml-1 font-semibold text-sm">
           {isExpanded ? " (less)" : " (more)"}
         </span>
       )}
@@ -986,14 +995,20 @@ function AdminQuestionsContent() {
         ) : (
           <>
             <header className="rounded-t-xl border-b border-muted/40 bg-white/95 p-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-1">
-                <h3 className="text-xl font-semibold">
-                  {selectedQuestion.title}
-                </h3>
+              <div className="space-y-1 min-w-0 flex-1">
+                <ExpandableText
+                  text={selectedQuestion.title}
+                  maxLength={80}
+                  className="text-xl font-semibold block"
+                  as="h3"
+                />
                 {selectedQuestion.description && (
-                  <p className="text-sm text-muted-foreground">
-                    {selectedQuestion.description}
-                  </p>
+                  <ExpandableText
+                    text={selectedQuestion.description}
+                    maxLength={120}
+                    className="text-sm text-muted-foreground block"
+                    as="p"
+                  />
                 )}
                 <p className="text-xs text-muted-foreground">
                   From: {selectedQuestion.user?.name ?? "Anonymous"} (

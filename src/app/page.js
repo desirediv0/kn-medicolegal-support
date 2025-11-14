@@ -39,7 +39,7 @@ const serviceBuckets = [
 const quickSolutions = [
   {
     label: "Talk to a Medicolegal Expert",
-    cta: "Book a Call",
+    cta: "Chat Now",
     href: "#contact",
     background: "bg-primary-foreground text-primary",
   },

@@ -75,6 +75,39 @@ const getActivityTimestamp = (question) => {
 const sortQuestionsByRecent = (list = []) =>
   [...list].sort((a, b) => getActivityTimestamp(b) - getActivityTimestamp(a));
 
+const truncateText = (text, maxLength = 60) => {
+  if (!text || text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + "...";
+};
+
+const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = "span" }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const shouldTruncate = text && text.length > maxLength;
+  const displayText = isExpanded || !shouldTruncate ? text : truncateText(text, maxLength);
+
+  if (!text) return null;
+
+  return (
+    <Component
+      className={cn("cursor-pointer hover:underline", className)}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (shouldTruncate) {
+          setIsExpanded(!isExpanded);
+        }
+      }}
+      title={!isExpanded && shouldTruncate ? text : undefined}
+    >
+      {displayText}
+      {shouldTruncate && (
+        <span className="text-primary ml-1 font-semibold">
+          {isExpanded ? " (less)" : " (more)"}
+        </span>
+      )}
+    </Component>
+  );
+};
+
 const IMAGE_COMPRESSION_OPTIONS = {
   maxSizeMB: 1,
   maxWidthOrHeight: 1600,
@@ -179,17 +212,27 @@ const QuestionList = ({
             onClick={() => onSelect(question)}
           >
             <div className="flex items-center justify-between gap-2">
-              <div className="flex flex-col">
+              <div className="flex flex-col min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="font-medium truncate text-foreground">
-                    {question.title}
-                  </p>
+                  <ExpandableText
+                    text={question.title}
+                    maxLength={50}
+                    className="font-medium flex-1"
+                    as="p"
+                  />
                   {unread > 0 && (
-                    <span className="inline-flex items-center justify-center rounded-full bg-primary px-2 text-[10px] font-semibold text-primary-foreground">
+                    <span className="inline-flex items-center justify-center rounded-full bg-primary px-2 text-[10px] font-semibold text-primary-foreground flex-shrink-0">
                       {unread > 99 ? "99+" : unread}
                     </span>
                   )}
                 </div>
+                {question.description && (
+                  <ExpandableText
+                    text={question.description}
+                    maxLength={60}
+                    className="text-xs text-muted-foreground/80 mt-0.5"
+                  />
+                )}
                 <span className="text-[11px] text-muted-foreground">
                   {lastActivity
                     ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
@@ -214,10 +257,14 @@ const QuestionList = ({
                 Status: {question.paymentStatus?.toLowerCase()}
               </span>
             </p>
-            <p className="text-xs text-foreground italic truncate">
+            <div className="text-xs text-foreground italic">
               {lastSender ? `${lastSender}: ` : ""}
-              {lastMessagePreview}
-            </p>
+              <ExpandableText
+                text={lastMessagePreview}
+                maxLength={70}
+                className="inline"
+              />
+            </div>
           </li>
         );
       })}
@@ -1441,7 +1488,11 @@ function UserContent() {
                   setNewQuestion((prev) => ({ ...prev, title: e.target.value }))
                 }
                 placeholder="Summarize your question"
+                maxLength={100}
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                {newQuestion.title.length}/100 characters
+              </p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-700">
@@ -1457,7 +1508,11 @@ function UserContent() {
                   }))
                 }
                 placeholder="Provide relevant background, deadlines, etc."
+                maxLength={500}
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                {newQuestion.description.length}/500 characters
+              </p>
             </div>
             <div className="flex justify-end gap-2">
               <Button

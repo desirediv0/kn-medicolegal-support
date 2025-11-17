@@ -37,7 +37,7 @@ const sections = [
 const TermsPolicies = () => {
   return (
     <div className="min-h-[100dvh] bg-background py-10 text-sm text-foreground sm:py-16">
-      <div className="mx-auto w-full max-w-4xl rounded-3xl border border-primary/15 bg-white p-8 shadow-[0_24px_80px_rgba(15,48,68,0.12)] md:p-12">
+      <div className="mx-auto w-full max-w-4xl rounded-2xl border border-primary/15 bg-white p-8 shadow-[0_24px_80px_rgba(15,48,68,0.12)] md:p-12">
         <header className="mb-10 space-y-3 text-center md:mb-14">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
             KN Medicolegal Support

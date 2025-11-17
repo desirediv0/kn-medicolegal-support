@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/components/session-provider";
+import { ConditionalLayout } from "@/components/conditional-layout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +34,7 @@ export default function RootLayout({ children }) {
             strategy="beforeInteractive"
           />
           <Toaster />
-          {children}
+          <ConditionalLayout>{children}</ConditionalLayout>
         </AuthProvider>
       </body>
     </html>

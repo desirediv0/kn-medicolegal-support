@@ -36,7 +36,12 @@ function UserHistoryContent() {
         );
         if (!res.ok) throw new Error("Failed to load questions");
         const data = await res.json();
-        setQuestions(data.questions ?? []);
+        setQuestions(
+          (data.questions ?? []).map((q) => ({
+            ...q,
+            unreadCount: q.unreadCount ?? 0,
+          }))
+        );
         setTotal(data.total ?? 0);
         const totalPages = Math.max(
           1,
@@ -134,8 +139,11 @@ function UserHistoryContent() {
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-gray-900 flex items-center gap-2">
                           {question.title}
+                          {(question.unreadCount ?? 0) > 0 && (
+                            <span className="inline-block h-2 w-2 rounded-full bg-red-500" title="New messages" />
+                          )}
                         </p>
                         <p className="text-xs text-gray-500">
                           {formatDistanceToNow(new Date(question.createdAt), {

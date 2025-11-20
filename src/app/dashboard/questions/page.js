@@ -102,10 +102,10 @@ const getActivityTimestamp = (question) => {
   return latest
     ? new Date(latest).getTime()
     : updated
-    ? new Date(updated).getTime()
-    : created
-    ? new Date(created).getTime()
-    : 0;
+      ? new Date(updated).getTime()
+      : created
+        ? new Date(created).getTime()
+        : 0;
 };
 
 const sortQuestionsByRecent = (list = []) =>
@@ -164,9 +164,8 @@ const StatusChip = ({ status }) => {
   );
   return (
     <span
-      className={`px-2 py-1 rounded-full text-xs font-medium ${
-        map[status] || "bg-gray-200 text-gray-700"
-      }`}
+      className={`px-2 py-1 rounded-full text-xs font-medium ${map[status] || "bg-gray-200 text-gray-700"
+        }`}
     >
       {status}
     </span>
@@ -209,6 +208,7 @@ function AdminQuestionsContent() {
     if (status !== "authenticated") return;
     setLoadingQuestions(true);
     try {
+      // Fetch list
       const response = await fetch("/api/questions?limit=15", {
         cache: "no-store",
       });
@@ -216,12 +216,16 @@ function AdminQuestionsContent() {
       const data = await response.json();
       let fetched = sortQuestionsByRecent(data.questions ?? []);
 
-      const currentSelected = selectedQuestionRef.current;
-      if (currentSelected) {
-        const match = fetched.find((q) => q.id === currentSelected.id);
+      // Handle deep link or selected question
+      const targetId = currentQuestionId || selectedQuestionRef.current?.id;
+
+      if (targetId) {
+        const match = fetched.find((q) => q.id === targetId);
         if (match) {
+          // Update existing question in list
           setSelectedQuestion((prev) => {
-            if (!prev) return prev;
+            if (!prev) return match; // If no prev, just set match
+            // Only update if changed
             const prevLatestId = prev.latestMessage?.id ?? null;
             const nextLatestId = match.latestMessage?.id ?? null;
             if (
@@ -229,19 +233,19 @@ function AdminQuestionsContent() {
               prevLatestId === nextLatestId &&
               prev.status === match.status &&
               prev.paymentStatus === match.paymentStatus &&
-              prev.adminId === match.adminId
+              prev.adminId === match.adminId &&
+              prev.unreadCount === match.unreadCount
             ) {
               return prev;
             }
             return { ...prev, ...match };
           });
         } else {
+          // Fetch individual question if not in list
           try {
             const detailRes = await fetch(
-              `/api/questions/${currentSelected.id}`,
-              {
-                cache: "no-store",
-              }
+              `/api/questions/${targetId}`,
+              { cache: "no-store" }
             );
             if (detailRes.ok) {
               const detailData = await detailRes.json();
@@ -249,50 +253,30 @@ function AdminQuestionsContent() {
               if (detail) {
                 const latest = detail.chats?.[detail.chats.length - 1] ?? null;
                 const hydrated = {
-                  id: detail.id,
-                  title: detail.title,
-                  description: detail.description,
-                  status: detail.status,
-                  paymentStatus: detail.paymentStatus,
+                  ...detail,
                   price: detail.price != null ? Number(detail.price) : null,
-                  userId: detail.userId,
-                  adminId: detail.adminId,
-                  createdAt: detail.createdAt,
-                  updatedAt: detail.updatedAt,
-                  closedAt: detail.closedAt,
-                  user: detail.user,
-                  admin: detail.admin,
                   messageCount: detail.chats?.length ?? 0,
                   latestMessage: latest,
+                  unreadCount: detail.unreadCount ?? 0, // Ensure API returns this or default 0
                 };
-                fetched = sortQuestionsByRecent([hydrated, ...fetched]).slice(
-                  0,
-                  15
-                );
+
+                // Add to list and sort
+                fetched = sortQuestionsByRecent([hydrated, ...fetched]);
+
                 setSelectedQuestion((prev) => {
-                  if (!prev || prev.id !== hydrated.id) return prev;
-                  const prevLatestId = prev.latestMessage?.id ?? null;
-                  const nextLatestId = hydrated.latestMessage?.id ?? null;
-                  if (
-                    prev.messageCount === hydrated.messageCount &&
-                    prevLatestId === nextLatestId &&
-                    prev.status === hydrated.status &&
-                    prev.paymentStatus === hydrated.paymentStatus &&
-                    prev.adminId === hydrated.adminId
-                  ) {
-                    return prev;
-                  }
+                  if (!prev || prev.id !== hydrated.id) return hydrated;
+                  // Update logic similar to above
                   return { ...prev, ...hydrated };
                 });
               }
             }
           } catch (err) {
-            console.error("Failed to hydrate selected question", err);
+            console.error("Failed to hydrate target question", err);
           }
         }
       }
 
-      setQuestions(sortQuestionsByRecent(fetched));
+      setQuestions(fetched);
       setReadCounts((prev) => {
         const next = { ...prev };
         fetched.forEach((question) => {
@@ -308,7 +292,7 @@ function AdminQuestionsContent() {
     } finally {
       setLoadingQuestions(false);
     }
-  }, [status]);
+  }, [status, currentQuestionId]);
 
   const fetchMessages = useCallback(
     async (questionId, { silent = false } = {}) => {
@@ -333,10 +317,11 @@ function AdminQuestionsContent() {
           const updated = prevQuestions.map((q) =>
             q.id === questionId
               ? {
-                  ...q,
-                  messageCount: data.messages?.length ?? q.messageCount ?? 0,
-                  latestMessage: latest ?? q.latestMessage,
-                }
+                ...q,
+                messageCount: data.messages?.length ?? q.messageCount ?? 0,
+                latestMessage: latest ?? q.latestMessage,
+                unreadCount: 0,
+              }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -357,6 +342,7 @@ function AdminQuestionsContent() {
             ...prev,
             messageCount: nextMessageCount,
             latestMessage: latest ?? prev.latestMessage,
+            unreadCount: 0,
           };
         });
       } catch (error) {
@@ -544,10 +530,7 @@ function AdminQuestionsContent() {
             question.price != null
               ? currencyFormatter.format(Number(question.price))
               : "—";
-          const unread = Math.max(
-            0,
-            (question.messageCount ?? 0) - (readCounts[question.id] ?? 0)
-          );
+          const unread = question.unreadCount ?? 0;
 
           return (
             <li
@@ -557,8 +540,8 @@ function AdminQuestionsContent() {
                 selectedQuestion?.id === question.id
                   ? "bg-primary/10 border-primary/50"
                   : unread > 0
-                  ? "bg-primary/5 border-primary/30"
-                  : "bg-white/5"
+                    ? "bg-primary/5 border-primary/30"
+                    : "bg-white/5"
               )}
               onClick={() => handleQuestionSelect(question)}
             >
@@ -572,7 +555,7 @@ function AdminQuestionsContent() {
                       as="p"
                     />
                     {unread > 0 && (
-                      <span className="inline-flex items-center justify-center rounded-full bg-primary px-2 text-[10px] font-semibold text-primary-foreground flex-shrink-0">
+                      <span className="inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white flex-shrink-0">
                         {unread > 99 ? "99+" : unread}
                       </span>
                     )}
@@ -587,8 +570,8 @@ function AdminQuestionsContent() {
                   <span className="text-[11px] text-muted-foreground">
                     {lastActivity
                       ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
-                          addSuffix: true,
-                        })}`
+                        addSuffix: true,
+                      })}`
                       : "No activity yet"}
                   </span>
                 </div>
@@ -611,11 +594,10 @@ function AdminQuestionsContent() {
               </p>
               <div className="text-xs text-foreground italic">
                 {question.latestMessage?.sender?.role
-                  ? `${
-                      question.latestMessage.sender.role === "ADMIN"
-                        ? "You"
-                        : "User"
-                    }: `
+                  ? `${question.latestMessage.sender.role === "ADMIN"
+                    ? "You"
+                    : "User"
+                  }: `
                   : ""}
                 <ExpandableText
                   text={lastMessagePreview}
@@ -740,10 +722,10 @@ function AdminQuestionsContent() {
           const updated = prevQuestions.map((q) =>
             q.id === selectedQuestion.id
               ? {
-                  ...q,
-                  latestMessage: message,
-                  messageCount: next.length,
-                }
+                ...q,
+                latestMessage: message,
+                messageCount: next.length,
+              }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -751,10 +733,10 @@ function AdminQuestionsContent() {
         setSelectedQuestion((prevSelected) =>
           prevSelected && prevSelected.id === selectedQuestion.id
             ? {
-                ...prevSelected,
-                latestMessage: message,
-                messageCount: next.length,
-              }
+              ...prevSelected,
+              latestMessage: message,
+              messageCount: next.length,
+            }
             : prevSelected
         );
         return next;
@@ -862,9 +844,8 @@ function AdminQuestionsContent() {
       toast.success(
         deleteAttachments
           ? deletedAttachments
-            ? `Conversation and ${deletedAttachments} attachment${
-                deletedAttachments === 1 ? "" : "s"
-              } deleted.`
+            ? `Conversation and ${deletedAttachments} attachment${deletedAttachments === 1 ? "" : "s"
+            } deleted.`
             : "Conversation deleted. No attachments found to remove."
           : "Conversation deleted."
       );

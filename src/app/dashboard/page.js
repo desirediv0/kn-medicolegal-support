@@ -178,17 +178,24 @@ export default function AdminDashboard() {
                         className="rounded-md border border-gray-200 p-3 hover:bg-gray-50 transition"
                       >
                         <div className="flex items-center justify-between gap-2">
-                          <div>
-                            <p className="text-sm font-semibold text-gray-900 truncate">
-                              {question.title}
-                            </p>
-                            <p className="text-xs text-gray-500">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm font-semibold text-gray-900 truncate max-w-[200px] sm:max-w-[300px]">
+                                {question.title}
+                              </p>
+                              {question.unreadCount > 0 && (
+                                <span className="inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white">
+                                  {question.unreadCount} new
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-500 truncate">
                               {question.user?.email ?? "Unknown user"}
                             </p>
                           </div>
                           <Link
                             href={`/dashboard/questions?question=${question.id}`}
-                            className="text-xs text-blue-600 hover:text-blue-800 underline"
+                            className="text-xs text-blue-600 hover:text-blue-800 underline whitespace-nowrap"
                           >
                             Open
                           </Link>

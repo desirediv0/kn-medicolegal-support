@@ -196,10 +196,7 @@ const QuestionList = ({
             : question.latestMessage?.sender?.role === "USER"
               ? "You"
               : null;
-        const unread = Math.max(
-          0,
-          (question.messageCount ?? 0) - (readCounts[question.id] ?? 0)
-        );
+        const unread = question.unreadCount ?? 0;
 
         return (
           <li
@@ -224,7 +221,7 @@ const QuestionList = ({
                     as="p"
                   />
                   {unread > 0 && (
-                    <span className="inline-flex items-center justify-center rounded-full bg-primary px-2 text-[10px] font-semibold text-primary-foreground flex-shrink-0">
+                    <span className="inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white flex-shrink-0">
                       {unread > 99 ? "99+" : unread}
                     </span>
                   )}
@@ -410,21 +407,11 @@ function UserContent() {
               if (detail) {
                 const latest = detail.chats?.[detail.chats.length - 1] ?? null;
                 const hydrated = {
-                  id: detail.id,
-                  title: detail.title,
-                  description: detail.description,
-                  status: detail.status,
-                  paymentStatus: detail.paymentStatus,
+                  ...detail,
                   price: detail.price != null ? Number(detail.price) : null,
-                  userId: detail.userId,
-                  adminId: detail.adminId,
-                  createdAt: detail.createdAt,
-                  updatedAt: detail.updatedAt,
-                  closedAt: detail.closedAt,
-                  user: detail.user,
-                  admin: detail.admin,
                   messageCount: detail.chats?.length ?? 0,
                   latestMessage: latest,
+                  unreadCount: detail.unreadCount ?? 0,
                 };
                 fetched = sortQuestionsByRecent([hydrated, ...fetched]).slice(
                   0,
@@ -438,7 +425,8 @@ function UserContent() {
                     prev.messageCount === hydrated.messageCount &&
                     prevLatestId === nextLatestId &&
                     prev.status === hydrated.status &&
-                    prev.paymentStatus === hydrated.paymentStatus
+                    prev.paymentStatus === hydrated.paymentStatus &&
+                    prev.unreadCount === hydrated.unreadCount
                   ) {
                     return prev;
                   }
@@ -497,6 +485,7 @@ function UserContent() {
                 ...q,
                 messageCount: data.messages?.length ?? q.messageCount ?? 0,
                 latestMessage: latest ?? q.latestMessage,
+                unreadCount: 0,
               }
               : q
           );
@@ -518,6 +507,7 @@ function UserContent() {
             ...prev,
             messageCount: nextMessageCount,
             latestMessage: latest ?? prev.latestMessage,
+            unreadCount: 0,
           };
         });
       } catch (error) {

@@ -73,7 +73,16 @@ export async function GET(request) {
             },
           },
         },
-        _count: { select: { chats: true } },
+        _count: {
+          select: {
+            chats: {
+              where: {
+                isRead: false,
+                senderId: { not: session.user.id },
+              },
+            },
+          },
+        },
       },
     }),
     includeMeta
@@ -85,6 +94,7 @@ export async function GET(request) {
     ...rest,
     price: rest.price != null ? Number(rest.price) : null,
     messageCount: _count?.chats ?? 0,
+    unreadCount: _count?.chats ?? 0,
     latestMessage: chats?.[0] ?? null,
   }));
 

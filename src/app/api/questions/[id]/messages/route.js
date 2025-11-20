@@ -27,6 +27,16 @@ export async function GET(_request, { params }) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
+  // Mark messages as read
+  await prisma.message.updateMany({
+    where: {
+      questionId: params.id,
+      isRead: false,
+      senderId: { not: session.user.id },
+    },
+    data: { isRead: true },
+  });
+
   const messages = await prisma.message.findMany({
     where: { questionId: params.id },
     orderBy: { createdAt: "asc" },

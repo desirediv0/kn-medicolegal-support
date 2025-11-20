@@ -31,7 +31,7 @@ const LayoutContent = ({ children }) => {
       <UserSidebar onWidthChange={setSidebarWidth} />
       <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
 
-        <nav className="flex items-center justify-between gap-6  bg-[#1C2C36] text-foreground px-6 py-4 backdrop-blur-lg">
+        <nav className="flex items-center justify-between gap-6  bg-primary text-foreground px-6 py-4 backdrop-blur-lg">
           <div className="flex items-center gap-3">
             <Link
               href="/"

@@ -151,7 +151,7 @@ export default function Home() {
           </div>
 
           {/* Content Grid */}
-          <div className="grid gap-3 md:gap-6 grid-cols-2 lg:grid-cols-3 mb-10">
+          <div className="grid gap-3 md:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-10">
             {/* Card 1 - Who We Are */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -216,7 +216,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
               whileHover={{ y: -5 }}
-              className="group col-span-2 lg:col-span-1"
+              className="group"
             >
               <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300">
                 <motion.div
@@ -315,7 +315,7 @@ export default function Home() {
           </div>
 
           {/* Services Grid */}
-          <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Service 1 - Preventive */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -522,7 +522,7 @@ export default function Home() {
           </div>
 
           {/* Team Cards */}
-          <div className="grid gap-4 md:gap-8 grid-cols-2 max-w-5xl mx-auto">
+          <div className="grid gap-4 md:gap-8 md:grid-cols-2 max-w-5xl mx-auto">
             {/* Dr. Promod Kumar Kohli */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -621,7 +621,7 @@ export default function Home() {
           </div>
 
           {/* Content Grid */}
-          <div className="grid gap-2 md:gap-8 grid-cols-2 md:items-center">
+          <div className="grid gap-2 md:gap-8 md:grid-cols-2 md:items-center">
             {/* Left - Visual Card */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -630,14 +630,14 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="rounded-2xl border border-foreground/10 bg-white p-4 md:p-10 shadow-lg">
+              <div className="rounded-2xl border border-foreground/10 bg-white p-5 md:p-10 shadow-lg">
                 <div className="mb-2 md:mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10">
                   <BookOpen className="h-8 w-8 text-blue-600" />
                 </div>
-                <h3 className="text-lg md:text-3xl font-bold text-foreground mb-4">
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
                   Essential Resources for Healthcare Professionals
                 </h3>
-                <p className="text-xs md:text-base text-foreground/70 leading-relaxed">
+                <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
                   This section includes important information of use to the healthcare
                   professionals. This information is accessible to all the registered
                   users of the site. The sign-up users also have the facility of
@@ -652,7 +652,7 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="space-y-3 md:space-y-6"
+              className="space-y-4 md:space-y-6"
             >
               {/* Feature 1 */}
               <motion.div
@@ -666,8 +666,8 @@ export default function Home() {
                   <CheckCircle className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <h4 className="text-sm md:text-lg font-bold text-foreground mb-1">Accessible</h4>
-                  <p className="text-xs md:text-sm text-foreground/70">
+                  <h4 className="text-base md:text-lg font-bold text-foreground mb-1">Accessible</h4>
+                  <p className="text-sm md:text-base text-foreground/70">
                     Available to all registered users anytime, anywhere
                   </p>
                 </div>
@@ -685,8 +685,8 @@ export default function Home() {
                   <Download className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="text-sm md:text-lg font-bold text-foreground mb-1">Downloadable</h4>
-                  <p className="text-xs md:text-sm text-foreground/70">
+                  <h4 className="text-base md:text-lg font-bold text-foreground mb-1">Downloadable</h4>
+                  <p className="text-sm md:text-base text-foreground/70">
                     Download materials for offline reference and study
                   </p>
                 </div>
@@ -704,8 +704,8 @@ export default function Home() {
                   <RefreshCw className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <h4 className="text-sm md:text-lg font-bold text-foreground mb-1">Updated</h4>
-                  <p className="text-xs md:text-sm text-foreground/70">
+                  <h4 className="text-base md:text-lg font-bold text-foreground mb-1">Updated</h4>
+                  <p className="text-sm md:text-base text-foreground/70">
                     Regularly updated with latest guidelines and case laws
                   </p>
                 </div>

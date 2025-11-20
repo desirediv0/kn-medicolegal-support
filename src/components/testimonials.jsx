@@ -102,7 +102,7 @@ export function Testimonials() {
       <div className="relative">
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-hidden"
+          className="flex  gap-3 md:gap-6 overflow-x-hidden"
           style={{ scrollBehavior: 'auto' }}
         >
           {duplicatedTestimonials.map((testimonial, index) => (

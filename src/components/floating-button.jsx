@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { FaUser, FaUserShield, FaSignInAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const publicRoutes = ["/", "/about", "/faq", "/contact"];
+const publicRoutes = ["/", "/about", "/faq", "/contact", "/services"];
 
 export function FloatingButton() {
   const { data: session, status } = useSession();

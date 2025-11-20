@@ -46,21 +46,21 @@ export function Header() {
         >
           <Link
             href="/"
-            className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-xl border border-foreground/20 bg-white p-1 md:p-1.5 flex items-center justify-center hover:border-primary-foreground/50 transition-all hover:scale-105"
+            className="relative h-16 w-16 md:h-12 md:w-12 overflow-hidden rounded-xl border border-foreground/20 bg-white p-1 md:p-1.5 flex items-center justify-center hover:border-primary-foreground/50 transition-all hover:scale-105"
             onClick={closeMenu}
           >
             <Image
               src="/logo.png"
               alt="KN Medicolegal Support logo"
-              width={80}
-              height={80}
+              width={100}
+              height={100}
               priority
             />
+            <div className="flex flex-col text-[9px] md:text-xs font-bold uppercase tracking-[0.3em] text-foreground">
+              <span>KN</span>
+              <span className="hidden sm:inline text-[8px] md:text-[10px]">Medicolegal Support</span>
+            </div>
           </Link>
-          <div className="flex flex-col text-[9px] md:text-xs font-bold uppercase tracking-[0.3em] text-foreground">
-            <span>KN</span>
-            <span className="hidden sm:inline text-[8px] md:text-[10px]">Medicolegal Support</span>
-          </div>
         </motion.div>
 
         {/* Desktop Navigation */}

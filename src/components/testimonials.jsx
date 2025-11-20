@@ -86,10 +86,10 @@ export function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4">
+          <p className="text-xs md:text-sm font-medium uppercase tracking-[0.3em] text-foreground/60 mb-4">
             What Our Clients Say
           </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium">
             Client{' '}
             <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
               Testimonials

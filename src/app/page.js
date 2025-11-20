@@ -39,7 +39,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.1] tracking-tight">
                   Welcome to{' '}
                   <span className="block mt-2 md:mt-3">
                     KN Medicolegal{' '}
@@ -74,7 +74,7 @@ export default function Home() {
               >
                 <Link
                   href="/user/auth"
-                  className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+                  className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
                 >
                   Let&apos;s Talk
                 </Link>
@@ -141,7 +141,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-extrabold"
+              className="text-3xl md:text-4xl lg:text-5xl font-medium"
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 About
@@ -169,7 +169,7 @@ export default function Home() {
                 >
                   <Target className="h-7 w-7 text-blue-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Who We Are
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -198,7 +198,7 @@ export default function Home() {
                 >
                   <ShieldCheck className="h-7 w-7 text-green-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Our Mission
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -226,7 +226,7 @@ export default function Home() {
                 >
                   <Users className="h-7 w-7 text-purple-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Professional Support
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed mb-4">
@@ -244,7 +244,7 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md"
           >
-            <h3 className="text-2xl font-bold text-foreground mb-6 text-center">
+            <h3 className="text-2xl font-medium text-foreground mb-6 text-center">
               Why Choose Us
             </h3>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -264,7 +264,7 @@ export default function Home() {
                   transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
                   className="flex items-start gap-3"
                 >
-                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-bold text-xs">
+                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-xs">
                     ✓
                   </span>
                   <span className="text-sm md:text-base text-foreground/80">{item}</span>
@@ -295,7 +295,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-extrabold"
+              className="text-3xl md:text-4xl lg:text-5xl font-medium"
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Our services
@@ -333,7 +333,7 @@ export default function Home() {
                 >
                   <Shield className="h-7 w-7 text-blue-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Preventive Medicolegal Support
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -362,7 +362,7 @@ export default function Home() {
                 >
                   <Scale className="h-7 w-7 text-green-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Defensive Legal Support
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -391,7 +391,7 @@ export default function Home() {
                 >
                   <FileText className="h-7 w-7 text-purple-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Documentation Review & Improvement
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -419,7 +419,7 @@ export default function Home() {
                 >
                   <Building2 className="h-7 w-7 text-orange-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Hospital Compliance & SOPs
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -447,7 +447,7 @@ export default function Home() {
                 >
                   <GraduationCap className="h-7 w-7 text-cyan-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Training & Workshops
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -475,7 +475,7 @@ export default function Home() {
                 >
                   <AlertTriangle className="h-7 w-7 text-red-600" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Crisis Management
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -512,7 +512,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-extrabold"
+              className="text-3xl md:text-4xl lg:text-5xl font-medium"
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Expert
@@ -536,7 +536,7 @@ export default function Home() {
                   <UserCircle className="h-8 w-8 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">Dr. Promod Kumar Kohli</h3>
+                  <h3 className="text-xl font-medium text-foreground">Dr. Promod Kumar Kohli</h3>
                   <p className="text-sm text-foreground/60">Medicolegal Expert & Surgeon</p>
                 </div>
               </div>
@@ -564,7 +564,7 @@ export default function Home() {
                   <UserCircle className="h-8 w-8 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">Dr. Sanjay Narula</h3>
+                  <h3 className="text-xl font-medium text-foreground">Dr. Sanjay Narula</h3>
                   <p className="text-sm text-foreground/60">MBBS, MS, FIAGES</p>
                 </div>
               </div>
@@ -611,7 +611,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-extrabold"
+              className="text-3xl md:text-4xl lg:text-5xl font-medium"
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Knowledge
@@ -634,7 +634,7 @@ export default function Home() {
                 <div className="mb-2 md:mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10">
                   <BookOpen className="h-8 w-8 text-blue-600" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                <h3 className="text-2xl md:text-3xl font-medium text-foreground mb-4">
                   Essential Resources for Healthcare Professionals
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
@@ -666,7 +666,7 @@ export default function Home() {
                   <CheckCircle className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <h4 className="text-base md:text-lg font-bold text-foreground mb-1">Accessible</h4>
+                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">Accessible</h4>
                   <p className="text-sm md:text-base text-foreground/70">
                     Available to all registered users anytime, anywhere
                   </p>
@@ -685,7 +685,7 @@ export default function Home() {
                   <Download className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="text-base md:text-lg font-bold text-foreground mb-1">Downloadable</h4>
+                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">Downloadable</h4>
                   <p className="text-sm md:text-base text-foreground/70">
                     Download materials for offline reference and study
                   </p>
@@ -704,7 +704,7 @@ export default function Home() {
                   <RefreshCw className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <h4 className="text-base md:text-lg font-bold text-foreground mb-1">Updated</h4>
+                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">Updated</h4>
                   <p className="text-sm md:text-base text-foreground/70">
                     Regularly updated with latest guidelines and case laws
                   </p>
@@ -721,7 +721,7 @@ export default function Home() {
               >
                 <Link
                   href="/knowledge-hub"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary-foreground px-8 py-4 text-base font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary-foreground px-8 py-4 text-base font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105"
                 >
                   Explore Knowledge Hub
                   <ArrowRight className="h-5 w-5" />
@@ -747,7 +747,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-extrabold"
+              className="text-3xl md:text-4xl lg:text-5xl font-medium"
             >
               Have questions?{' '}
               <span className="block mt-2 bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
@@ -786,7 +786,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="mt-6 rounded-2xl border border-foreground/10 bg-white p-6 shadow-lg"
               >
-                <h3 className="text-lg md:text-xl font-bold text-foreground mb-4">
+                <h3 className="text-lg md:text-xl font-medium text-foreground mb-4">
                   Contact us for:
                 </h3>
                 <ul className="space-y-2 text-sm text-foreground/70">

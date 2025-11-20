@@ -52,7 +52,7 @@ export function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email || !formData.message) {
       toast.error("Please fill in all required fields");
       return;
@@ -67,8 +67,8 @@ export function ContactForm() {
         },
         body: JSON.stringify({
           ...formData,
-          subject: showCustomSubject && formData.customSubject 
-            ? formData.customSubject 
+          subject: showCustomSubject && formData.customSubject
+            ? formData.customSubject
             : formData.subject,
         }),
       });
@@ -221,17 +221,17 @@ export function ContactForm() {
           <FieldLabel htmlFor="message" className="text-foreground/80 font-medium">
             Message <span className="text-red-500">*</span>
           </FieldLabel>
-            <Textarea
-              id="message"
-              name="message"
-              placeholder="Please describe your inquiry or requirement..."
-              rows={6}
-              value={formData.message}
-              onChange={handleChange}
-              required
-              disabled={loading}
-              className="bg-white resize-none border-foreground/20 focus:border-primary-foreground transition-colors"
-            />
+          <Textarea
+            id="message"
+            name="message"
+            placeholder="Please describe your inquiry or requirement..."
+            rows={6}
+            value={formData.message}
+            onChange={handleChange}
+            required
+            disabled={loading}
+            className="bg-white resize-none border-foreground/20 focus:border-primary-foreground transition-colors"
+          />
         </Field>
       </motion.div>
 
@@ -245,7 +245,7 @@ export function ContactForm() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full md:w-auto min-w-[200px] bg-[hsl(var(--contact-button))] text-[hsl(var(--contact-button-text))] hover:bg-[hsl(var(--contact-button))]/90 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-bold uppercase tracking-wider"
+          className="w-full md:w-auto min-w-[200px] bg-[hsl(var(--contact-button))] text-[hsl(var(--contact-button-text))] hover:bg-[hsl(var(--contact-button))]/90 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-medium uppercase tracking-wider"
           size="lg"
         >
           {loading ? (

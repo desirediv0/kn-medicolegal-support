@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
     }
 
     return (
-        <div className="flex h-[100dvh] overflow-hidden bg-gray-50">
+        <div className="flex h-[100dvh] overflow-hidden bg-background">
             <AdminSidebar onWidthChange={setSidebarWidth} />
             <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
                 <header className="sticky top-0 z-30 flex h-16 w-full items-center border-b border-primary/20 bg-primary px-4 text-primary-foreground shadow-md backdrop-blur">

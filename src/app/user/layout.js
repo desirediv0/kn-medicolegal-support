@@ -27,7 +27,7 @@ const LayoutContent = ({ children }) => {
   ];
 
   return (
-    <div className="flex h-[100dvh] overflow-hidden bg-gray-50">
+    <div className="flex h-[100dvh] overflow-hidden bg-background">
       <UserSidebar onWidthChange={setSidebarWidth} />
       <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
 

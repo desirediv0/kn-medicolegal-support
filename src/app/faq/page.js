@@ -132,7 +132,7 @@ export default function FAQPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4"
+              className="text-xs md:text-sm font-medium uppercase tracking-[0.3em] text-foreground/60 mb-4"
             >
               Medicolegal Services for Doctors & Hospitals
             </motion.p>
@@ -141,7 +141,7 @@ export default function FAQPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-medium mb-6"
             >
               Frequently Asked{' '}
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
@@ -193,7 +193,7 @@ export default function FAQPage() {
                   <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/10 to-purple-500/10 mt-0.5">
                     <HelpCircle className="h-4 w-4 text-blue-600" />
                   </div>
-                  <h3 className="text-base md:text-lg font-bold text-foreground pr-4">
+                  <h3 className="text-base md:text-lg font-medium text-foreground pr-4">
                     {faq.question}
                   </h3>
                 </div>

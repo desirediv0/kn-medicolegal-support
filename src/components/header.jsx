@@ -56,10 +56,7 @@ export function Header() {
               height={100}
               priority
             />
-            <div className="flex flex-col text-[9px] md:text-xs font-bold uppercase tracking-[0.3em] text-foreground">
-              <span>KN</span>
-              <span className="hidden sm:inline text-[8px] md:text-[10px]">Medicolegal Support</span>
-            </div>
+
           </Link>
         </motion.div>
 
@@ -102,14 +99,14 @@ export function Header() {
                   ? "/dashboard/profile"
                   : "/user/profile"
               }
-              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
             >
               {profileData && profileData?.name?.split(" ")[0]}
             </Link>
           ) : (
             <Link
               href="/user/auth"
-              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider text-nowrap"
+              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider text-nowrap"
             >
               Let&apos;s Talk
             </Link>
@@ -170,7 +167,7 @@ export function Header() {
                         : "/user/profile"
                     }
                     onClick={closeMenu}
-                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
+                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
                   >
                     {profileData && profileData?.name?.split(" ")[0]}
                   </Link>
@@ -178,7 +175,7 @@ export function Header() {
                   <Link
                     href="/user/auth"
                     onClick={closeMenu}
-                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
+                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
                   >
                     Let&apos;s Talk
                   </Link>

@@ -25,7 +25,7 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold"
+              className="text-4xl md:text-5xl lg:text-6xl font-medium"
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 About
@@ -46,7 +46,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-4">
               Our Expert Team
             </h2>
             <p className="text-foreground/60 max-w-2xl mx-auto">
@@ -68,7 +68,7 @@ export default function AboutPage() {
                   <UserCircle className="h-10 w-10 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-foreground">Dr. Promod Kumar Kohli</h3>
+                  <h3 className="text-2xl font-medium text-foreground">Dr. Promod Kumar Kohli</h3>
                   <p className="text-sm text-foreground/60">Medicolegal Expert & Surgeon</p>
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function AboutPage() {
                   <UserCircle className="h-10 w-10 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-foreground">Dr. Sanjay Narula</h3>
+                  <h3 className="text-2xl font-medium text-foreground">Dr. Sanjay Narula</h3>
                   <p className="text-sm text-foreground/60">MBBS, MS, FIAGES</p>
                 </div>
               </div>
@@ -189,7 +189,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-medium mb-4">
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Services
               </span>{' '}
@@ -240,7 +240,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            <h2 className="text-3xl md:text-4xl font-medium text-foreground">
               Relevant Acts & Rules
             </h2>
           </motion.div>
@@ -262,7 +262,7 @@ export default function AboutPage() {
                 className="rounded-xl border border-foreground/10 bg-white p-6 shadow-md"
               >
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-bold text-sm">
+                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-sm">
                     {index + 1}
                   </span>
                   <p className="text-foreground/80 font-medium">{act}</p>
@@ -281,7 +281,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            <h2 className="text-3xl md:text-4xl font-medium text-foreground">
               Relevant Case Laws
             </h2>
             <p className="text-foreground/60 mt-2">Which all doctors must read</p>
@@ -303,7 +303,7 @@ export default function AboutPage() {
                 className="rounded-xl border border-foreground/10 bg-white p-6 shadow-md"
               >
                 <div className="flex items-start gap-3">
-                  <span className="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-bold text-sm">
+                  <span className="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-sm">
                     {index + 1}
                   </span>
                   <p className="text-foreground/80 leading-relaxed">{caseLaw}</p>

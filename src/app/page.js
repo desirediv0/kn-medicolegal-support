@@ -161,7 +161,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300">
+              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300">
                 <motion.div
                   className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10"
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -325,7 +325,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
+              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
                 <motion.div
                   className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/10 to-teal-500/10"
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -336,7 +336,7 @@ export default function Home() {
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Preventive Medicolegal Support
                 </h3>
-                <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
+                <p className="text-sm  text-foreground/70 leading-relaxed">
                   We help you put systems in place that prevent disputes, reduce
                   risk, and ensure regulatory compliance. This includes
                   documentation audits, SOP development, consent system review,
@@ -354,7 +354,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
+              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
                 <motion.div
                   className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10"
                   whileHover={{ scale: 1.1, rotate: -5 }}
@@ -365,7 +365,7 @@ export default function Home() {
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Defensive Legal Support
                 </h3>
-                <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
+                <p className="text-sm  text-foreground/70 leading-relaxed">
                   If you face a legal notice, complaint, police inquiry, FIR, or
                   medical council case, we guide you step-by-step with factual,
                   record-based responses. We assist with drafting replies,
@@ -383,7 +383,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
+              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
                 <motion.div
                   className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10"
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -394,7 +394,7 @@ export default function Home() {
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Documentation Review & Improvement
                 </h3>
-                <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
+                <p className="text-sm  text-foreground/70 leading-relaxed">
                   We review your records, consent forms, and clinical notes and
                   help you strengthen them with standard best practices and
                   specialty-specific recommendations.
@@ -411,7 +411,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
+              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
                 <motion.div
                   className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/10 to-red-500/10"
                   whileHover={{ scale: 1.1, rotate: -5 }}
@@ -422,7 +422,7 @@ export default function Home() {
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Hospital Compliance & SOPs
                 </h3>
-                <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
+                <p className="text-sm  text-foreground/70 leading-relaxed">
                   We assist hospitals with mandatory compliance (PCPNDT, BMW, MTP,
                   CEA, Telemedicine guidelines), review of documentation, SOP
                   creation, and internal file audits.
@@ -439,7 +439,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
+              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
                 <motion.div
                   className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10"
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -450,7 +450,7 @@ export default function Home() {
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Training & Workshops
                 </h3>
-                <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
+                <p className="text-sm  text-foreground/70 leading-relaxed">
                   We conduct customized medicolegal workshops, CME programs,
                   nursing training, and mock drills on documentation,
                   communication, violence prevention, and handling complications.
@@ -467,7 +467,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
+              <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-primary-foreground/30">
                 <motion.div
                   className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-red-500/10 to-orange-500/10"
                   whileHover={{ scale: 1.1, rotate: -5 }}
@@ -478,7 +478,7 @@ export default function Home() {
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
                   Crisis Management
                 </h3>
-                <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
+                <p className="text-sm  text-foreground/70 leading-relaxed">
                   We support clinicians and hospitals during critical incidents
                   such as unexpected deaths, serious complications, disputes,
                   crowd aggression, FIR threats, and negative media exposure.

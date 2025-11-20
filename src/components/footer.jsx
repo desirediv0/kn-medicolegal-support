@@ -6,7 +6,7 @@ export function Footer() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12 sm:px-10 lg:px-16">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-4 lg:col-span-2">
-            <p className="text-base font-bold uppercase tracking-[0.3em] text-white">
+            <p className="text-base font-medium uppercase tracking-[0.3em] text-white">
               KN Medicolegal Support
             </p>
             <p className="text-sm text-white/80 leading-relaxed max-w-xl">
@@ -15,7 +15,7 @@ export function Footer() {
             </p>
           </div>
           <div className="space-y-4 text-sm">
-            <p className="font-bold uppercase tracking-[0.2em] text-white">
+            <p className="font-medium uppercase tracking-[0.2em] text-white">
               Quick Links
             </p>
             <ul className="space-y-2.5 text-white/80">

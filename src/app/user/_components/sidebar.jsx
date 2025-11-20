@@ -129,7 +129,7 @@ export function UserSidebar({ onWidthChange }) {
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className={cn(
-          "fixed lg:static top-0 left-0 h-[100dvh] bg-primary text-primary-foreground border-r border-primary/30 shadow-lg z-50 flex flex-col px-3 py-6 overflow-y-auto transition-all duration-300",
+          "fixed lg:static top-0 left-0 h-[100dvh] bg-background text-foreground border-r border-border shadow-lg z-50 flex flex-col px-3 py-6 overflow-y-auto transition-all duration-300",
           isCollapsed ? "w-20" : "w-52"
         )}
       >
@@ -138,7 +138,7 @@ export function UserSidebar({ onWidthChange }) {
           {!isCollapsed && (
             <div className="flex items-center gap-1">
 
-              <span className="font-semibold text-sm text-primary-foreground/90">
+              <span className="font-semibold text-sm text-foreground/90">
                 Hello,{" "}
                 {profileData ? profileData.name.split(" ")[0]
                   : "User"}
@@ -155,7 +155,7 @@ export function UserSidebar({ onWidthChange }) {
           >
             <PanelLeft
               size={16}
-              className={cn("text-primary-foreground transition-transform")}
+              className={cn("text-foreground transition-transform")}
             />
           </motion.button>
         </div>
@@ -187,13 +187,13 @@ export function UserSidebar({ onWidthChange }) {
                 if (!isLargeScreen) setIsOpen(false);
               }}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-primary-foreground/80 transition-colors hover:bg-primary-foreground/10",
+                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-foreground/80 transition-colors hover:bg-muted",
                 isCollapsed && "justify-center",
-                isActive && !isCollapsed ? "bg-primary-foreground/20 text-primary-foreground" : ""
+                isActive && !isCollapsed ? "bg-accent text-accent-foreground" : ""
               )}
               title={isCollapsed ? item.label : ""}
             >
-              <span className="text-primary-foreground opacity-90">{item.icon}</span>
+              <span className="opacity-90">{item.icon}</span>
               {!isCollapsed && <span>{item.label}</span>}
             </button>
           );
@@ -202,18 +202,18 @@ export function UserSidebar({ onWidthChange }) {
         {/* Chat History Section */}
         <div className="mt-6 border-t border-gray-200 pt-4 flex-1 overflow-y-auto">
           {!isCollapsed && (
-            <h3 className="text-xs font-semibold text-primary-foreground/80 uppercase mb-2">
+            <h3 className="text-xs font-semibold text-foreground/80 uppercase mb-2">
               Questions
             </h3>
           )}
           <div className="space-y-1 overflow-x-hidden">
             {loading ? (
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/70 px-3 py-2">
+              <div className="flex items-center gap-2 text-sm text-foreground/70 px-3 py-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 {!isCollapsed && <span>Loading...</span>}
               </div>
             ) : questions.length === 0 ? (
-              <p className="text-xs text-primary-foreground/70 px-3 py-2">
+              <p className="text-xs text-foreground/70 px-3 py-2">
                 {!isCollapsed ? "No questions yet." : "No data"}
               </p>
             ) : (
@@ -223,10 +223,10 @@ export function UserSidebar({ onWidthChange }) {
                   onClick={() => handleSelectQuestion(question.id)}
                   whileHover={{ x: 2 }}
                   className={cn(
-                    "w-full text-left flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-all text-primary-foreground/80 hover:bg-primary-foreground/10",
+                    "w-full text-left flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-all text-foreground/80 hover:bg-muted",
                     activeQuestionId === question.id
-                      ? "bg-primary-foreground/20 text-primary-foreground"
-                      : "text-primary-foreground/80",
+                      ? "bg-accent text-accent-foreground"
+                      : "text-foreground/80",
                     isCollapsed && "justify-center"
                   )}
                   title={isCollapsed ? question.title : ""}
@@ -234,10 +234,10 @@ export function UserSidebar({ onWidthChange }) {
                   <MessageSquare size={16} />
                   {!isCollapsed && (
                     <div className="flex flex-col items-start">
-                      <span className="truncate text-xs font-medium text-primary-foreground">
+                      <span className="truncate text-xs font-medium text-foreground">
                         {question.title}
                       </span>
-                      <span className="text-[10px] text-primary-foreground/70 capitalize">
+                      <span className="text-[10px] text-foreground/70 capitalize">
                         {question.status.toLowerCase()}
                       </span>
                     </div>

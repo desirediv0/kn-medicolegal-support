@@ -69,7 +69,7 @@ export default function ContactPage() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="mt-6 rounded-2xl border border-foreground/10 bg-white p-6 shadow-lg"
             >
-              <h3 className="text-lg md:text-xl font-bold text-foreground mb-4">
+              <h3 className="text-lg md:text-xl font-medium text-foreground mb-4">
                 Contact us for:
               </h3>
               <ul className="space-y-2 text-sm text-foreground/70">

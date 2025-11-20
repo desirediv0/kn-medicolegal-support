@@ -108,7 +108,7 @@ export function Testimonials() {
           {duplicatedTestimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-[calc(50%-12px)] md:w-[calc(25%-18px)]"
+              className="flex-shrink-0 w-full md:w-[calc(33.333%-16px)]"
             >
               <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg">
                 {/* Quote icon */}
@@ -130,7 +130,7 @@ export function Testimonials() {
 
                 {/* Author */}
                 <div className="border-t border-foreground/10 pt-4">
-                  <p className="font-bold text-foreground">{testimonial.name}</p>
+                  <p className="font-medium text-foreground">{testimonial.name}</p>
                   <p className="text-xs md:text-sm text-foreground/60">{testimonial.role}</p>
                 </div>
               </div>

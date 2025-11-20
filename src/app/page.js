@@ -4,7 +4,23 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
 import { Testimonials } from "@/components/testimonials";
-import { Shield, Scale, FileText, Building2, GraduationCap, AlertTriangle, Target, ShieldCheck, Users, BookOpen, CheckCircle, Download, RefreshCw, UserCircle, Award } from "lucide-react";
+import {
+  Shield,
+  Scale,
+  FileText,
+  Building2,
+  GraduationCap,
+  AlertTriangle,
+  Target,
+  ShieldCheck,
+  Users,
+  BookOpen,
+  CheckCircle,
+  Download,
+  RefreshCw,
+  UserCircle,
+  Award,
+} from "lucide-react";
 
 export default function Home() {
   return (
@@ -15,8 +31,15 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(196,248,42,0.08),transparent_50%)]" />
 
         {/* Decorative Star Elements */}
-        <div className="absolute top-32 right-32 text-primary-foreground text-3xl opacity-60 animate-pulse hidden lg:block">✦</div>
-        <div className="absolute bottom-48 left-16 text-primary-foreground text-2xl opacity-40 animate-pulse hidden lg:block" style={{ animationDelay: '0.5s' }}>✦</div>
+        <div className="absolute top-32 right-32 text-primary-foreground text-3xl opacity-60 animate-pulse hidden lg:block">
+          ✦
+        </div>
+        <div
+          className="absolute bottom-48 left-16 text-primary-foreground text-2xl opacity-40 animate-pulse hidden lg:block"
+          style={{ animationDelay: "0.5s" }}
+        >
+          ✦
+        </div>
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 md:py-20 lg:px-16">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -40,9 +63,9 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.1] tracking-tight">
-                  Welcome to{' '}
+                  Welcome to{" "}
                   <span className="block mt-2 md:mt-3">
-                    KN Medicolegal{' '}
+                    KN Medicolegal{" "}
                     <span className="bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
                       Support
                     </span>
@@ -60,8 +83,8 @@ export default function Home() {
                   We are here to support doctors and hospitals in navigating the
                   increasingly complex medicolegal landscape. Whether you need
                   preventive guidance, help with documentation, support during a
-                  complication, or assistance in responding to legal/court notices,
-                  we&apos;re just a call away.
+                  complication, or assistance in responding to legal/court
+                  notices, we&apos;re just a call away.
                 </p>
               </motion.div>
 
@@ -79,7 +102,7 @@ export default function Home() {
                   Let&apos;s Talk
                 </Link>
                 <Link
-                  href="/#services"
+                  href="/services"
                   className="inline-flex items-center justify-center rounded-full border-2 border-foreground/20 px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-foreground shadow-sm transition hover:bg-foreground/5 hover:border-foreground/40"
                 >
                   Our Services
@@ -114,8 +137,6 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
       </section>
 
-
-
       {/* About Section */}
       <section
         id="about"
@@ -145,7 +166,7 @@ export default function Home() {
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 About
-              </span>{' '}
+              </span>{" "}
               Us
             </motion.h2>
           </div>
@@ -173,10 +194,10 @@ export default function Home() {
                   Who We Are
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
-                  We are a team of qualified & experienced doctors with medicolegal
-                  expertise and compliance professionals dedicated to helping healthcare
-                  providers navigate real-world medicolegal challenges with confidence
-                  and clarity.
+                  We are a team of qualified & experienced doctors with
+                  medicolegal expertise and compliance professionals dedicated
+                  to helping healthcare providers navigate real-world
+                  medicolegal challenges with confidence and clarity.
                 </p>
               </div>
             </motion.div>
@@ -202,9 +223,9 @@ export default function Home() {
                   Our Mission
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
-                  To empower clinicians with practical, easy-to-implement medicolegal
-                  knowledge and support — so you can focus on what matters most:
-                  exceptional patient care.
+                  To empower clinicians with practical, easy-to-implement
+                  medicolegal knowledge and support — so you can focus on what
+                  matters most: exceptional patient care.
                 </p>
               </div>
             </motion.div>
@@ -267,14 +288,15 @@ export default function Home() {
                   <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-xs">
                     ✓
                   </span>
-                  <span className="text-sm md:text-base text-foreground/80">{item}</span>
+                  <span className="text-sm md:text-base text-foreground/80">
+                    {item}
+                  </span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
         </div>
       </section>
-
 
       {/* Services Section */}
       <section
@@ -295,7 +317,7 @@ export default function Home() {
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Our services
-              </span>{' '}
+              </span>{" "}
               help to resolve your situation
             </motion.h2>
 
@@ -419,9 +441,9 @@ export default function Home() {
                   Hospital Compliance & SOPs
                 </h3>
                 <p className="text-sm  text-foreground/70 leading-relaxed">
-                  We assist hospitals with mandatory compliance (PCPNDT, BMW, MTP,
-                  CEA, Telemedicine guidelines), review of documentation, SOP
-                  creation, and internal file audits.
+                  We assist hospitals with mandatory compliance (PCPNDT, BMW,
+                  MTP, CEA, Telemedicine guidelines), review of documentation,
+                  SOP creation, and internal file audits.
                 </p>
               </div>
             </motion.div>
@@ -449,7 +471,8 @@ export default function Home() {
                 <p className="text-sm  text-foreground/70 leading-relaxed">
                   We conduct customized medicolegal workshops, CME programs,
                   nursing training, and mock drills on documentation,
-                  communication, violence prevention, and handling complications.
+                  communication, violence prevention, and handling
+                  complications.
                 </p>
               </div>
             </motion.div>
@@ -485,7 +508,6 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Expert Team Section */}
       <section className="relative overflow-hidden bg-background py-12">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(196,248,42,0.05),transparent_50%)]" />
@@ -512,7 +534,7 @@ export default function Home() {
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Expert
-              </span>{' '}
+              </span>{" "}
               Team
             </motion.h2>
           </div>
@@ -532,13 +554,19 @@ export default function Home() {
                   <UserCircle className="h-8 w-8 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-medium text-foreground">Dr. Promod Kumar Kohli</h3>
-                  <p className="text-sm text-foreground/60">Medicolegal Expert & Surgeon</p>
+                  <h3 className="text-xl font-medium text-foreground">
+                    Dr. Promod Kumar Kohli
+                  </h3>
+                  <p className="text-sm text-foreground/60">
+                    Medicolegal Expert & Surgeon
+                  </p>
                 </div>
               </div>
 
               <p className="text-sm text-foreground/70 leading-relaxed mb-4">
-                Qualified & experienced surgeon and medicolegal expert with experience as consultant surgeon, Dean of Medical Education, and Medical Director.
+                Qualified & experienced surgeon and medicolegal expert with
+                experience as consultant surgeon, Dean of Medical Education, and
+                Medical Director.
               </p>
 
               <div className="flex items-center gap-2 text-xs text-foreground/60">
@@ -560,30 +588,34 @@ export default function Home() {
                   <UserCircle className="h-8 w-8 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-medium text-foreground">Dr. Sanjay Narula</h3>
+                  <h3 className="text-xl font-medium text-foreground">
+                    Dr. Sanjay Narula
+                  </h3>
                   <p className="text-sm text-foreground/60">MBBS, MS, FIAGES</p>
                 </div>
               </div>
 
               <p className="text-sm text-foreground/70 leading-relaxed mb-4">
-                Qualified general surgeon and experienced medicolegal expert with 36 years of surgical experience. Former Chairman of District Medical Negligence Board.
+                Qualified general surgeon and experienced medicolegal expert
+                with 36 years of surgical experience. Former Chairman of
+                District Medical Negligence Board.
               </p>
 
               <div className="flex items-center gap-2 text-xs text-foreground/60">
                 <Award className="h-4 w-4 text-green-600" />
-                <span>600+ Enquiries | 2000+ Postmortems | High-profile Cases</span>
+                <span>
+                  600+ Enquiries | 2000+ Postmortems | High-profile Cases
+                </span>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-
       {/* Testimonials Section */}
       <div className="max-w-7xl mx-auto px-4 ">
         <Testimonials />
       </div>
-
 
       {/* Knowledge Hub Section */}
       <section className="relative overflow-hidden bg-background border-y border-foreground/10 py-12">
@@ -611,7 +643,7 @@ export default function Home() {
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Knowledge
-              </span>{' '}
+              </span>{" "}
               Hub
             </motion.h2>
           </div>
@@ -634,10 +666,10 @@ export default function Home() {
                   Essential Resources for Healthcare Professionals
                 </h3>
                 <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
-                  This section includes important information of use to the healthcare
-                  professionals. This information is accessible to all the registered
-                  users of the site. The sign-up users also have the facility of
-                  downloading this material if desired.
+                  This section includes important information of use to the
+                  healthcare professionals. This information is accessible to
+                  all the registered users of the site. The sign-up users also
+                  have the facility of downloading this material if desired.
                 </p>
               </div>
             </motion.div>
@@ -662,7 +694,9 @@ export default function Home() {
                   <CheckCircle className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">Accessible</h4>
+                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">
+                    Accessible
+                  </h4>
                   <p className="text-sm md:text-base text-foreground/70">
                     Available to all registered users anytime, anywhere
                   </p>
@@ -681,7 +715,9 @@ export default function Home() {
                   <Download className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">Downloadable</h4>
+                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">
+                    Downloadable
+                  </h4>
                   <p className="text-sm md:text-base text-foreground/70">
                     Download materials for offline reference and study
                   </p>
@@ -700,7 +736,9 @@ export default function Home() {
                   <RefreshCw className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">Updated</h4>
+                  <h4 className="text-base md:text-lg font-medium text-foreground mb-1">
+                    Updated
+                  </h4>
                   <p className="text-sm md:text-base text-foreground/70">
                     Regularly updated with latest guidelines and case laws
                   </p>
@@ -745,7 +783,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-3xl md:text-4xl lg:text-5xl font-medium"
             >
-              Have questions?{' '}
+              Have questions?{" "}
               <span className="block mt-2 bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
                 Get in touch!
               </span>
@@ -773,9 +811,6 @@ export default function Home() {
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
               </div>
-
-
-
             </motion.div>
 
             {/* Right - Contact Form */}
@@ -822,7 +857,10 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary-foreground mt-0.5">✓</span>
-                    <span>Medicolegal help in litigation, police investigation, or medical council complaints</span>
+                    <span>
+                      Medicolegal help in litigation, police investigation, or
+                      medical council complaints
+                    </span>
                   </li>
                 </ul>
               </motion.div>
@@ -830,6 +868,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </main >
+    </main>
   );
 }

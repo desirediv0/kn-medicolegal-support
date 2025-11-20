@@ -30,13 +30,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#services" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                <Link href="/services" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
                   <span className="text-primary-foreground">→</span> Services
                 </Link>
               </li>
               <li>
                 <Link href="/faq" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
                   <span className="text-primary-foreground">→</span> FAQ
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                  <span className="text-primary-foreground">→</span> Contact Us
                 </Link>
               </li>
             </ul>

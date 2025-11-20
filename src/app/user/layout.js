@@ -6,14 +6,10 @@ import { UserSidebar } from "./_components/sidebar";
 import Link from "next/link";
 import Image from "next/image";
 
-
-
 const LayoutContent = ({ children }) => {
   const pathname = usePathname();
   const [, setSidebarWidth] = useState(224);
   const hideSidebar = pathname?.startsWith("/user/auth");
-
-
 
   if (hideSidebar) {
     return <div className="min-h-[100dvh] bg-background">{children}</div>;
@@ -22,7 +18,7 @@ const LayoutContent = ({ children }) => {
   const navLinks = [
     { title: "Home", href: "/" },
     { title: "About Us", href: "/about" },
-    { title: "Services", href: "/#services" },
+    { title: "Services", href: "/services" },
     { title: "Contact", href: "/contact" },
   ];
 
@@ -30,12 +26,12 @@ const LayoutContent = ({ children }) => {
     <div className="flex h-[100dvh] overflow-hidden bg-background">
       <UserSidebar onWidthChange={setSidebarWidth} />
       <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
-
         <nav className="flex items-center justify-between gap-6  bg-primary text-foreground px-6 py-4 backdrop-blur-lg">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="relative h-16 w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center">
+              className="relative h-16 w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center"
+            >
               <Image
                 src="/logo.png"
                 alt="KN Medicolegal Support logo"
@@ -60,7 +56,6 @@ const LayoutContent = ({ children }) => {
               </Link>
             ))}
           </div>
-
         </nav>
         <div className="flex-1 overflow-y-auto px-3 pb-6 pt-4">{children}</div>
       </main>

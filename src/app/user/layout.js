@@ -21,9 +21,9 @@ const LayoutContent = ({ children }) => {
 
   const navLinks = [
     { title: "Home", href: "/" },
+    { title: "About Us", href: "/about" },
     { title: "Services", href: "/#services" },
-    { title: "Testimonials", href: "/#testimonials" },
-    { title: "Contact", href: "/#contact" },
+    { title: "Contact", href: "/contact" },
   ];
 
   return (
@@ -34,7 +34,7 @@ const LayoutContent = ({ children }) => {
         <nav className="flex items-center justify-between gap-6  bg-[#1C2C36] text-foreground px-6 py-4 backdrop-blur-lg">
           <div className="flex items-center gap-3">
             <Link
-              href="/user/profile"
+              href="/"
               className="relative h-16 w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center">
               <Image
                 src="/logo.png"

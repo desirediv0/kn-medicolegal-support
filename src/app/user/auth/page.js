@@ -4,7 +4,7 @@ import { UserAuthForm } from "@/components/user-auth-form";
 
 const AuthContent = () => (
   <div className="w-full max-w-sm">
-    <UserAuthForm defaultCallback="/user/profile" />
+    <UserAuthForm defaultCallback="/user" />
   </div>
 );
 

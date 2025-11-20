@@ -21,11 +21,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
 const mainNavItems = [
-  {
-    label: "Admin Profile",
-    icon: <Shield size={18} />,
-    href: "/dashboard/profile",
-  },
   { label: "Overview", icon: <Home size={18} />, href: "/dashboard" },
   {
     label: "Questions",
@@ -35,6 +30,11 @@ const mainNavItems = [
   { label: "Users", icon: <Users size={18} />, href: "/dashboard/users" },
   { label: "Reports", icon: <FileText size={18} />, href: "/dashboard/reports" },
   { label: "Storage", icon: <HardDrive size={18} />, href: "/dashboard/storage" },
+  {
+    label: "Admin Profile",
+    icon: <Shield size={18} />,
+    href: "/dashboard/profile",
+  },
   { label: "Question Pricing", icon: <Settings size={18} />, href: "/dashboard/settings" },
 ];
 
@@ -175,7 +175,7 @@ export function AdminSidebar({ onWidthChange }) {
                   if (!isLargeScreen) setIsOpen(false);
                 }}
                 className={cn(
-                  "w-full flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-foreground/80 hover:bg-muted group",
+                  "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground",
                   isCollapsed && "justify-center",
                   isActive && !isCollapsed
                     ? "bg-accent font-semibold text-accent-foreground"

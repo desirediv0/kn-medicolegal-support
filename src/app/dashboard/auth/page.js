@@ -4,7 +4,7 @@ import { UserAuthForm } from "@/components/user-auth-form";
 const AuthContent = () => (
   <div className="w-full max-w-sm">
     <UserAuthForm
-      defaultCallback="/dashboard/profile"
+      defaultCallback="/dashboard"
       portal="admin"
       enableSignup={false}
     />

@@ -162,13 +162,13 @@ export function UserSidebar({ onWidthChange }) {
 
         {/* Primary navigation */}
         {[
-          { label: "Profile", href: "/user/profile", icon: <User size={18} /> },
           { label: "Message", href: "/user", icon: <MessageCircle size={18} /> },
           {
             label: "Message History",
             href: "/user/history",
             icon: <Clock size={18} />,
           },
+          { label: "Profile", href: "/user/profile", icon: <User size={18} /> },
           {
             label: "Terms & Policies",
             href: "/user/terms-policies",

@@ -62,6 +62,20 @@ export default function ContactPage() {
             </div>
 
             {/* Contact Info Card */}
+
+          </motion.div>
+
+          {/* Right - Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="order-1 lg:order-2"
+          >
+            <div className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg">
+              <ContactForm />
+            </div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -99,19 +113,6 @@ export default function ContactPage() {
                 </li>
               </ul>
             </motion.div>
-          </motion.div>
-
-          {/* Right - Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="order-1 lg:order-2"
-          >
-            <div className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg">
-              <ContactForm />
-            </div>
           </motion.div>
         </div>
       </section>

@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Header } from "./header";
 import { Footer } from "./footer";
+import { FloatingButton } from "./floating-button";
 
 const publicRoutes = [
   "/",
@@ -33,6 +34,7 @@ export function ConditionalLayout({ children }) {
       {showHeaderFooter && <Header />}
       {children}
       {showHeaderFooter && <Footer />}
+      {showHeaderFooter && <FloatingButton />}
     </>
   );
 }

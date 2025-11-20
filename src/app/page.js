@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
 import { Testimonials } from "@/components/testimonials";
-import { Shield, Scale, FileText, Building2, GraduationCap, AlertTriangle, Target, ShieldCheck, Users, BookOpen, CheckCircle, Download, RefreshCw, ArrowRight, UserCircle, Award } from "lucide-react";
+import { Shield, Scale, FileText, Building2, GraduationCap, AlertTriangle, Target, ShieldCheck, Users, BookOpen, CheckCircle, Download, RefreshCw, UserCircle, Award } from "lucide-react";
 
 export default function Home() {
   return (
@@ -125,7 +125,7 @@ export default function Home() {
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
           {/* Header */}
-          <div className="text-center mb-12 md:mb-16">
+          <div className="text-center mb-10">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -236,7 +236,7 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* Why Choose Us - Expanded */}
+          {/* Why Choose Us  */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -276,10 +276,6 @@ export default function Home() {
       </section>
 
 
-
-
-
-
       {/* Services Section */}
       <section
         id="services"
@@ -289,7 +285,7 @@ export default function Home() {
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
           {/* Header */}
-          <div className="text-center mb-12 md:mb-16">
+          <div className="text-center mb-10">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -496,7 +492,7 @@ export default function Home() {
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
           {/* Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -712,7 +708,7 @@ export default function Home() {
               </motion.div>
 
               {/* CTA Button */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -726,7 +722,7 @@ export default function Home() {
                   Explore Knowledge Hub
                   <ArrowRight className="h-5 w-5" />
                 </Link>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           </div>
         </div>
@@ -778,7 +774,21 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
               </div>
 
-              {/* Contact Info Card */}
+
+
+            </motion.div>
+
+            {/* Right - Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="order-1 lg:order-2"
+            >
+              <div className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg">
+                <ContactForm />
+              </div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -816,19 +826,6 @@ export default function Home() {
                   </li>
                 </ul>
               </motion.div>
-            </motion.div>
-
-            {/* Right - Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="order-1 lg:order-2"
-            >
-              <div className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg">
-                <ContactForm />
-              </div>
             </motion.div>
           </div>
         </div>

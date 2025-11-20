@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -30,12 +31,22 @@ export function Header() {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-primary/80">
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-6 py-4 sm:px-10 lg:px-16">
-        <div className="flex items-center gap-3">
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 shadow-sm"
+    >
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 md:gap-6 px-4 sm:px-6 py-3 md:py-4 lg:px-16">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex items-center gap-2 md:gap-3"
+        >
           <Link
             href="/"
-            className="relative h-12 md:h-16 w-12 md:w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center"
+            className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-xl border border-foreground/20 bg-white p-1 md:p-1.5 flex items-center justify-center hover:border-primary-foreground/50 transition-all hover:scale-105"
             onClick={closeMenu}
           >
             <Image
@@ -46,27 +57,44 @@ export function Header() {
               priority
             />
           </Link>
-          <div className="flex flex-col text-[10px] md:text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground">
+          <div className="flex flex-col text-[9px] md:text-xs font-bold uppercase tracking-[0.3em] text-foreground">
             <span>KN</span>
-            <span className="hidden sm:inline">Medicolegal Support</span>
+            <span className="hidden sm:inline text-[8px] md:text-[10px]">Medicolegal Support</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 text-sm font-medium text-primary-foreground/90 md:flex">
-          {navLinks.map((link) => (
-            <Link
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="hidden items-center gap-6 lg:gap-8 text-sm font-medium text-foreground/80 md:flex"
+        >
+          {navLinks.map((link, index) => (
+            <motion.div
               key={link.title}
-              href={link.href}
-              className="transition hover:text-primary-foreground"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
             >
-              {link.title}
-            </Link>
+              <Link
+                href={link.href}
+                className="relative transition hover:text-foreground group"
+              >
+                {link.title}
+                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary-foreground transition-all group-hover:w-full" />
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Desktop Auth Button */}
-        <div className="hidden md:flex items-center gap-3">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="hidden md:flex items-center gap-3"
+        >
           {profileData?.name ? (
             <Link
               href={
@@ -74,71 +102,93 @@ export function Header() {
                   ? "/dashboard/profile"
                   : "/user/profile"
               }
-              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-5 py-1 md:py-2 text-xs md:text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl"
+              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
             >
-              Welcome, {profileData && profileData?.name?.split(" ")[0]}
+              {profileData && profileData?.name?.split(" ")[0]}
             </Link>
           ) : (
             <Link
               href="/user/auth"
-              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-5 py-2 md:py-2 text-xs md:text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl text-nowrap"
+              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider text-nowrap"
             >
-              Sign In
+              Let&apos;s Talk
             </Link>
           )}
-        </div>
+        </motion.div>
 
         {/* Mobile Menu Button */}
-        <button
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
           onClick={toggleMenu}
-          className="md:hidden p-2 text-primary-foreground hover:bg-primary-foreground/10 rounded-lg transition"
+          className="md:hidden p-2 text-foreground hover:bg-foreground/5 rounded-lg transition"
           aria-label="Toggle menu"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        </motion.button>
       </nav>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden border-t border-primary-foreground/20 bg-primary/95 backdrop-blur">
-          <div className="mx-auto max-w-7xl px-6 py-4 space-y-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.title}
-                href={link.href}
-                onClick={closeMenu}
-                className="block py-2 text-sm font-medium text-primary-foreground/90 hover:text-primary-foreground transition"
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden border-t border-foreground/10 bg-background/95 backdrop-blur-md overflow-hidden"
+          >
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 space-y-3">
+              {navLinks.map((link, index) => (
+                <motion.div
+                  key={link.title}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={closeMenu}
+                    className="block py-2 text-sm font-medium text-foreground/80 hover:text-foreground transition"
+                  >
+                    {link.title}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+                className="pt-3 border-t border-foreground/10"
               >
-                {link.title}
-              </Link>
-            ))}
-            <div className="pt-3 border-t border-primary-foreground/20">
-              {profileData?.name ? (
-                <Link
-                  href={
-                    profileData.role === "ADMIN"
-                      ? "/dashboard/profile"
-                      : "/user/profile"
-                  }
-                  onClick={closeMenu}
-                  className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2 text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl w-full"
-                >
-                  Welcome, {profileData && profileData?.name?.split(" ")[0]}
-                </Link>
-              ) : (
-                <Link
-                  href="/user/auth"
-                  onClick={closeMenu}
-                  className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2 text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:shadow-xl w-full"
-                >
-                  Sign In
-                </Link>
-              )}
+                {profileData?.name ? (
+                  <Link
+                    href={
+                      profileData.role === "ADMIN"
+                        ? "/dashboard/profile"
+                        : "/user/profile"
+                    }
+                    onClick={closeMenu}
+                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
+                  >
+                    {profileData && profileData?.name?.split(" ")[0]}
+                  </Link>
+                ) : (
+                  <Link
+                    href="/user/auth"
+                    onClick={closeMenu}
+                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-bold text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
+                  >
+                    Let&apos;s Talk
+                  </Link>
+                )}
+              </motion.div>
             </div>
-          </div>
-        </div>
-      )}
-    </header>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }
 

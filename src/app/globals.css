@@ -6,63 +6,93 @@
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Slide-up animation for hero section */
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.8s ease-out;
+  }
 }
 
 
 
 @layer base {
   :root {
-    --background: 210 33% 98%;
-    --foreground: 203 32% 16%;
+    /* Main Colors - Change these to update header/footer colors */
+    --background: 0 0% 100%;           /* White background */
+    --foreground: 0 0% 4%;             /* Almost black text */
     --card: 0 0% 100%;
-    --card-foreground: 203 32% 16%;
+    --card-foreground: 0 0% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 203 32% 16%;
-    --primary: 203 32% 16%;
-    --primary-foreground: 203 54% 92%;
-    --secondary: 199 36% 90%;
-    --secondary-foreground: 203 30% 24%;
-    --muted: 205 22% 88%;
-    --muted-foreground: 205 16% 40%;
-    --accent: 201 48% 62%;
-    --accent-foreground: 203 42% 14%;
-    --destructive: 5 72% 56%;
+    --popover-foreground: 0 0% 4%;
+    
+    /* Primary = Black (Header/Footer Background) */
+    --primary: 0 0% 4%;                /* #0a0a0a - Black for header/footer */
+    --primary-foreground: 75 91% 57%;  /* #c4f82a - Lime Green for text/accents */
+    
+    /* Secondary Colors */
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 4%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    
+    /* Accent = Lime Green */
+    --accent: 75 91% 57%;              /* #c4f82a - Lime Green */
+    --accent-foreground: 0 0% 4%;      /* Black text on lime */
+    
+    /* Contact Section Colors - Easy to customize */
+    --contact-gradient-from: 217 91% 60%;   /* Blue #3b82f6 */
+    --contact-gradient-to: 142 76% 36%;     /* Green #16a34a */
+    --contact-button: 75 91% 57%;           /* Lime Green #c4f82a */
+    --contact-button-text: 0 0% 4%;         /* Black text */
+    
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 203 18% 82%;
-    --input: 203 18% 82%;
-    --ring: 203 36% 24%;
-    --chart-1: 203 32% 26%;
-    --chart-2: 199 50% 42%;
-    --chart-3: 201 48% 62%;
-    --chart-4: 32 74% 60%;
-    --chart-5: 347 72% 54%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 75 91% 57%;                /* Lime Green ring */
+    --chart-1: 75 91% 57%;
+    --chart-2: 0 0% 4%;
+    --chart-3: 0 0% 20%;
+    --chart-4: 75 80% 45%;
+    --chart-5: 75 70% 35%;
     --radius: 0.5rem;
   }
   .dark {
-    --background: 215 40% 8%;
-    --foreground: 203 32% 90%;
-    --card: 215 40% 10%;
-    --card-foreground: 203 32% 90%;
-    --popover: 215 40% 10%;
-    --popover-foreground: 203 32% 90%;
-    --primary: 199 52% 44%;
-    --primary-foreground: 210 40% 12%;
-    --secondary: 203 28% 18%;
-    --secondary-foreground: 203 36% 88%;
-    --muted: 205 24% 22%;
-    --muted-foreground: 205 20% 74%;
-    --accent: 201 48% 32%;
-    --accent-foreground: 203 44% 90%;
-    --destructive: 5 66% 46%;
-    --destructive-foreground: 0 0% 95%;
-    --border: 208 24% 24%;
-    --input: 208 24% 24%;
-    --ring: 199 52% 48%;
-    --chart-1: 199 52% 48%;
-    --chart-2: 201 48% 40%;
-    --chart-3: 32 74% 62%;
-    --chart-4: 347 72% 56%;
-    --chart-5: 265 52% 66%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 4%;
+    --primary-foreground: 75 91% 57%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 75 91% 57%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 75 91% 57%;
+    --chart-1: 75 91% 57%;
+    --chart-2: 0 0% 20%;
+    --chart-3: 0 0% 30%;
+    --chart-4: 75 80% 45%;
+    --chart-5: 75 70% 35%;
   }
 }
 

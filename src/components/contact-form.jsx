@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 
 const subjectOptions = [
   "Medicolegal Consultation",
@@ -97,113 +98,154 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid gap-6 md:grid-cols-2">
-        <Field>
-          <FieldLabel htmlFor="name">
-            Name <span className="text-destructive">*</span>
-          </FieldLabel>
-          <Input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Your name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            disabled={loading}
-            className="bg-white/90 text-foreground border-primary/20"
-          />
-        </Field>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="grid gap-5 md:grid-cols-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Field>
+            <FieldLabel htmlFor="name" className="text-foreground/80 font-medium">
+              Name <span className="text-red-500">*</span>
+            </FieldLabel>
+            <Input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Your name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              disabled={loading}
+              className="bg-white border-foreground/20 focus:border-primary-foreground transition-colors"
+            />
+          </Field>
+        </motion.div>
 
-        <Field>
-          <FieldLabel htmlFor="email">
-            Email <span className="text-destructive">*</span>
-          </FieldLabel>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="your.email@example.com"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            disabled={loading}
-            className="bg-white/90 text-foreground border-primary/20"
-          />
-        </Field>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Field>
+            <FieldLabel htmlFor="email" className="text-foreground/80 font-medium">
+              Email <span className="text-red-500">*</span>
+            </FieldLabel>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="your.email@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={loading}
+              className="bg-white border-foreground/20 focus:border-primary-foreground transition-colors"
+            />
+          </Field>
+        </motion.div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Field>
-          <FieldLabel htmlFor="phone">Phone</FieldLabel>
-          <Input
-            id="phone"
-            name="phone"
-            type="tel"
-            placeholder="+91 1234567890"
-            value={formData.phone}
-            onChange={handleChange}
-            disabled={loading}
-            className="bg-white/90 text-foreground border-primary/20"
-          />
-        </Field>
-
-        <Field>
-          <FieldLabel htmlFor="subject">Subject</FieldLabel>
-          <Select
-            value={formData.subject}
-            onValueChange={handleSubjectChange}
-            disabled={loading}
-          >
-            <SelectTrigger className="bg-white/90 text-foreground border-primary/20 h-9">
-              <SelectValue placeholder="Select a subject" />
-            </SelectTrigger>
-            <SelectContent>
-              {subjectOptions.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {showCustomSubject && (
+      <div className="grid gap-5 md:grid-cols-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <Field>
+            <FieldLabel htmlFor="phone" className="text-foreground/80 font-medium">Phone</FieldLabel>
             <Input
-              name="customSubject"
-              type="text"
-              placeholder="Please specify your subject"
-              value={formData.customSubject}
+              id="phone"
+              name="phone"
+              type="tel"
+              placeholder="+91 1234567890"
+              value={formData.phone}
               onChange={handleChange}
               disabled={loading}
-              className="bg-white/90 text-foreground border-primary/20 mt-3"
-              required
+              className="bg-white border-foreground/20 focus:border-primary-foreground transition-colors"
             />
-          )}
-        </Field>
+          </Field>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <Field>
+            <FieldLabel htmlFor="subject" className="text-foreground/80 font-medium">Subject</FieldLabel>
+            <Select
+              value={formData.subject}
+              onValueChange={handleSubjectChange}
+              disabled={loading}
+            >
+              <SelectTrigger className="bg-white border-foreground/20 focus:border-primary-foreground transition-colors h-9">
+                <SelectValue placeholder="Select a subject" />
+              </SelectTrigger>
+              <SelectContent>
+                {subjectOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {showCustomSubject && (
+              <Input
+                name="customSubject"
+                type="text"
+                placeholder="Please specify your subject"
+                value={formData.customSubject}
+                onChange={handleChange}
+                disabled={loading}
+                className="bg-white border-foreground/20 focus:border-primary-foreground transition-colors mt-3"
+                required
+              />
+            )}
+          </Field>
+        </motion.div>
       </div>
 
-      <Field>
-        <FieldLabel htmlFor="message">
-          Message <span className="text-destructive">*</span>
-        </FieldLabel>
-          <Textarea
-            id="message"
-            name="message"
-            placeholder="Please describe your inquiry or requirement..."
-            rows={6}
-            value={formData.message}
-            onChange={handleChange}
-            required
-            disabled={loading}
-            className="bg-white/90 text-foreground resize-none border-primary/20"
-          />
-      </Field>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
+        <Field>
+          <FieldLabel htmlFor="message" className="text-foreground/80 font-medium">
+            Message <span className="text-red-500">*</span>
+          </FieldLabel>
+            <Textarea
+              id="message"
+              name="message"
+              placeholder="Please describe your inquiry or requirement..."
+              rows={6}
+              value={formData.message}
+              onChange={handleChange}
+              required
+              disabled={loading}
+              className="bg-white resize-none border-foreground/20 focus:border-primary-foreground transition-colors"
+            />
+        </Field>
+      </motion.div>
 
-      <div className="flex justify-start pt-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="flex justify-start pt-2"
+      >
         <Button
           type="submit"
           disabled={loading}
-          className="w-full md:w-auto min-w-[200px] bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
+          className="w-full md:w-auto min-w-[200px] bg-[hsl(var(--contact-button))] text-[hsl(var(--contact-button-text))] hover:bg-[hsl(var(--contact-button))]/90 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-bold uppercase tracking-wider"
           size="lg"
         >
           {loading ? (
@@ -212,10 +254,13 @@ export function ContactForm() {
               Sending...
             </>
           ) : (
-            "Send Message"
+            <>
+              <Send className="h-4 w-4 mr-2" />
+              Get In Touch
+            </>
           )}
         </Button>
-      </div>
+      </motion.div>
     </form>
   );
 }

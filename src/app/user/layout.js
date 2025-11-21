@@ -26,31 +26,29 @@ const LayoutContent = ({ children }) => {
     <div className="flex h-[100dvh] overflow-hidden bg-background">
       <UserSidebar onWidthChange={setSidebarWidth} />
       <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
-        <nav className="flex items-center justify-between gap-6  bg-primary text-foreground px-6 py-4 backdrop-blur-lg">
+        <nav className="flex items-center justify-between gap-6  bg-white text-foreground px-6 py-4 backdrop-blur-lg border-b border-foreground/10 shadow-sm">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="relative h-16 w-16 overflow-hidden rounded-2xl border border-primary-foreground/40 bg-white p-1 flex items-center justify-center"
+              className="relative h-16 w-auto    pl-10 bg-white  p-1  flex items-center justify-center scale-110 md:scale-125"
             >
               <Image
-                src="/logo.png"
+                src="/kn-logo.png"
                 alt="KN Medicolegal Support logo"
                 width={80}
                 height={80}
                 priority
+                className="scale-150"
               />
             </Link>
-            <div className="flex flex-col text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground">
-              <span>KN</span>
-              <span>Medicolegal Support</span>
-            </div>
+
           </div>
-          <div className="hidden items-center gap-8 text-sm font-medium text-primary-foreground/90 md:flex">
+          <div className="hidden items-center gap-8 text-sm font-medium text-primary/90 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.title}
                 href={link.href}
-                className="transition hover:text-primary-foreground/80"
+                className="transition hover:text-primary-foreground"
               >
                 {link.title}
               </Link>

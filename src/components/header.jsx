@@ -97,8 +97,8 @@ export function Header() {
             <Link
               href={
                 profileData.role === "ADMIN"
-                  ? "/dashboard/profile"
-                  : "/user/profile"
+                  ? "/dashboard"
+                  : "/user"
               }
               className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
             >
@@ -172,8 +172,8 @@ export function Header() {
                   <Link
                     href={
                       profileData.role === "ADMIN"
-                        ? "/dashboard/profile"
-                        : "/user/profile"
+                        ? "/dashboard"
+                        : "/user"
                     }
                     onClick={closeMenu}
                     className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
@@ -195,13 +195,6 @@ export function Header() {
                       className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full"
                     >
                       Login
-                    </Link>
-                    <Link
-                      href="/user/auth"
-                      onClick={closeMenu}
-                      className="inline-flex items-center justify-center rounded-full border-2 border-foreground/20 px-4 py-2.5 text-sm font-medium text-foreground transition hover:bg-foreground/5 w-full"
-                    >
-                      Chat Login
                     </Link>
                   </>
                 )}

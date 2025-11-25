@@ -108,13 +108,13 @@ export function Header() {
             <>
               <Link
                 href="/user/auth?mode=register"
-                className="inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-primary-foreground transition hover:bg-primary-foreground hover:text-primary whitespace-nowrap"
+                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary-foreground to-[hsl(var(--contact-gradient-to))] px-4 lg:px-5 py-2 lg:py-2.5 text-xs lg:text-sm font-semibold text-primary shadow-md shadow-primary-foreground/30 transition hover:shadow-lg hover:scale-105 whitespace-nowrap"
               >
                 New User
               </Link>
               <Link
                 href="/user/auth"
-                className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 whitespace-nowrap"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-4 lg:px-5 py-2 lg:py-2.5 text-xs lg:text-sm font-semibold text-white shadow-md shadow-primary/30 transition hover:shadow-lg hover:scale-105 whitespace-nowrap"
               >
                 Login
               </Link>
@@ -185,14 +185,14 @@ export function Header() {
                     <Link
                       href="/user/auth?mode=register"
                       onClick={closeMenu}
-                      className="inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary-foreground hover:text-primary w-full"
+                      className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary-foreground to-[hsl(var(--contact-gradient-to))] px-4 py-2.5 text-sm font-semibold text-primary shadow-md shadow-primary-foreground/30 transition hover:shadow-lg w-full uppercase tracking-wider"
                     >
                       New User Registration
                     </Link>
                     <Link
                       href="/user/auth"
                       onClick={closeMenu}
-                      className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full"
+                      className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/30 transition hover:shadow-lg w-full uppercase tracking-wider"
                     >
                       Login
                     </Link>

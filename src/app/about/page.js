@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { UserCircle, Award, BookOpen, Scale, FileCheck, Building, Users as UsersIcon, Briefcase } from "lucide-react";
 
@@ -18,7 +19,7 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
               className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4"
             >
-              Precision, Protection, and Professional Support
+              Prevention, Anticipation, and Defence
             </motion.p>
 
             <motion.h1
@@ -64,8 +65,14 @@ export default function AboutPage() {
               className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="flex items-start gap-4 mb-6">
-                <div className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
-                  <UserCircle className="h-10 w-10 text-blue-600" />
+                <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
+                  <Image
+                    src="/dr-kohli.png"
+                    alt="Dr. Promod Kumar Kohli"
+                    width={80}
+                    height={80}
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="text-2xl font-medium text-foreground">Dr. Promod Kumar Kohli</h3>
@@ -121,8 +128,14 @@ export default function AboutPage() {
               className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="flex items-start gap-4 mb-6">
-                <div className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-green-500/10 to-emerald-500/10">
-                  <UserCircle className="h-10 w-10 text-green-600" />
+                <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10">
+                  <Image
+                    src="/dr-narula.png"
+                    alt="Dr. Sanjay Narula"
+                    width={80}
+                    height={80}
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="text-2xl font-medium text-foreground">Dr. Sanjay Narula</h3>

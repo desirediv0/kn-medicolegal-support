@@ -18,6 +18,7 @@ const Layout = ({ children }) => {
   const navLinks = [
     { title: "Home", href: "/" },
     { title: "About Us", href: "/about" },
+    { title: "Knowledge Hub", href: "/knowledge-hub" },
     { title: "Services", href: "/services" },
     { title: "Contact", href: "/contact" },
   ];

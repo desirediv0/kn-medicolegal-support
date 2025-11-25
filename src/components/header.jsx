@@ -11,6 +11,8 @@ const navLinks = [
   { title: "Home", href: "/" },
   { title: "About Us", href: "/about" },
   { title: "Services", href: "/services" },
+  { title: "Knowledge Hub", href: "/knowledge-hub" },
+  { title: "Gallery", href: "/gallery" },
   { title: "FAQ", href: "/faq" },
   { title: "Contact Us", href: "/contact" },
 ];
@@ -35,7 +37,7 @@ export function Header() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 shadow-sm"
+      className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-background backdrop-blur-md supports-[backdrop-filter]:bg-background/80 shadow-sm"
     >
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 md:gap-6 px-4 sm:px-6 py-3 md:py-4 lg:px-16">
         <motion.div
@@ -46,17 +48,16 @@ export function Header() {
         >
           <Link
             href="/"
-            className="relative h-16 w-auto overflow-hidden   bg-white  p-1  flex items-center justify-center scale-110 md:scale-150"
+            className="relative h-16 w-auto overflow-hidden flex items-center justify-center scale-125 md:scale-175 transition-shadow"
             onClick={closeMenu}
           >
             <Image
               src="/kn-logo.png"
               alt="KN Medicolegal Support logo"
-              width={100}
-              height={100}
+              width={120}
+              height={120}
               priority
             />
-
           </Link>
         </motion.div>
 
@@ -85,12 +86,12 @@ export function Header() {
           ))}
         </motion.div>
 
-        {/* Desktop Auth Button */}
+        {/* Desktop Auth Buttons */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="hidden md:flex items-center gap-3"
+          className="hidden md:flex items-center gap-2 lg:gap-3"
         >
           {profileData?.name ? (
             <Link
@@ -99,17 +100,25 @@ export function Header() {
                   ? "/dashboard/profile"
                   : "/user/profile"
               }
-              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
             >
               {profileData && profileData?.name?.split(" ")[0]}
             </Link>
           ) : (
-            <Link
-              href="/user/auth"
-              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider text-nowrap"
-            >
-              Let&apos;s Talk
-            </Link>
+            <>
+              <Link
+                href="/user/auth?mode=register"
+                className="inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-primary-foreground transition hover:bg-primary-foreground hover:text-primary whitespace-nowrap"
+              >
+                New User
+              </Link>
+              <Link
+                href="/user/auth"
+                className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 whitespace-nowrap"
+              >
+                Login
+              </Link>
+            </>
           )}
         </motion.div>
 
@@ -157,7 +166,7 @@ export function Header() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
-                className="pt-3 border-t border-foreground/10"
+                className="pt-3 border-t border-foreground/10 space-y-2"
               >
                 {profileData?.name ? (
                   <Link
@@ -172,13 +181,29 @@ export function Header() {
                     {profileData && profileData?.name?.split(" ")[0]}
                   </Link>
                 ) : (
-                  <Link
-                    href="/user/auth"
-                    onClick={closeMenu}
-                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
-                  >
-                    Let&apos;s Talk
-                  </Link>
+                  <>
+                    <Link
+                      href="/user/auth?mode=register"
+                      onClick={closeMenu}
+                      className="inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary-foreground hover:text-primary w-full"
+                    >
+                      New User Registration
+                    </Link>
+                    <Link
+                      href="/user/auth"
+                      onClick={closeMenu}
+                      className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/user/auth"
+                      onClick={closeMenu}
+                      className="inline-flex items-center justify-center rounded-full border-2 border-foreground/20 px-4 py-2.5 text-sm font-medium text-foreground transition hover:bg-foreground/5 w-full"
+                    >
+                      Chat Login
+                    </Link>
+                  </>
                 )}
               </motion.div>
             </div>

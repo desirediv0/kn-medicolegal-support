@@ -47,7 +47,13 @@ export function UserAuthForm({
   enableSignup = true,
   ...props
 }) {
-  const [mode, setMode] = useState("login");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackParam = searchParams.get("callbackUrl");
+  const modeParam = searchParams.get("mode");
+  const redirectTarget = buildRedirectTarget(callbackParam, defaultCallback);
+  
+  const [mode, setMode] = useState(modeParam === "register" ? "signup" : "login");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -56,10 +62,6 @@ export function UserAuthForm({
   const [otp, setOtp] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
   const [signupData, setSignupData] = useState(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackParam = searchParams.get("callbackUrl");
-  const redirectTarget = buildRedirectTarget(callbackParam, defaultCallback);
 
   // Password strength checker
   const checkPasswordStrength = (password) => {

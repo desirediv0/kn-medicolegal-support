@@ -3,9 +3,10 @@
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import { FaUser, FaUserShield, FaSignInAlt } from "react-icons/fa";
+import { CiChat1 } from "react-icons/ci";
 import { motion } from "framer-motion";
 
-const publicRoutes = ["/", "/about", "/faq", "/contact", "/services"];
+const publicRoutes = ["/", "/about", "/faq", "/contact", "/services","/knowledge-hub","/gallery"];
 
 export function FloatingButton() {
   const { data: session, status } = useSession();
@@ -38,8 +39,8 @@ export function FloatingButton() {
     icon = <FaSignInAlt className="w-5 h-5" />;
     label = "Loading...";
   } else if (!session?.user) {
-    icon = <FaSignInAlt className="w-5 h-5" />;
-    label = "Login";
+    icon = <CiChat1 className="w-5 h-5" />;
+    label = "LET'S TALK";
   } else if (session.user.role === "ADMIN") {
     icon = <FaUserShield className="w-5 h-5" />;
     label = "Dashboard";

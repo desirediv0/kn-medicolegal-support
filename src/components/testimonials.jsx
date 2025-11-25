@@ -1,78 +1,20 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
 
 export function Testimonials() {
-  const scrollRef = useRef(null);
 
   const testimonials = [
     {
-      name: "Dr. Rajesh Kumar",
-      role: "Senior Consultant, Apollo Hospital",
-      text: "Their medicolegal expertise saved us during a critical consumer court case. The team's practical advice and documentation support were invaluable. Highly recommended for all healthcare professionals.",
-      rating: 5,
-    },
-    {
-      name: "Dr. Priya Sharma",
-      role: "Medical Director, City Care Hospital",
-      text: "We've been using their monthly support package for over a year. The peace of mind knowing expert medicolegal help is just a call away is priceless. Professional and responsive team.",
-      rating: 5,
-    },
-    {
-      name: "Dr. Anil Verma",
-      role: "General Surgeon, Private Practice",
-      text: "When I received a legal notice, I was completely lost. Their team guided me through every step, drafted perfect responses, and the case was dismissed. Forever grateful!",
-      rating: 5,
-    },
-    {
-      name: "Dr. Meera Patel",
-      role: "Gynecologist, Women's Wellness Clinic",
-      text: "Their PCPNDT compliance audit helped us identify and fix critical documentation gaps. The training sessions for our staff were excellent. True experts in their field.",
-      rating: 5,
-    },
-    {
-      name: "Dr. Suresh Reddy",
-      role: "Hospital Administrator, Metro Hospital",
-      text: "Excellent medicolegal support for our entire hospital. They conduct regular workshops, audit our records, and are always available for urgent consultations. Best investment we made.",
-      rating: 5,
-    },
-    {
-      name: "Dr. Kavita Singh",
-      role: "Pediatrician, Child Care Center",
-      text: "Their preventive medicolegal advice helped me improve my consent forms and documentation practices. No legal issues in 3 years since following their guidance!",
+      name: "Coming Soon",
+      role: "Client Testimonials",
+      text: "Real testimonials will be updated soon based on client cases.",
       rating: 5,
     },
   ];
 
-  // Duplicate testimonials for infinite scroll
-  const duplicatedTestimonials = [...testimonials, ...testimonials];
-
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let scrollPosition = 0;
-    const scrollSpeed = 0.5; // pixels per frame
-
-    const scroll = () => {
-      scrollPosition += scrollSpeed;
-
-      // Reset position when we've scrolled through the first set
-      const maxScroll = scrollContainer.scrollWidth / 2;
-      if (scrollPosition >= maxScroll) {
-        scrollPosition = 0;
-      }
-
-      scrollContainer.scrollLeft = scrollPosition;
-      requestAnimationFrame(scroll);
-    };
-
-    const animationId = requestAnimationFrame(scroll);
-
-    return () => cancelAnimationFrame(animationId);
-  }, []);
+  // No auto-scroll for placeholder
 
   return (
     <section className="relative overflow-hidden bg-background py-12">
@@ -98,17 +40,13 @@ export function Testimonials() {
         </motion.div>
       </div>
 
-      {/* Auto-scroll container */}
-      <div className="relative">
-        <div
-          ref={scrollRef}
-          className="flex  gap-3 md:gap-6 overflow-x-hidden"
-          style={{ scrollBehavior: 'auto' }}
-        >
-          {duplicatedTestimonials.map((testimonial, index) => (
+      {/* Testimonials container */}
+      <div className="relative max-w-2xl mx-auto px-4">
+        <div className="flex justify-center">
+          {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-full md:w-[calc(33.333%-16px)]"
+              className="w-full"
             >
               <div className="h-full rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg">
                 {/* Quote icon */}

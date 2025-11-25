@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
-import { Testimonials } from "@/components/testimonials";
 import {
   Shield,
   Scale,
@@ -18,8 +17,8 @@ import {
   CheckCircle,
   Download,
   RefreshCw,
-  UserCircle,
   Award,
+  ArrowRight,
 } from "lucide-react";
 
 export default function Home() {
@@ -119,8 +118,8 @@ export default function Home() {
             >
               <div className="relative w-full aspect-[4/3] lg:aspect-square rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=800&fit=crop"
-                  alt="Professional medical consultation"
+                  src="/hero-banner1.jpg"
+                  alt="Medical and Legal Professional Support"
                   fill
                   className="object-cover"
                   priority
@@ -132,6 +131,24 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+
+        {/* Confidentiality Statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-8 lg:px-16"
+        >
+          <div className="flex items-center justify-center gap-3 md:gap-4 rounded-2xl border-2 border-primary-foreground/30 bg-gradient-to-r from-primary-foreground/10 via-primary-foreground/5 to-primary-foreground/10 px-6 md:px-8 py-5 md:py-6 shadow-lg hover:shadow-xl transition-shadow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground shrink-0 h-6 w-6 md:h-7 md:w-7">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <p className="text-base md:text-lg font-semibold text-foreground text-center">
+              We ensure confidentiality of all user information.
+            </p>
+          </div>
+        </motion.div>
 
         {/* Bottom Subtle Line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
@@ -154,7 +171,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4"
             >
-              Precision • Protection • Professional Support
+              Prevention • Anticipation • Defence
             </motion.p>
 
             <motion.h2
@@ -274,7 +291,7 @@ export default function Home() {
                 "Practical, real-world advice",
                 "Fast response times",
                 "Strict confidentiality",
-                "Comprehensive support: preventive + defensive",
+                "Comprehensive support: Prevention, Anticipation & Defence",
                 "Nationwide support for doctors and hospitals",
               ].map((item, index) => (
                 <motion.div
@@ -356,7 +373,7 @@ export default function Home() {
                 </h3>
                 <p className="text-sm  text-foreground/70 leading-relaxed">
                   We help you put systems in place that prevent disputes, reduce
-                  risk, and ensure regulatory compliance. This includes
+                  risk, and ensure regulatory compliance. We also help you in anticipating a medicolegal dispute and help resolve it at that stage itself. This includes
                   documentation audits, SOP development, consent system review,
                   and staff training.
                 </p>
@@ -381,13 +398,13 @@ export default function Home() {
                   <Scale className="h-7 w-7 text-green-600" />
                 </motion.div>
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
-                  Defensive Legal Support
+                  Support in Medicolegal Defence
                 </h3>
                 <p className="text-sm  text-foreground/70 leading-relaxed">
                   If you face a legal notice, complaint, police inquiry, FIR, or
                   medical council case, we guide you step-by-step with factual,
                   record-based responses. We assist with drafting replies,
-                  affidavits, and court submissions.
+                  affidavits, and court submissions. We also empower your advocate even if he/she is not from our panel.
                 </p>
               </div>
             </motion.div>
@@ -550,8 +567,14 @@ export default function Home() {
               className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
-                  <UserCircle className="h-8 w-8 text-blue-600" />
+                <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
+                  <Image
+                    src="/dr-kohli.png"
+                    alt="Dr. Promod Kumar Kohli"
+                    width={80}
+                    height={80}
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="text-xl font-medium text-foreground">
@@ -584,8 +607,14 @@ export default function Home() {
               className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-green-500/10 to-emerald-500/10">
-                  <UserCircle className="h-8 w-8 text-green-600" />
+                <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10">
+                  <Image
+                    src="/dr-narula.png"
+                    alt="Dr. Sanjay Narula"
+                    width={80}
+                    height={80}
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="text-xl font-medium text-foreground">
@@ -613,9 +642,9 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <div className="max-w-7xl mx-auto px-4 ">
+      {/* <div className="max-w-7xl mx-auto px-4 ">
         <Testimonials />
-      </div>
+      </div> */}
 
       {/* Knowledge Hub Section */}
       <section className="relative overflow-hidden bg-background border-y border-foreground/10 py-12">
@@ -746,7 +775,7 @@ export default function Home() {
               </motion.div>
 
               {/* CTA Button */}
-              {/* <motion.div
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -760,7 +789,7 @@ export default function Home() {
                   Explore Knowledge Hub
                   <ArrowRight className="h-5 w-5" />
                 </Link>
-              </motion.div> */}
+              </motion.div>
             </motion.div>
           </div>
         </div>

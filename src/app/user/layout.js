@@ -18,6 +18,7 @@ const LayoutContent = ({ children }) => {
   const navLinks = [
     { title: "Home", href: "/" },
     { title: "About Us", href: "/about" },
+    { title: "Knowledge Hub", href: "/knowledge-hub" },
     { title: "Services", href: "/services" },
     { title: "Contact", href: "/contact" },
   ];
@@ -26,11 +27,11 @@ const LayoutContent = ({ children }) => {
     <div className="flex h-[100dvh] overflow-hidden bg-background">
       <UserSidebar onWidthChange={setSidebarWidth} />
       <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
-        <nav className="flex items-center justify-between gap-6  bg-white text-foreground px-6 py-4 backdrop-blur-lg border-b border-foreground/10 shadow-sm">
+        <nav className="flex items-center justify-between gap-6 bg-white text-foreground px-6 py-4 backdrop-blur-lg border-b border-foreground/10 shadow-sm">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="relative h-16 w-auto    pl-10 bg-white  p-1  flex items-center justify-center scale-110 md:scale-125"
+              className="relative h-16 w-auto pl-10 bg-white p-1 flex items-center justify-center scale-110 md:scale-125"
             >
               <Image
                 src="/kn-logo.png"

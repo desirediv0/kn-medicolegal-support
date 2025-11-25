@@ -22,7 +22,7 @@ export default function ServicesPage() {
       icon: Shield,
       title: "Preventive Medicolegal Support",
       description:
-        "We help you put systems in place that prevent disputes, reduce risk, and ensure regulatory compliance. This includes documentation audits, SOP development, consent system review, and staff training.",
+        "We help you put systems in place that prevent disputes, reduce risk, and ensure regulatory compliance. We also help you in anticipating a medicolegal dispute and help resolve it at that stage itself. This includes documentation audits, SOP development, consent system review, and staff training.",
       color: "blue",
       gradientFrom: "from-blue-500/10",
       gradientTo: "to-teal-500/10",
@@ -30,9 +30,9 @@ export default function ServicesPage() {
     },
     {
       icon: Scale,
-      title: "Defensive Legal Support",
+      title: "Support in Medicolegal Defence",
       description:
-        "If you face a legal notice, complaint, police inquiry, FIR, or medical council case, we guide you step-by-step with factual, record-based responses. We assist with drafting replies, affidavits, and court submissions.",
+        "If you face a legal notice, complaint, police inquiry, FIR, or medical council case, we guide you step-by-step with factual, record-based responses. We assist with drafting replies, affidavits, and court submissions. We also empower your advocate even if he/she is not from our panel.",
       color: "green",
       gradientFrom: "from-green-500/10",
       gradientTo: "to-emerald-500/10",

@@ -62,6 +62,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/fee-packages" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                  <span className="text-primary-foreground">→</span> Fee & Packages
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
                   <span className="text-primary-foreground">→</span> Contact Us
                 </Link>
@@ -91,5 +96,3 @@ export function Footer() {
     </footer>
   );
 }
-
-

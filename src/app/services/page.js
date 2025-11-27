@@ -8,15 +8,9 @@ import {
   Building2,
   GraduationCap,
   AlertTriangle,
-  ChevronDown,
-  HelpCircle,
 } from "lucide-react";
-import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
 
 export default function ServicesPage() {
-  const [openIndex, setOpenIndex] = useState(null);
-
   const services = [
     {
       icon: Shield,
@@ -30,7 +24,7 @@ export default function ServicesPage() {
     },
     {
       icon: Scale,
-      title: "Support in Medicolegal Defence",
+      title: "Support in court complaint and legal proceedings",
       description:
         "If you face a legal notice, complaint, police inquiry, FIR, or medical council case, we guide you step-by-step with factual, record-based responses. We assist with drafting replies, affidavits, and court submissions. We also empower your advocate even if he/she is not from our panel.",
       color: "green",
@@ -40,7 +34,7 @@ export default function ServicesPage() {
     },
     {
       icon: FileText,
-      title: "Documentation Review & Improvement",
+      title: "Review & input on medical records and reports",
       description:
         "We review your records, consent forms, and clinical notes and help you strengthen them with standard best practices and specialty-specific recommendations.",
       color: "purple",
@@ -62,7 +56,7 @@ export default function ServicesPage() {
       icon: GraduationCap,
       title: "Training & Workshops",
       description:
-        "We conduct customized medicolegal workshops, CME programs, nursing training, and mock drills on documentation, communication, violence prevention, and handling complications.",
+        "We conduct customized medicolegal workshops, CME programs, nursing training, and mock drills. We conduct lectures & group discussions on risk management, system improvement, and legal safety in clinical practice.",
       color: "cyan",
       gradientFrom: "from-cyan-500/10",
       gradientTo: "to-blue-500/10",
@@ -79,46 +73,6 @@ export default function ServicesPage() {
       iconColor: "text-red-600",
     },
   ];
-
-  const faqs = [
-    {
-      question: "What medicolegal services do you provide?",
-      answer:
-        "We offer end-to-end medicolegal support, including advisory services, case assessment, documentation guidance, litigation assistance, risk prevention strategies, compliance audits, and crisis response. For court appearances, we have advocates on our panel. We provide the medicolegal support, on your behalf, to the advocate you select – from the panel or otherwise.",
-    },
-    {
-      question: "Do you help with both preventive and defensive legal matters?",
-      answer:
-        "Yes. We focus on preventing litigation through good practices and also assist in defending cases if a court notice on a complaint or legal notice is served.",
-    },
-    {
-      question:
-        "How should I respond if I receive a legal notice or complaint?",
-      answer:
-        "You should not reply without expert guidance. Share the notice with us, and we will render proper advice and help draft an appropriate, legally sound response based on facts and records.",
-    },
-    {
-      question:
-        "Can you help with documentation, consent forms, and record-keeping standards?",
-      answer:
-        "Absolutely. We review and improve consent formats, counselling sheets, progress notes, operation notes, discharge summaries, and other aspects of medical records to align with best medicolegal practices.",
-    },
-    {
-      question:
-        "What support do you offer when complications or adverse events occur?",
-      answer:
-        "We provide early advisory input to ensure correct documentation, communication strategy, and legal preparedness. Early involvement of a medicolegal expert provides a solution or at least reduces escalation. Medicolegal risk management should be initiated early rather than late.",
-    },
-    {
-      question: "Do you provide emergency or urgent medicolegal support?",
-      answer:
-        "Yes. We offer priority access for urgent matters such as police inquiries, unexpected hospital deaths, or high-risk complications.",
-    },
-  ];
-
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -154,8 +108,7 @@ export default function ServicesPage() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="mt-6 max-w-2xl mx-auto text-sm md:text-base text-foreground/70 leading-relaxed"
             >
-              Our comprehensive range of medicolegal services help to resolve
-              your situation and protect your practice
+              Our comprehensive range of medicolegal services helps to manage your medicolegal risks to protect your medical practice.
             </motion.p>
           </div>
         </div>
@@ -198,86 +151,6 @@ export default function ServicesPage() {
                 </motion.div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="relative overflow-hidden bg-background border-t border-foreground/10 py-12">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(196,248,42,0.05),transparent_50%)]" />
-
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
-          {/* Header */}
-          <div className="text-center mb-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium">
-                <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
-                  Frequently Asked
-                </span>{" "}
-                Questions
-              </h2>
-              <p className="mt-4 text-sm md:text-base text-foreground/60 max-w-2xl mx-auto">
-                Common questions about our medicolegal services
-              </p>
-            </motion.div>
-          </div>
-
-          {/* FAQ Accordion */}
-          <div className="max-w-4xl mx-auto space-y-4">
-            {faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="rounded-xl border border-foreground/10 bg-white shadow-md overflow-hidden"
-              >
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full flex items-start justify-between gap-4 p-6 text-left hover:bg-foreground/5 transition-colors"
-                >
-                  <div className="flex items-start gap-3 flex-1">
-                    <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/10 to-purple-500/10 mt-0.5">
-                      <HelpCircle className="h-4 w-4 text-blue-600" />
-                    </div>
-                    <h3 className="text-base md:text-lg font-medium text-foreground pr-4">
-                      {faq.question}
-                    </h3>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: openIndex === index ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="shrink-0"
-                  >
-                    <ChevronDown className="h-5 w-5 text-foreground/60" />
-                  </motion.div>
-                </button>
-
-                <AnimatePresence>
-                  {openIndex === index && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-6 pl-[4.5rem]">
-                        <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>

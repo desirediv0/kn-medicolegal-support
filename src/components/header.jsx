@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
@@ -13,6 +13,7 @@ const navLinks = [
   { title: "Services", href: "/services" },
   { title: "Knowledge Hub", href: "/knowledge-hub" },
   { title: "Gallery", href: "/gallery" },
+  { title: "Fee & Packages", href: "/fee-packages" },
   { title: "FAQ", href: "/faq" },
   { title: "Contact Us", href: "/contact" },
 ];
@@ -122,17 +123,29 @@ export function Header() {
           )}
         </motion.div>
 
-        {/* Mobile Menu Button */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          onClick={toggleMenu}
-          className="md:hidden p-2 text-foreground hover:bg-foreground/5 rounded-lg transition"
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </motion.button>
+        {/* Mobile User Icon & Menu Button */}
+        <div className="md:hidden flex items-center gap-2">
+          {/* User Icon - Left of Hamburger */}
+          <Link
+            href={profileData?.name ? (profileData.role === "ADMIN" ? "/dashboard" : "/user") : "/user/auth"}
+            className="p-2 text-foreground hover:bg-foreground/5 rounded-lg transition inline-flex items-center justify-center no-underline hover:no-underline border-none focus:ring-0"
+            aria-label="User account"
+          >
+            <User size={24} />
+          </Link>
+
+          {/* Hamburger Menu Button */}
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            onClick={toggleMenu}
+            className="p-2 text-foreground hover:bg-foreground/5 rounded-lg transition inline-flex items-center justify-center"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </motion.button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}

@@ -117,22 +117,6 @@ Violations may be detected by:
 
 **Common Violations**
 - Non-registration or misuse of ultrasound machine
-- Deficiency in maintenance of records
-- Advertisement for sex determination
-- Communication of foetal sex
-
-**Penalties**
-
-| Offence | First Offence | Subsequent Offence |
-|---------|--------------|-------------------|
-| Sex selection/determination | Up to 3 years + ₹10,000 fine | Up to 5 years + ₹50,000 fine |
-| Non-maintenance of records | Same as above | — |
-| Advertising | Up to 3 years + ₹10,000 fine | — |
-| Medical Council action | 5 years suspension | Permanent removal |
-
-**Legal Process**
-
-1. Inspection, Search and Seizure (Section 30)
 2. Show-Cause Notice issued
 3. Suspension/Cancellation of Registration
 4. Filing of Complaint before Court
@@ -402,32 +386,42 @@ export default function KnowledgeHubPage() {
                                     {/* Topic Header - Always Visible */}
                                     <button
                                         onClick={() => handleTopicClick(topic.id)}
-                                        className="w-full p-6 md:p-8 text-left hover:bg-foreground/5 transition-colors"
+                                        className="w-full p-6 md:p-8 text-left hover:bg-foreground/5 transition-colors relative group"
                                     >
                                         <div className="flex items-start gap-4">
-                                            <div className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${getIconColor(topic.color)}`}>
+                                            <div className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${getIconColor(topic.color)} transition-transform group-hover:scale-110`}>
                                                 <Icon className="h-6 w-6" />
                                             </div>
                                             <div className="flex-1">
                                                 <div className="flex items-start justify-between gap-4">
                                                     <div>
-                                                        <h3 className="text-lg md:text-xl font-medium text-foreground mb-2">
+                                                        <h3 className="text-lg md:text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors">
                                                             {topic.title}
                                                         </h3>
                                                         <p className="text-sm text-foreground/70 leading-relaxed">
                                                             {topic.summary}
                                                         </p>
+                                                        {!session && (
+                                                            <div className="mt-3 flex items-center gap-2 text-xs font-medium text-green-500">
+                                                                <Lock className="h-3 w-3" />
+                                                                <span>Login to view full content</span>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                     <div className="flex items-center gap-2 shrink-0">
                                                         {!session && (
-                                                            <Lock className="h-5 w-5 text-foreground/40" />
+                                                            <div className="h-8 w-8 rounded-full bg-foreground/5 flex items-center justify-center">
+                                                                <Lock className="h-4 w-4 text-foreground/40" />
+                                                            </div>
                                                         )}
                                                         {session && (
-                                                            isExpanded ? (
-                                                                <ChevronUp className="h-5 w-5 text-foreground/60" />
-                                                            ) : (
-                                                                <ChevronDown className="h-5 w-5 text-foreground/60" />
-                                                            )
+                                                            <div className={`h-8 w-8 rounded-full flex items-center justify-center transition-colors ${isExpanded ? 'bg-primary/10 text-primary' : 'bg-foreground/5 text-foreground/40'}`}>
+                                                                {isExpanded ? (
+                                                                    <ChevronUp className="h-5 w-5" />
+                                                                ) : (
+                                                                    <ChevronDown className="h-5 w-5" />
+                                                                )}
+                                                            </div>
                                                         )}
                                                     </div>
                                                 </div>
@@ -462,6 +456,111 @@ export default function KnowledgeHubPage() {
                 </div>
             </section>
 
+            {/* Relevant Acts & Rules Section */}
+            {session && (
+                <section className="relative overflow-hidden bg-background border-t border-foreground/10 py-12">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(196,248,42,0.05),transparent_50%)]" />
+
+                    <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="text-center mb-10"
+                        >
+                            <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-2">
+                                <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
+                                    Relevant Acts
+                                </span>{" "}
+                                & Rules
+                            </h2>
+                            <p className="text-sm md:text-base text-foreground/60">
+                                Essential legal frameworks for healthcare practice
+                            </p>
+                        </motion.div>
+
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {[
+                                "CPA 2019",
+                                "PC-PNDT Act",
+                                "MTP Act",
+                                "NMC guidelines 2023 (held in abeyance)",
+                                "Telemedicine guidelines",
+                            ].map((act, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    className="rounded-xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-lg transition-shadow"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-sm">
+                                            {index + 1}
+                                        </span>
+                                        <p className="text-foreground/80 font-medium">{act}</p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Relevant Case Laws Section */}
+            {session && (
+                <section className="relative overflow-hidden bg-background border-t border-foreground/10 py-12">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(196,248,42,0.05),transparent_50%)]" />
+
+                    <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="text-center mb-10"
+                        >
+                            <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-2">
+                                <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
+                                    Relevant Case
+                                </span>{" "}
+                                Laws
+                            </h2>
+                            <p className="text-sm md:text-base text-foreground/60">
+                                Which all doctors must read
+                            </p>
+                        </motion.div>
+
+                        <div className="space-y-4 max-w-4xl mx-auto">
+                            {[
+                                "Jacob Mathew vs State of Punjab; 2005 (6) SCC 1",
+                                "Samira Kohli vs Dr Prabha Manchanda",
+                                "Kusum Sharma & ors vs Batra Hospital and Medical Research Centre; 2010(2) BCR 599",
+                                "Nizam's Institute of Medical Sciences vs Prasanth S. Dhananka & ors; Civil appeal no.4119 of 1999",
+                            ].map((caseLaw, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                                    className="rounded-xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-lg transition-shadow"
+                                >
+                                    <div className="flex items-start gap-3">
+                                        <span className="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-sm">
+                                            {index + 1}
+                                        </span>
+                                        <p className="text-foreground/80 leading-relaxed">{caseLaw}</p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* Login Modal */}
             <AnimatePresence>
                 {showLoginModal && (
@@ -492,7 +591,7 @@ export default function KnowledgeHubPage() {
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <Link
                                         href="/user/auth?mode=register"
-                                        className="flex-1 inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary-foreground hover:text-primary"
+                                        className="flex-1 inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-6 py-3 text-sm font-medium text-primary transition hover:bg-primary-foreground hover:text-primary"
                                     >
                                         Register
                                     </Link>

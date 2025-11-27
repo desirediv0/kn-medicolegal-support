@@ -92,20 +92,31 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.7 }}
-                className="flex flex-row gap-3 md:gap-4"
+                className="space-y-4"
               >
-                <Link
-                  href="/user/auth"
-                  className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
-                >
-                  Let&apos;s Talk
-                </Link>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center justify-center rounded-full border-2 border-foreground/20 px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-foreground shadow-sm transition hover:bg-foreground/5 hover:border-foreground/40"
-                >
-                  Our Services
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+                  <Link
+                    href="/user/auth?mode=register"
+                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+                  >
+                    Registration
+                  </Link>
+                  <Link
+                    href="/user"
+                    className="inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-foreground shadow-sm transition hover:bg-foreground/5 hover:border-primary-foreground"
+                  >
+                    Chat
+                  </Link>
+                  <Link
+                    href="/user"
+                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+                  >
+                    Advanced Chat
+                  </Link>
+                </div>
+                <p className="text-xs md:text-sm text-foreground/60 italic text-center">
+                  *Advanced Chat is a paid service. Users get extended support & priority responses.
+                </p>
               </motion.div>
             </div>
 
@@ -145,7 +156,7 @@ export default function Home() {
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
             <p className="text-base md:text-lg font-semibold text-foreground text-center">
-              We ensure confidentiality of all user information.
+              We ensure the confidentiality of all individual user information shared with us.
             </p>
           </div>
         </motion.div>
@@ -345,7 +356,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-4 text-sm md:text-base text-foreground/60 max-w-2xl mx-auto"
             >
-              Your Safety Net in Complex Medicolegal Situations
+              Our comprehensive range of medicolegal services helps to manage your medicolegal risks to protect your medical practice.
             </motion.p>
           </div>
 
@@ -398,7 +409,7 @@ export default function Home() {
                   <Scale className="h-7 w-7 text-green-600" />
                 </motion.div>
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
-                  Support in Medicolegal Defence
+                  Support in court complaint and legal proceedings
                 </h3>
                 <p className="text-sm  text-foreground/70 leading-relaxed">
                   If you face a legal notice, complaint, police inquiry, FIR, or
@@ -427,7 +438,7 @@ export default function Home() {
                   <FileText className="h-7 w-7 text-purple-600" />
                 </motion.div>
                 <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3">
-                  Documentation Review & Improvement
+                  Review & input on medical records and reports
                 </h3>
                 <p className="text-sm  text-foreground/70 leading-relaxed">
                   We review your records, consent forms, and clinical notes and
@@ -487,9 +498,7 @@ export default function Home() {
                 </h3>
                 <p className="text-sm  text-foreground/70 leading-relaxed">
                   We conduct customized medicolegal workshops, CME programs,
-                  nursing training, and mock drills on documentation,
-                  communication, violence prevention, and handling
-                  complications.
+                  nursing training, and mock drills. We conduct lectures & group discussions on risk management, system improvement, and legal safety in clinical practice.
                 </p>
               </div>
             </motion.div>

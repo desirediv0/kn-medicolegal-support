@@ -38,6 +38,42 @@ export default function AboutPage() {
       </section>
 
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 md:py-20 lg:px-16">
+        {/* Introduction */}
+        <section className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg"
+          >
+            <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
+              KN Medicolegal Support has been established by two highly experienced & reputed surgeons who share a passion for risk management within the healthcare ecosystem. They have been providing medicolegal support services since 2003, informally & individually. Now they have provided a formal platform to render these services in a more structured manner collectively.
+            </p>
+          </motion.div>
+        </section>
+
+        {/* Founder Photographs Placeholder */}
+        <section className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-2xl border-2 border-dashed border-foreground/20 bg-foreground/5 p-8 md:p-12 text-center"
+          >
+            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary-foreground/10 mb-4">
+              <UserCircle className="h-8 w-8 text-primary-foreground" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-medium text-foreground mb-2">
+              Founder Photographs
+            </h3>
+            <p className="text-sm md:text-base text-foreground/60">
+              Photographs will be added soon
+            </p>
+          </motion.div>
+        </section>
+
         {/* Our Expert Team */}
         <section className="mb-16">
           <motion.div
@@ -190,139 +226,6 @@ export default function AboutPage() {
                 </ul>
               </div>
             </motion.div>
-          </div>
-        </section>
-
-        {/* Services Provided */}
-        <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-medium mb-4">
-              <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
-                Services
-              </span>{' '}
-              Provided
-            </h2>
-          </motion.div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              { icon: Briefcase, text: "Medicolegal Consultation (on phone, Chat, Email, in-person)" },
-              { icon: FileCheck, text: "Drafting of Legal documents (Reply, Evidence, Arguments, Affidavits, MOUs, etc.)" },
-              { icon: Scale, text: "Drafting of Expert opinions for Expert evidence" },
-              { icon: BookOpen, text: "Medical Research on contentious issues" },
-              { icon: Scale, text: "Legal research for relevant case laws" },
-              { icon: UsersIcon, text: "Inputs to Advocates for medicolegal support" },
-              { icon: FileCheck, text: "Hospital Medical record file audits" },
-              { icon: Building, text: "On-site emergency medicolegal support" },
-              { icon: Award, text: "Annual/monthly medicolegal support packages for individual doctors/hospitals" },
-            ].map((service, index) => {
-              const Icon = service.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="rounded-xl border border-foreground/10 bg-white p-6 shadow-md hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/10 to-purple-500/10">
-                      <Icon className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <p className="text-sm text-foreground/80 leading-relaxed">{service.text}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Relevant Acts & Rules */}
-        <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-medium text-foreground">
-              Relevant Acts & Rules
-            </h2>
-          </motion.div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              "CPA 2019",
-              "PC-PNDT Act",
-              "MTP Act",
-              "NMC guidelines 2023 (held in abeyance)",
-              "Telemedicine guidelines",
-            ].map((act, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="rounded-xl border border-foreground/10 bg-white p-6 shadow-md"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-sm">
-                    {index + 1}
-                  </span>
-                  <p className="text-foreground/80 font-medium">{act}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* Relevant Case Laws */}
-        <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-medium text-foreground">
-              Relevant Case Laws
-            </h2>
-            <p className="text-foreground/60 mt-2">Which all doctors must read</p>
-          </motion.div>
-
-          <div className="space-y-4 max-w-4xl mx-auto">
-            {[
-              "Jacob Mathew vs State of Punjab; 2005 (6) SCC 1",
-              "Samira Kohli vs Dr Prabha Manchanda",
-              "Kusum Sharma & ors vs Batra Hospital and Medical Research Centre; 2010(2) BCR 599",
-              "Nizam's Institute of Medical Sciences vs Prasanth S. Dhananka & ors; Civil appeal no.4119 of 1999",
-            ].map((caseLaw, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="rounded-xl border border-foreground/10 bg-white p-6 shadow-md"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-foreground text-primary font-medium text-sm">
-                    {index + 1}
-                  </span>
-                  <p className="text-foreground/80 leading-relaxed">{caseLaw}</p>
-                </div>
-              </motion.div>
-            ))}
           </div>
         </section>
       </div>

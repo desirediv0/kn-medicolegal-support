@@ -23,9 +23,14 @@ import { signOut, useSession } from "next-auth/react";
 const mainNavItems = [
   { label: "Overview", icon: <Home size={18} />, href: "/dashboard" },
   {
-    label: "Questions",
+    label: "General Chat",
     icon: <MessageSquare size={18} />,
     href: "/dashboard/questions",
+  },
+  {
+    label: "Advance Chat",
+    icon: <MessageSquare size={18} className="text-primary" />,
+    href: "/dashboard/advance-chat",
   },
   { label: "Users", icon: <Users size={18} />, href: "/dashboard/users" },
   { label: "Reports", icon: <FileText size={18} />, href: "/dashboard/reports" },
@@ -35,7 +40,7 @@ const mainNavItems = [
     icon: <Shield size={18} />,
     href: "/dashboard/profile",
   },
-  { label: "Question Pricing", icon: <Settings size={18} />, href: "/dashboard/settings" },
+  { label: "Chat Pricing", icon: <Settings size={18} />, href: "/dashboard/settings" },
 ];
 
 

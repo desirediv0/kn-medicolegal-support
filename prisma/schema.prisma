@@ -43,11 +43,18 @@ model User {
   accounts           Account[]
   verificationTokens VerificationToken[]
 
-  // App relations
+  // App relations - General Chat
   questions Question[] @relation("QuestionUser")
   answers   Question[] @relation("QuestionAdmin")
   messages  Message[]
   settings  Setting[]
+
+  // Advance Chat relations
+  advanceQuestions       AdvanceQuestion[] @relation("AdvanceQuestionUser")
+  advanceAnswers         AdvanceQuestion[] @relation("AdvanceQuestionAdmin")
+  advanceMessages        AdvanceMessage[]
+  advanceChatAccess      AdvanceChatAccess[]
+  advanceChatPricingUpdates AdvanceChatPricing[]
 }
 
 model Account {
@@ -165,6 +172,106 @@ model Attachment {
   createdAt DateTime @default(now())
 
   message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+}
+
+// ============================================
+// ADVANCE CHAT MODELS
+// ============================================
+
+// Advance Chat Pricing Configuration
+model AdvanceChatPricing {
+  id          String   @id @default(cuid())
+  amount      Decimal  @db.Decimal(10, 2)
+  currency    String   @default("INR")
+  description String?
+  isActive    Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedById String?
+  updatedBy   User?    @relation(fields: [updatedById], references: [id])
+}
+
+// User Access to Advance Chat
+model AdvanceChatAccess {
+  id                String        @id @default(cuid())
+  userId            String
+  purchaseDate      DateTime      @default(now())
+  expiryDate        DateTime?     // null for lifetime access
+  paymentStatus     PaymentStatus @default(PENDING)
+  amount            Decimal       @db.Decimal(10, 2)
+  razorpayOrderId   String?       @unique
+  razorpayPaymentId String?       @unique
+  razorpaySignature String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([paymentStatus])
+}
+
+// Advance Chat Questions
+model AdvanceQuestion {
+  id                String         @id @default(cuid())
+  title             String
+  description       String?
+  userId            String
+  adminId           String?
+  status            QuestionStatus @default(PENDING)
+  paymentStatus     PaymentStatus  @default(PENDING)
+  price             Decimal        @db.Decimal(10, 2)
+  razorpayOrderId   String?        @unique
+  razorpayPaymentId String?        @unique
+  razorpaySignature String?
+  closedAt          DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  user     User              @relation("AdvanceQuestionUser", fields: [userId], references: [id])
+  admin    User?             @relation("AdvanceQuestionAdmin", fields: [adminId], references: [id])
+  messages AdvanceMessage[]
+
+  @@index([userId])
+  @@index([adminId])
+  @@index([status])
+  @@index([paymentStatus])
+}
+
+// Advance Chat Messages
+model AdvanceMessage {
+  id         String   @id @default(cuid())
+  questionId String
+  senderId   String
+  body       String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isInternal Boolean  @default(false)
+  isRead     Boolean  @default(false)
+
+  question    AdvanceQuestion      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  sender      User                 @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  attachments AdvanceAttachment[]
+
+  @@index([questionId, createdAt])
+  @@index([isRead])
+}
+
+// Advance Chat Attachments
+model AdvanceAttachment {
+  id        String   @id @default(cuid())
+  messageId String
+  fileName  String
+  fileSize  Int
+  mimeType  String
+  url       String
+  key       String
+  createdAt DateTime @default(now())
+
+  message AdvanceMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
 
   @@index([messageId])
 }

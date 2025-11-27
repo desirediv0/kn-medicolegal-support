@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Suspense,
   useEffect,
   useState,
   useCallback,
@@ -304,7 +303,7 @@ const MobileQuestionDrawer = ({
           Create New Question
         </Button>
         <Button variant="outline" className="w-full" asChild>
-          <Link href="/user/history">View History</Link>
+          <Link href="/user/advance-chat/history">View History</Link>
         </Button>
         <div className="max-h-[60vh] overflow-y-auto rounded-lg border border-primary/20 bg-white/80 p-2 shadow-inner">
           <QuestionList
@@ -368,7 +367,7 @@ function UserContent() {
     if (status !== "authenticated") return;
     setLoadingQuestions(true);
     try {
-      const res = await fetch("/api/questions?limit=15", { cache: "no-store" });
+      const res = await fetch("/api/advance-chat/questions?limit=15", { cache: "no-store" });
       if (!res.ok) {
         throw new Error("Failed to load questions");
       }
@@ -396,7 +395,7 @@ function UserContent() {
         } else {
           try {
             const detailRes = await fetch(
-              `/api/questions/${currentSelected.id}`,
+              `/api/advance-chat/questions/${currentSelected.id}`,
               {
                 cache: "no-store",
               }
@@ -465,7 +464,7 @@ function UserContent() {
         setLoadingMessages(true);
       }
       try {
-        const res = await fetch(`/api/questions/${questionId}/messages`, {
+        const res = await fetch(`/api/advance-chat/questions/${questionId}/messages`, {
           cache: "no-store",
         });
         if (!res.ok) {
@@ -541,8 +540,8 @@ function UserContent() {
         const res = await fetch("/api/settings", { cache: "no-store" });
         if (!res.ok) return;
         const data = await res.json();
-        if (data?.questionPrice != null) {
-          setQuestionPrice(Number(data.questionPrice));
+        if (data?.advanceQuestionPrice != null) {
+          setQuestionPrice(Number(data.advanceQuestionPrice));
         }
       } catch (error) {
         console.error("Failed to load pricing", error);
@@ -559,7 +558,7 @@ function UserContent() {
     if (loadingQuestions) return;
     if (!questions.length) {
       if (selectedQuestion) setSelectedQuestion(null);
-      if (currentQuestionId) router.replace("/user", { scroll: false });
+      if (currentQuestionId) router.replace("/user/advance-chat", { scroll: false });
       return;
     }
 
@@ -571,7 +570,7 @@ function UserContent() {
         }
         return;
       }
-      router.replace("/user", { scroll: false });
+      router.replace("/user/advance-chat", { scroll: false });
       setSelectedQuestion(null);
     }
   }, [
@@ -679,7 +678,7 @@ function UserContent() {
     }
     setCreatingQuestion(true);
     try {
-      const res = await fetch("/api/questions", {
+      const res = await fetch("/api/advance-chat/questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newQuestion),
@@ -697,7 +696,7 @@ function UserContent() {
         [question.id]: question.messageCount ?? 0,
       }));
       setSelectedQuestion(question);
-      router.replace(`/user?question=${question.id}`, { scroll: false });
+      router.replace(`/user/advance-chat?question=${question.id}`, { scroll: false });
       setQuestionModalOpen(false);
       setNewQuestion({ title: "", description: "" });
       const amountText =
@@ -735,7 +734,7 @@ function UserContent() {
       const res = await fetch("/api/payments/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId }),
+        body: JSON.stringify({ advanceQuestionId: questionId }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -757,7 +756,7 @@ function UserContent() {
         )})`,
         order_id: order.id,
         handler: async function (response) {
-          await verifyPayment({ questionId, ...response });
+          await verifyPayment({ advanceQuestionId: questionId, ...response });
         },
         prefill: {},
       };
@@ -784,7 +783,7 @@ function UserContent() {
   };
 
   const verifyPayment = async ({
-    questionId,
+    advanceQuestionId,
     razorpay_payment_id,
     razorpay_order_id,
     razorpay_signature,
@@ -794,7 +793,7 @@ function UserContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          questionId,
+          advanceQuestionId,
           razorpayPaymentId: razorpay_payment_id,
           razorpayOrderId: razorpay_order_id,
           razorpaySignature: razorpay_signature,
@@ -814,7 +813,7 @@ function UserContent() {
       );
       setSelectedQuestion(question);
       if (currentQuestionId !== question.id) {
-        router.replace(`/user?question=${question.id}`, { scroll: false });
+        router.replace(`/user/advance-chat?question=${question.id}`, { scroll: false });
       }
       const paidAmount =
         question.price != null
@@ -890,7 +889,7 @@ function UserContent() {
       }
 
       const res = await fetch(
-        `/api/questions/${selectedQuestion.id}/messages`,
+        `/api/advance-chat/questions/${selectedQuestion.id}/messages`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -957,7 +956,7 @@ function UserContent() {
   const closeChat = async () => {
     if (!selectedQuestion?.id) return;
     try {
-      const res = await fetch(`/api/questions/${selectedQuestion.id}`, {
+      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "CLOSED" }),
@@ -1005,7 +1004,7 @@ function UserContent() {
             Queue
           </Button>
           <Button size="sm" variant="outline" asChild>
-            <Link href="/user/history">History</Link>
+            <Link href="/user/advance-chat/history">History</Link>
           </Button>
           <Button size="sm" onClick={() => setQuestionModalOpen(true)}>
             New
@@ -1018,7 +1017,7 @@ function UserContent() {
           <h2 className="text-lg font-semibold">My Questions</h2>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
-              <Link href="/user/history">History</Link>
+              <Link href="/user/advance-chat/history">History</Link>
             </Button>
             <Button size="sm" onClick={() => setQuestionModalOpen(true)}>
               New
@@ -1041,7 +1040,7 @@ function UserContent() {
                 [question.id]: question.messageCount ?? 0,
               }));
               if (currentQuestionId !== question.id) {
-                router.replace(`/user?question=${question.id}`, {
+                router.replace(`/user/advance-chat?question=${question.id}`, {
                   scroll: false,
                 });
               }
@@ -1070,7 +1069,7 @@ function UserContent() {
           }));
           setIsDrawerOpen(false);
           if (currentQuestionId !== question.id) {
-            router.replace(`/user?question=${question.id}`, { scroll: false });
+            router.replace(`/user/advance-chat?question=${question.id}`, { scroll: false });
           }
           fetchMessages(question.id);
         }}
@@ -1551,18 +1550,4 @@ function UserContent() {
   );
 }
 
-function UserPageFallback() {
-  return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-gray-50 text-sm text-gray-500">
-      Loading your workspace…
-    </div>
-  );
-}
-
-export default function User() {
-  return (
-    <Suspense fallback={<UserPageFallback />}>
-      <UserContent />
-    </Suspense>
-  );
-}
+export default UserContent;

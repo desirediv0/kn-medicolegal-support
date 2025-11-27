@@ -12,6 +12,9 @@ import {
   Download,
   Paperclip,
   Video,
+  FileText,
+  FileSpreadsheet,
+  File,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -231,9 +234,28 @@ export default function StoragePage() {
                               preload="metadata"
                             />
                           </div>
+                        ) : attachment.mimeType?.includes("pdf") ||
+                          attachment.fileName?.toLowerCase().endsWith(".pdf") ? (
+                          <div className="flex h-16 w-24 items-center justify-center rounded-lg border border-gray-200 bg-red-50 text-red-500">
+                            <FileText className="h-8 w-8" />
+                          </div>
+                        ) : attachment.mimeType?.includes("spreadsheet") ||
+                          attachment.mimeType?.includes("excel") ||
+                          attachment.fileName?.toLowerCase().endsWith(".xlsx") ||
+                          attachment.fileName?.toLowerCase().endsWith(".xls") ? (
+                          <div className="flex h-16 w-24 items-center justify-center rounded-lg border border-gray-200 bg-green-50 text-green-500">
+                            <FileSpreadsheet className="h-8 w-8" />
+                          </div>
+                        ) : attachment.mimeType?.includes("word") ||
+                          attachment.mimeType?.includes("document") ||
+                          attachment.fileName?.toLowerCase().endsWith(".docx") ||
+                          attachment.fileName?.toLowerCase().endsWith(".doc") ? (
+                          <div className="flex h-16 w-24 items-center justify-center rounded-lg border border-gray-200 bg-blue-50 text-blue-500">
+                            <FileText className="h-8 w-8" />
+                          </div>
                         ) : (
-                          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-dashed border-gray-300 bg-gray-50">
-                            <Paperclip className="h-5 w-5 text-gray-400" />
+                          <div className="flex h-16 w-24 items-center justify-center rounded-lg border border-gray-200 bg-gray-50">
+                            <File className="h-8 w-8 text-gray-400" />
                           </div>
                         )}
                       </td>

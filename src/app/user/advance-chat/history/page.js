@@ -31,7 +31,7 @@ function UserHistoryContent() {
       setLoading(true);
       try {
         const res = await fetch(
-          `/api/questions?limit=${PER_PAGE}&page=${currentPage}&meta=true`,
+          `/api/advance-chat/questions?limit=${PER_PAGE}&page=${currentPage}&meta=true`,
           { cache: "no-store" }
         );
         if (!res.ok) throw new Error("Failed to load questions");
@@ -95,10 +95,10 @@ function UserHistoryContent() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">
-            General Chat History
+            Advance Chat History
           </h1>
           <p className="text-sm text-gray-500">
-            Review all your previous General Chat questions and reopen conversations if needed.
+            Review all your previous Advance Chat questions and reopen conversations if needed.
           </p>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -114,7 +114,7 @@ function UserHistoryContent() {
         <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle>My Conversations</CardTitle>
           <Button variant="outline" size="sm" asChild>
-            <Link href="/user">Back to General Chat</Link>
+            <Link href="/user/advance-chat">Back to Advance Chat</Link>
           </Button>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -155,7 +155,7 @@ function UserHistoryContent() {
                         </p>
                       </div>
                       <Link
-                        href={`/user?question=${question.id}`}
+                        href={`/user/advance-chat?question=${question.id}`}
                         className="text-xs text-green-600 hover:text-green-700 underline"
                       >
                         View
@@ -215,3 +215,4 @@ export default function UserHistory() {
     </Suspense>
   );
 }
+

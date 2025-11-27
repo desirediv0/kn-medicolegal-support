@@ -12,39 +12,99 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const limit = Number(searchParams.get("limit")) || 100;
 
-  const attachments = await prisma.attachment.findMany({
-    orderBy: { createdAt: "desc" },
-    take: Math.min(limit, 500),
-    include: {
-      message: {
-        select: {
-          question: {
-            select: {
-              id: true,
-              title: true,
-              user: {
-                select: {
-                  id: true,
-                  email: true,
-                  name: true,
+  const [generalAttachments, advanceAttachments] = await Promise.all([
+    prisma.attachment.findMany({
+      orderBy: { createdAt: "desc" },
+      take: Math.min(limit, 500),
+      include: {
+        message: {
+          select: {
+            question: {
+              select: {
+                id: true,
+                title: true,
+                user: {
+                  select: {
+                    id: true,
+                    email: true,
+                    name: true,
+                  },
                 },
               },
             },
-          },
-          sender: {
-            select: {
-              id: true,
-              email: true,
-              name: true,
-              role: true,
+            sender: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+              },
             },
           },
         },
       },
-    },
-  });
+    }),
+    prisma.advanceAttachment.findMany({
+      orderBy: { createdAt: "desc" },
+      take: Math.min(limit, 500),
+      include: {
+        message: {
+          select: {
+            question: {
+              select: {
+                id: true,
+                title: true,
+                user: {
+                  select: {
+                    id: true,
+                    email: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+            sender: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+              },
+            },
+          },
+        },
+      },
+    }),
+  ]);
 
-  const result = attachments.map((attachment) => ({
+  const combined = [
+    ...generalAttachments.map((a) => ({
+      ...a,
+      type: "GENERAL",
+      question: a.message?.question
+        ? {
+          id: a.message.question.id,
+          title: a.message.question.title,
+          user: a.message.question.user,
+        }
+        : null,
+      sender: a.message?.sender ?? null,
+    })),
+    ...advanceAttachments.map((a) => ({
+      ...a,
+      type: "ADVANCE",
+      question: a.message?.question
+        ? {
+          id: a.message.question.id,
+          title: a.message.question.title,
+          user: a.message.question.user,
+        }
+        : null,
+      sender: a.message?.sender ?? null,
+    })),
+  ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  const result = combined.slice(0, limit).map((attachment) => ({
     id: attachment.id,
     fileName: attachment.fileName,
     fileSize: attachment.fileSize,
@@ -52,14 +112,9 @@ export async function GET(request) {
     url: attachment.url,
     key: attachment.key,
     createdAt: attachment.createdAt,
-    question: attachment.message?.question
-      ? {
-          id: attachment.message.question.id,
-          title: attachment.message.question.title,
-          user: attachment.message.question.user,
-        }
-      : null,
-    sender: attachment.message?.sender ?? null,
+    type: attachment.type,
+    question: attachment.question,
+    sender: attachment.sender,
   }));
 
   return NextResponse.json({ attachments: result });

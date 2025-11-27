@@ -130,7 +130,7 @@ export function UserSidebar({ onWidthChange }) {
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className={cn(
           "fixed lg:static top-0 left-0 h-[100dvh] bg-background text-foreground border-r border-border shadow-lg z-50 flex flex-col px-3 py-6 overflow-y-auto transition-all duration-300",
-          isCollapsed ? "w-20" : "w-52"
+          isCollapsed ? "w-20" : "w-56"
         )}
       >
         {/* Logo + Collapse */}
@@ -162,11 +162,17 @@ export function UserSidebar({ onWidthChange }) {
 
         {/* Primary navigation */}
         {[
-          { label: "Message", href: "/user", icon: <MessageCircle size={18} /> },
+          { label: "General Chat", href: "/user", icon: <MessageCircle size={18} /> },
+          { label: "Advance Chat", href: "/user/advance-chat", icon: <MessageCircle size={18} className="text-primary" /> },
           {
-            label: "Message History",
+            label: "General Chat History",
             href: "/user/history",
             icon: <Clock size={18} />,
+          },
+          {
+            label: "Advance Chat History",
+            href: "/user/advance-chat/history",
+            icon: <Clock size={18} className="text-primary" />,
           },
           { label: "Profile", href: "/user/profile", icon: <User size={18} /> },
           {
@@ -187,7 +193,7 @@ export function UserSidebar({ onWidthChange }) {
                 if (!isLargeScreen) setIsOpen(false);
               }}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-foreground/80 transition-colors hover:bg-muted",
+                "flex items-center text-start gap-2 px-3 py-2 rounded-md text-sm font-medium text-foreground/80 transition-colors hover:bg-muted",
                 isCollapsed && "justify-center",
                 isActive && !isCollapsed ? "bg-accent text-accent-foreground" : ""
               )}

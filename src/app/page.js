@@ -20,8 +20,20 @@ import {
   Award,
   ArrowRight,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
 
 export default function Home() {
+  const { data: session } = useSession();
+
+
+  const profileData = useMemo(
+    () => ({
+      name: session?.user?.name,
+      role: session?.user?.role,
+    }),
+    [session]
+  );
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
@@ -96,19 +108,27 @@ export default function Home() {
               >
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   <Link
-                    href="/user/auth?mode=register"
+                    href={profileData.role === "ADMIN" ? "/dashboard" : profileData.role === "USER" ? "/user" : "/user/auth?mode=register"}
                     className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
                   >
-                    Registration
+                    {profileData.role === "ADMIN" ? "Dashboard" : profileData.role === "USER" ? "User" : "Registration"}
                   </Link>
                   <Link
-                    href="/user"
+                    href={
+                      profileData.role === "ADMIN"
+                        ? "/dashboard/questions"
+                        : "/user"
+                    }
                     className="inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-foreground shadow-sm transition hover:bg-foreground/5 hover:border-primary-foreground"
                   >
                     Chat
                   </Link>
                   <Link
-                    href="/user"
+                    href={
+                      profileData.role === "ADMIN"
+                        ? "/dashboard/advance-chat"
+                        : "/user/advance-chat"
+                    }
                     className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
                   >
                     Advanced Chat

@@ -306,7 +306,10 @@ function AdminQuestionsContent() {
         });
         if (!response.ok) throw new Error("Failed to fetch messages");
         const data = await response.json();
-        const nextMessages = data.messages ?? [];
+        const nextMessages = (data.messages ?? []).map((msg) => ({
+          ...msg,
+          files: msg.attachments ?? msg.files ?? [],
+        }));
         setMessages(nextMessages);
         setReadCounts((prev) => ({
           ...prev,
@@ -469,6 +472,10 @@ function AdminQuestionsContent() {
       "application/msword": [".doc"],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         [".docx"],
+      "application/vnd.ms-excel": [".xls"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
       "video/*": [".mp4", ".mov", ".m4v", ".webm"],
     },
   });
@@ -711,9 +718,13 @@ function AdminQuestionsContent() {
       }
 
       const { message } = await res.json();
+      const mappedMessage = {
+        ...message,
+        files: message.attachments ?? message.files ?? [],
+      };
       shouldStickToBottomRef.current = true;
       setMessages((prev) => {
-        const next = [...prev, message];
+        const next = [...prev, mappedMessage];
         setReadCounts((counts) => ({
           ...counts,
           [selectedQuestion.id]: next.length,

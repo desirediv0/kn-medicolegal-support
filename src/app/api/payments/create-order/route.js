@@ -10,18 +10,30 @@ export async function POST(request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { questionId } = await request.json();
+  const { questionId, advanceQuestionId } = await request.json();
 
-  if (!questionId) {
+  if (!questionId && !advanceQuestionId) {
     return NextResponse.json(
-      { error: "questionId is required" },
+      { error: "questionId or advanceQuestionId is required" },
       { status: 400 }
     );
   }
 
-  const question = await prisma.question.findUnique({
-    where: { id: questionId },
-  });
+  let question;
+  let isAdvance = false;
+
+  // Check if it's an advance question
+  if (advanceQuestionId) {
+    question = await prisma.advanceQuestion.findUnique({
+      where: { id: advanceQuestionId },
+    });
+    isAdvance = true;
+  } else {
+    // General question
+    question = await prisma.question.findUnique({
+      where: { id: questionId },
+    });
+  }
 
   if (!question) {
     return NextResponse.json({ error: "Question not found" }, { status: 404 });
@@ -48,15 +60,26 @@ export async function POST(request) {
       receipt: question.id,
       notes: {
         questionId: question.id,
+        type: isAdvance ? "advance" : "general",
       },
     });
 
-    await prisma.question.update({
-      where: { id: question.id },
-      data: {
-        razorpayOrderId: order.id,
-      },
-    });
+    // Update the appropriate table
+    if (isAdvance) {
+      await prisma.advanceQuestion.update({
+        where: { id: question.id },
+        data: {
+          razorpayOrderId: order.id,
+        },
+      });
+    } else {
+      await prisma.question.update({
+        where: { id: question.id },
+        data: {
+          razorpayOrderId: order.id,
+        },
+      });
+    }
 
     return NextResponse.json({
       order,
@@ -70,4 +93,3 @@ export async function POST(request) {
     );
   }
 }
-

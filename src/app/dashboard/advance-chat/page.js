@@ -2,60 +2,96 @@
 
 import {
   Suspense,
-  useEffect,
-  useState,
   useCallback,
+  useEffect,
   useMemo,
+  useState,
   useRef,
 } from "react";
 import { useDropzone } from "react-dropzone";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogDescription,
+  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Paperclip,
-  X,
   Loader2,
+  X,
+  UserCircle2,
   Download,
   Plus,
   SendHorizontal,
 } from "lucide-react";
 import imageCompression from "browser-image-compression";
 import { format, formatDistanceToNow } from "date-fns";
-import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
-const POLL_INTERVAL = 10000;
+const POLL_INTERVAL = 8000;
 
-const QuestionStatusBadge = ({ status }) => {
-  const colorMap = useMemo(
-    () => ({
-      PENDING: "bg-yellow-100 text-yellow-800",
-      ACTIVE: "bg-green-100 text-green-800",
-      CLOSED: "bg-gray-200 text-gray-700",
-    }),
-    []
-  );
+const IMAGE_COMPRESSION_OPTIONS = {
+  maxSizeMB: 1,
+  maxWidthOrHeight: 1600,
+  useWebWorker: true,
+};
 
-  return (
-    <span
-      className={`px-2 py-1 text-xs rounded-full font-medium ${colorMap[status] ?? "bg-gray-200 text-gray-700"
-        }`}
-    >
-      {status}
-    </span>
-  );
+async function processFileForUpload(file) {
+  if (!file?.type?.startsWith("image/")) {
+    return file;
+  }
+
+  try {
+    const compressed = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
+    return new File([compressed], file.name, {
+      type: compressed.type,
+      lastModified: Date.now(),
+    });
+  } catch (error) {
+    console.warn("Image compression failed, using original file", error);
+    return file;
+  }
+}
+
+const formatFileSize = (bytes) => {
+  if (typeof bytes !== "number" || Number.isNaN(bytes)) {
+    return "";
+  }
+  const units = ["B", "KB", "MB", "GB"];
+  let value = bytes;
+  let unitIndex = 0;
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+  const precision = value < 10 && unitIndex > 0 ? 1 : 0;
+  return `${value.toFixed(precision)} ${units[unitIndex]}`;
+};
+
+const isImageMimeType = (mime) =>
+  typeof mime === "string" && mime.toLowerCase().startsWith("image/");
+
+const isVideoMimeType = (mime) =>
+  typeof mime === "string" && mime.toLowerCase().startsWith("video/");
+
+const getAttachmentName = (file) =>
+  file?.fileName || file?.name || "attachment";
+
+const formatMessageTime = (timestamp) => {
+  if (!timestamp) return "";
+  try {
+    return format(new Date(timestamp), "hh:mm a");
+  } catch (error) {
+    return "";
+  }
 };
 
 const getActivityTimestamp = (question) => {
@@ -80,10 +116,16 @@ const truncateText = (text, maxLength = 60) => {
   return text.substring(0, maxLength) + "...";
 };
 
-const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = "span" }) => {
+const ExpandableText = ({
+  text,
+  maxLength = 60,
+  className = "",
+  as: Component = "span",
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const shouldTruncate = text && text.length > maxLength;
-  const displayText = isExpanded || !shouldTruncate ? text : truncateText(text, maxLength);
+  const displayText =
+    isExpanded || !shouldTruncate ? text : truncateText(text, maxLength);
 
   if (!text) return null;
 
@@ -111,244 +153,27 @@ const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = 
   );
 };
 
-const IMAGE_COMPRESSION_OPTIONS = {
-  maxSizeMB: 1,
-  maxWidthOrHeight: 1600,
-  useWebWorker: true,
-};
-
-async function processFileForUpload(file) {
-  if (!file || !file.type?.startsWith("image/")) {
-    return file;
-  }
-
-  try {
-    const compressed = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
-    return new File([compressed], file.name, {
-      type: compressed.type,
-      lastModified: Date.now(),
-    });
-  } catch (error) {
-    console.warn("Image compression failed, sending original file", error);
-    return file;
-  }
-}
-
-const formatFileSize = (bytes) => {
-  if (typeof bytes !== "number" || Number.isNaN(bytes)) {
-    return "";
-  }
-  const sizes = ["B", "KB", "MB", "GB"];
-  let size = bytes;
-  let unit = 0;
-  while (size >= 1024 && unit < sizes.length - 1) {
-    size /= 1024;
-    unit += 1;
-  }
-  const precision = size < 10 && unit > 0 ? 1 : 0;
-  return `${size.toFixed(precision)} ${sizes[unit]}`;
-};
-
-const isImageMimeType = (mime) =>
-  typeof mime === "string" && mime.toLowerCase().startsWith("image/");
-
-const isVideoMimeType = (mime) =>
-  typeof mime === "string" && mime.toLowerCase().startsWith("video/");
-
-const getAttachmentName = (file) =>
-  file?.fileName || file?.name || "attachment";
-
-const formatMessageTime = (timestamp) => {
-  if (!timestamp) return "";
-  try {
-    return format(new Date(timestamp), "hh:mm a");
-  } catch (error) {
-    return "";
-  }
-};
-
-const QuestionList = ({
-  questions,
-  loading,
-  selectedQuestion,
-  onSelect,
-  currencyFormatter,
-  readCounts,
-}) => {
-  if (loading) {
-    return <div className="p-4 text-sm text-gray-500">Loading...</div>;
-  }
-
-  if (!questions.length) {
-    return <div className="p-4 text-sm text-gray-500">No questions yet.</div>;
-  }
-
+const StatusChip = ({ status }) => {
+  const map = useMemo(
+    () => ({
+      PENDING: "bg-yellow-100 text-yellow-800",
+      ACTIVE: "bg-green-100 text-green-800",
+      CLOSED: "bg-gray-200 text-gray-700",
+    }),
+    []
+  );
   return (
-    <ul className="space-y-2">
-      {questions.map((question) => {
-        const lastActivity =
-          question.latestMessage?.createdAt || question.updatedAt;
-        const lastMessagePreview =
-          question.latestMessage?.body?.trim() || "No messages yet";
-        const lastSender =
-          question.latestMessage?.sender?.role === "ADMIN"
-            ? "Admin"
-            : question.latestMessage?.sender?.role === "USER"
-              ? "You"
-              : null;
-        const unread = question.unreadCount ?? 0;
-
-        return (
-          <li
-            key={question.id}
-            className={cn(
-              "space-y-1 rounded-lg border border-transparent px-4 py-3 transition hover:border-primary/40 hover:bg-primary/5 cursor-pointer",
-              selectedQuestion?.id === question.id
-                ? "border-primary/50 bg-primary/10"
-                : unread > 0
-                  ? "border-primary/30 bg-primary/5"
-                  : "bg-white/80"
-            )}
-            onClick={() => onSelect(question)}
-          >
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex flex-col min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <ExpandableText
-                    text={question.title}
-                    maxLength={50}
-                    className="font-medium flex-1"
-                    as="p"
-                  />
-                  {unread > 0 && (
-                    <span className="inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white flex-shrink-0">
-                      {unread > 99 ? "99+" : unread}
-                    </span>
-                  )}
-                </div>
-                {question.description && (
-                  <ExpandableText
-                    text={question.description}
-                    maxLength={60}
-                    className="text-xs text-muted-foreground/80 mt-0.5"
-                  />
-                )}
-                <span className="text-[11px] text-muted-foreground">
-                  {lastActivity
-                    ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
-                      addSuffix: true,
-                    })}`
-                    : "No activity yet"}
-                </span>
-              </div>
-              <QuestionStatusBadge status={question.status} />
-            </div>
-            <p className="text-xs text-muted-foreground flex flex-col sm:flex-row sm:items-center sm:gap-2">
-              <span>
-                Amount:{" "}
-                {question.price != null
-                  ? currencyFormatter.format(Number(question.price))
-                  : "—"}
-              </span>
-              <span className="hidden sm:inline text-muted-foreground/60">
-                •
-              </span>
-              <span className="capitalize">
-                Status: {question.paymentStatus?.toLowerCase()}
-              </span>
-            </p>
-            <div className="text-xs text-foreground italic">
-              {lastSender ? `${lastSender}: ` : ""}
-              <ExpandableText
-                text={lastMessagePreview}
-                maxLength={70}
-                className="inline"
-              />
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+    <span
+      className={`px-2 py-1 rounded-full text-xs font-medium ${map[status] || "bg-gray-200 text-gray-700"
+        }`}
+    >
+      {status}
+    </span>
   );
 };
 
-const MobileQuestionDrawer = ({
-  open,
-  onOpenChange,
-  onNewQuestion,
-  questions,
-  loading,
-  selectedQuestion,
-  currencyFormatter,
-  readCounts,
-  onSelect,
-}) => (
-  <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="max-w-md w-[90vw] sm:w-[420px] rounded-2xl border border-primary/20 bg-white/95 p-0 shadow-xl">
-      <DialogHeader className="px-4 pt-4 pb-2 text-left">
-        <DialogTitle className="text-lg font-semibold">
-          My Questions
-        </DialogTitle>
-        <DialogDescription className="text-sm text-muted-foreground">
-          Latest conversations appear first.
-        </DialogDescription>
-      </DialogHeader>
-      <div className="px-4 pb-4 space-y-3">
-        <Button
-          className="w-full"
-          onClick={() => {
-            onOpenChange(false);
-            onNewQuestion();
-          }}
-        >
-          Create New Question
-        </Button>
-        <Button variant="outline" className="w-full" asChild>
-          <Link href="/user/history">View History</Link>
-        </Button>
-        <div className="max-h-[60vh] overflow-y-auto rounded-lg border border-primary/20 bg-white/80 p-2 shadow-inner">
-          <QuestionList
-            questions={questions}
-            loading={loading}
-            selectedQuestion={selectedQuestion}
-            currencyFormatter={currencyFormatter}
-            readCounts={readCounts}
-            onSelect={(question) => {
-              onSelect(question);
-              onOpenChange(false);
-            }}
-          />
-        </div>
-      </div>
-    </DialogContent>
-  </Dialog>
-);
-
-function UserContent() {
+function AdminQuestionsContent() {
   const { data: session, status } = useSession();
-  const [questions, setQuestions] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [loadingQuestions, setLoadingQuestions] = useState(false);
-  const [loadingMessages, setLoadingMessages] = useState(false);
-  const [creatingQuestion, setCreatingQuestion] = useState(false);
-  const [questionModalOpen, setQuestionModalOpen] = useState(false);
-  const [newQuestion, setNewQuestion] = useState({
-    title: "",
-    description: "",
-  });
-  const [messageInput, setMessageInput] = useState("");
-  const [attachments, setAttachments] = useState([]);
-  const [sending, setSending] = useState(false);
-  const [processingPayment, setProcessingPayment] = useState(false);
-  const [payImmediately, setPayImmediately] = useState(true);
-  const [readCounts, setReadCounts] = useState({});
-  const selectedQuestionRef = useRef(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [questionPrice, setQuestionPrice] = useState(null);
-  const messagesContainerRef = useRef(null);
-  const shouldStickToBottomRef = useRef(true);
-  const initialMessagesRenderRef = useRef(true);
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentQuestionId = searchParams.get("question");
@@ -361,45 +186,66 @@ function UserContent() {
       }),
     []
   );
-  const formattedQuestionPrice =
-    questionPrice != null ? currencyFormatter.format(questionPrice) : null;
+
+  const [questions, setQuestions] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [attachments, setAttachments] = useState([]);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [messageInput, setMessageInput] = useState("");
+  const [sending, setSending] = useState(false);
+  const [readCounts, setReadCounts] = useState({});
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingConversation, setDeletingConversation] = useState(false);
+  const selectedQuestionRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const shouldStickToBottomRef = useRef(true);
+  const initialMessagesRenderRef = useRef(true);
 
   const fetchQuestions = useCallback(async () => {
     if (status !== "authenticated") return;
     setLoadingQuestions(true);
     try {
-      const res = await fetch("/api/questions?limit=15", { cache: "no-store" });
-      if (!res.ok) {
-        throw new Error("Failed to load questions");
-      }
-      const data = await res.json();
+      // Fetch list
+      const response = await fetch("/api/advance-chat/questions?limit=15", {
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Failed to fetch questions");
+      const data = await response.json();
       let fetched = sortQuestionsByRecent(data.questions ?? []);
 
-      const currentSelected = selectedQuestionRef.current;
-      if (currentSelected) {
-        const match = fetched.find((q) => q.id === currentSelected.id);
+      // Handle deep link or selected question
+      const targetId = currentQuestionId || selectedQuestionRef.current?.id;
+
+      if (targetId) {
+        const match = fetched.find((q) => q.id === targetId);
         if (match) {
+          // Update existing question in list
           setSelectedQuestion((prev) => {
-            if (!prev) return prev;
-            const latestId = match.latestMessage?.id ?? null;
+            if (!prev) return match; // If no prev, just set match
+            // Only update if changed
             const prevLatestId = prev.latestMessage?.id ?? null;
+            const nextLatestId = match.latestMessage?.id ?? null;
             if (
               prev.messageCount === (match.messageCount ?? prev.messageCount) &&
-              prevLatestId === latestId &&
+              prevLatestId === nextLatestId &&
               prev.status === match.status &&
-              prev.paymentStatus === match.paymentStatus
+              prev.paymentStatus === match.paymentStatus &&
+              prev.adminId === match.adminId &&
+              prev.unreadCount === match.unreadCount
             ) {
               return prev;
             }
             return { ...prev, ...match };
           });
         } else {
+          // Fetch individual question if not in list
           try {
             const detailRes = await fetch(
-              `/api/questions/${currentSelected.id}`,
-              {
-                cache: "no-store",
-              }
+              `/api/advance-chat/questions/${targetId}`,
+              { cache: "no-store" }
             );
             if (detailRes.ok) {
               const detailData = await detailRes.json();
@@ -411,36 +257,26 @@ function UserContent() {
                   price: detail.price != null ? Number(detail.price) : null,
                   messageCount: detail.chats?.length ?? 0,
                   latestMessage: latest,
-                  unreadCount: detail.unreadCount ?? 0,
+                  unreadCount: detail.unreadCount ?? 0, // Ensure API returns this or default 0
                 };
-                fetched = sortQuestionsByRecent([hydrated, ...fetched]).slice(
-                  0,
-                  15
-                );
+
+                // Add to list and sort
+                fetched = sortQuestionsByRecent([hydrated, ...fetched]);
+
                 setSelectedQuestion((prev) => {
-                  if (!prev || prev.id !== hydrated.id) return prev;
-                  const prevLatestId = prev.latestMessage?.id ?? null;
-                  const nextLatestId = hydrated.latestMessage?.id ?? null;
-                  if (
-                    prev.messageCount === hydrated.messageCount &&
-                    prevLatestId === nextLatestId &&
-                    prev.status === hydrated.status &&
-                    prev.paymentStatus === hydrated.paymentStatus &&
-                    prev.unreadCount === hydrated.unreadCount
-                  ) {
-                    return prev;
-                  }
+                  if (!prev || prev.id !== hydrated.id) return hydrated;
+                  // Update logic similar to above
                   return { ...prev, ...hydrated };
                 });
               }
             }
           } catch (err) {
-            console.error("Failed to hydrate selected question", err);
+            console.error("Failed to hydrate target question", err);
           }
         }
       }
 
-      setQuestions(sortQuestionsByRecent(fetched));
+      setQuestions(fetched);
       setReadCounts((prev) => {
         const next = { ...prev };
         fetched.forEach((question) => {
@@ -452,11 +288,11 @@ function UserContent() {
       });
     } catch (error) {
       console.error(error);
-      toast.error(error?.message || "Unable to fetch questions");
+      toast.error(error?.message || "Unable to load questions");
     } finally {
       setLoadingQuestions(false);
     }
-  }, [status]);
+  }, [status, currentQuestionId]);
 
   const fetchMessages = useCallback(
     async (questionId, { silent = false } = {}) => {
@@ -465,18 +301,16 @@ function UserContent() {
         setLoadingMessages(true);
       }
       try {
-        const res = await fetch(`/api/questions/${questionId}/messages`, {
+        const response = await fetch(`/api/advance-chat/questions/${questionId}/messages`, {
           cache: "no-store",
         });
-        if (!res.ok) {
-          throw new Error("Failed to load messages");
-        }
-        const data = await res.json();
-        const mappedMessages = (data.messages ?? []).map((msg) => ({
+        if (!response.ok) throw new Error("Failed to fetch messages");
+        const data = await response.json();
+        const nextMessages = (data.messages ?? []).map((msg) => ({
           ...msg,
           files: msg.attachments ?? msg.files ?? [],
         }));
-        setMessages(mappedMessages);
+        setMessages(nextMessages);
         setReadCounts((prev) => ({
           ...prev,
           [questionId]: data.messages?.length ?? 0,
@@ -499,11 +333,11 @@ function UserContent() {
           if (!prev || prev.id !== questionId) return prev;
           const nextMessageCount =
             data.messages?.length ?? prev.messageCount ?? 0;
-          const latestId = latest?.id ?? null;
           const prevLatestId = prev.latestMessage?.id ?? null;
+          const nextLatestId = latest?.id ?? null;
           if (
             prev.messageCount === nextMessageCount &&
-            prevLatestId === latestId
+            prevLatestId === nextLatestId
           ) {
             return prev;
           }
@@ -516,14 +350,14 @@ function UserContent() {
         });
       } catch (error) {
         console.error(error);
-        toast.error(error?.message || "Unable to fetch messages");
+        toast.error(error?.message || "Unable to load messages");
       } finally {
         if (!silent) {
           setLoadingMessages(false);
         }
       }
     },
-    [setMessages]
+    []
   );
 
   useEffect(() => {
@@ -536,30 +370,11 @@ function UserContent() {
   }, [status, fetchQuestions]);
 
   useEffect(() => {
-    const loadPrice = async () => {
-      try {
-        const res = await fetch("/api/settings", { cache: "no-store" });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data?.questionPrice != null) {
-          setQuestionPrice(Number(data.questionPrice));
-        }
-      } catch (error) {
-        console.error("Failed to load pricing", error);
-      }
-    };
-    if (status === "authenticated") {
-      loadPrice();
-    } else if (status === "unauthenticated") {
-      setQuestionPrice(null);
-    }
-  }, [status]);
-
-  useEffect(() => {
     if (loadingQuestions) return;
     if (!questions.length) {
       if (selectedQuestion) setSelectedQuestion(null);
-      if (currentQuestionId) router.replace("/user", { scroll: false });
+      if (currentQuestionId)
+        router.replace("/dashboard/advance-chat", { scroll: false });
       return;
     }
 
@@ -571,7 +386,7 @@ function UserContent() {
         }
         return;
       }
-      router.replace("/user", { scroll: false });
+      router.replace("/dashboard/advance-chat", { scroll: false });
       setSelectedQuestion(null);
     }
   }, [
@@ -583,14 +398,17 @@ function UserContent() {
   ]);
 
   useEffect(() => {
-    if (!selectedQuestion?.id || status !== "authenticated") return;
+    if (!selectedQuestion?.id) {
+      setMessages([]);
+      return;
+    }
     fetchMessages(selectedQuestion.id);
     const interval = setInterval(
       () => fetchMessages(selectedQuestion.id, { silent: true }),
       POLL_INTERVAL
     );
     return () => clearInterval(interval);
-  }, [selectedQuestion, fetchMessages, status]);
+  }, [selectedQuestion, fetchMessages]);
 
   useEffect(() => {
     selectedQuestionRef.current = selectedQuestion;
@@ -672,140 +490,148 @@ function UserContent() {
     });
   }, []);
 
-  const handleCreateQuestion = async () => {
-    if (!newQuestion.title.trim()) {
-      toast.error("Question title is required");
-      return;
-    }
-    setCreatingQuestion(true);
-    try {
-      const res = await fetch("/api/questions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newQuestion),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to create question");
-      }
-      const { question } = await res.json();
-      setQuestions((prev) =>
-        sortQuestionsByRecent([question, ...prev]).slice(0, 15)
-      );
+  const handleQuestionSelect = useCallback(
+    (question) => {
+      if (!question) return;
+      setSelectedQuestion(question);
+      shouldStickToBottomRef.current = true;
+      initialMessagesRenderRef.current = true;
       setReadCounts((prev) => ({
         ...prev,
         [question.id]: question.messageCount ?? 0,
       }));
-      setSelectedQuestion(question);
-      router.replace(`/user?question=${question.id}`, { scroll: false });
-      setQuestionModalOpen(false);
-      setNewQuestion({ title: "", description: "" });
-      const amountText =
-        question.price != null
-          ? currencyFormatter.format(Number(question.price))
-          : formattedQuestionPrice ?? "";
-      if (question.paymentStatus === "PENDING") {
-        if (payImmediately) {
-          toast.success(
-            `Question created. Redirecting you to pay${amountText ? ` ${amountText}` : ""
-            } now.`
-          );
-          await initiatePayment(question.id);
-        } else {
-          toast.info(
-            `Question created. Pay${amountText ? ` ${amountText}` : ""
-            } later from the question list when you're ready.`
-          );
-        }
-      } else {
-        toast.success("Question created. You can start chatting right away.");
+      if (currentQuestionId !== question.id) {
+        router.replace(`/dashboard/advance-chat?question=${question.id}`, {
+          scroll: false,
+        });
       }
-      setPayImmediately(true);
-    } catch (error) {
-      console.error(error);
-      toast.error(error?.message || "Unable to create question");
-    } finally {
-      setCreatingQuestion(false);
+      fetchMessages(question.id);
+      setIsMobileDrawerOpen(false);
+    },
+    [currentQuestionId, fetchMessages, router]
+  );
+
+  const renderQuestionList = () => {
+    if (loadingQuestions) {
+      return (
+        <p className="p-4 text-sm text-muted-foreground">
+          Loading questions...
+        </p>
+      );
     }
+
+    if (questions.length === 0) {
+      return (
+        <p className="p-4 text-sm text-muted-foreground">No questions yet.</p>
+      );
+    }
+
+    return (
+      <ul className="divide-y divide-white/10">
+        {questions.map((question) => {
+          const lastActivity =
+            question.latestMessage?.createdAt || question.updatedAt;
+          const lastMessagePreview =
+            question.latestMessage?.body?.trim() || "No messages yet";
+          const amountText =
+            question.price != null
+              ? currencyFormatter.format(Number(question.price))
+              : "—";
+          const unread = question.unreadCount ?? 0;
+
+          return (
+            <li
+              key={question.id}
+              className={cn(
+                "px-4 py-3 space-y-1 cursor-pointer transition rounded-lg border border-transparent hover:border-primary/40 hover:bg-primary/5",
+                selectedQuestion?.id === question.id
+                  ? "bg-primary/10 border-primary/50"
+                  : unread > 0
+                    ? "bg-primary/5 border-primary/30"
+                    : "bg-white/5"
+              )}
+              onClick={() => handleQuestionSelect(question)}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex flex-col min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <ExpandableText
+                      text={question.title}
+                      maxLength={50}
+                      className="font-medium flex-1"
+                      as="p"
+                    />
+                    {unread > 0 && (
+                      <span className="inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white flex-shrink-0">
+                        {unread > 99 ? "99+" : unread}
+                      </span>
+                    )}
+                  </div>
+                  {question.description && (
+                    <ExpandableText
+                      text={question.description}
+                      maxLength={60}
+                      className="text-xs text-muted-foreground/80 mt-0.5"
+                    />
+                  )}
+                  <span className="text-[11px] text-muted-foreground">
+                    {lastActivity
+                      ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
+                        addSuffix: true,
+                      })}`
+                      : "No activity yet"}
+                  </span>
+                </div>
+                <StatusChip status={question.status} />
+              </div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground truncate">
+                <UserCircle2 className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">
+                  {question.user?.email ?? "Unknown"}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                <span>Amount: {amountText}</span>
+                <span className="hidden sm:inline text-muted-foreground/60">
+                  •
+                </span>
+                <span className="capitalize">
+                  Payment: {question.paymentStatus?.toLowerCase()}
+                </span>
+              </p>
+              <div className="text-xs text-foreground italic">
+                {question.latestMessage?.sender?.role
+                  ? `${question.latestMessage.sender.role === "ADMIN"
+                    ? "You"
+                    : "User"
+                  }: `
+                  : ""}
+                <ExpandableText
+                  text={lastMessagePreview}
+                  maxLength={70}
+                  className="inline"
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    );
   };
 
-  const initiatePayment = async (questionId) => {
-    setProcessingPayment(true);
+  const ensureAssignment = async () => {
+    if (!session?.user?.id || !selectedQuestion?.id) return;
+    if (selectedQuestion.adminId === session.user.id) return;
     try {
-      const res = await fetch("/api/payments/create-order", {
-        method: "POST",
+      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId }),
+        body: JSON.stringify({ adminId: session.user.id }),
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to create payment order");
+        throw new Error(data.error || "Failed to claim question");
       }
-      const { order, key } = await res.json();
-      if (!order || !key) {
-        throw new Error("Invalid Razorpay configuration");
-      }
-
-      const payableAmount = order.amount / 100;
-      const options = {
-        key,
-        amount: order.amount,
-        currency: order.currency,
-        name: "Medicolegal Support",
-        description: `Question payment (${currencyFormatter.format(
-          payableAmount
-        )})`,
-        order_id: order.id,
-        handler: async function (response) {
-          await verifyPayment({ questionId, ...response });
-        },
-        prefill: {},
-      };
-
-      if (typeof window !== "undefined") {
-        const razorpay = new window.Razorpay(options);
-        razorpay.open();
-      } else {
-        toast.error("Razorpay is not available");
-      }
-    } catch (error) {
-      console.error(error);
-      const message = error?.message || "Payment initiation failed";
-      if (message.includes("Razorpay secret not configured")) {
-        toast.error(
-          "Payment gateway is not configured yet. Please contact support to complete the payment."
-        );
-      } else {
-        toast.error(message);
-      }
-    } finally {
-      setProcessingPayment(false);
-    }
-  };
-
-  const verifyPayment = async ({
-    questionId,
-    razorpay_payment_id,
-    razorpay_order_id,
-    razorpay_signature,
-  }) => {
-    try {
-      const res = await fetch("/api/payments/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          questionId,
-          razorpayPaymentId: razorpay_payment_id,
-          razorpayOrderId: razorpay_order_id,
-          razorpaySignature: razorpay_signature,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Payment verification failed");
-      }
-
       const { question } = await res.json();
       setQuestions((prev) =>
         sortQuestionsByRecent(
@@ -813,20 +639,9 @@ function UserContent() {
         )
       );
       setSelectedQuestion(question);
-      if (currentQuestionId !== question.id) {
-        router.replace(`/user?question=${question.id}`, { scroll: false });
-      }
-      const paidAmount =
-        question.price != null
-          ? currencyFormatter.format(Number(question.price))
-          : formattedQuestionPrice ?? "";
-      toast.success(
-        `Payment${paidAmount ? ` of ${paidAmount}` : ""
-        } successful! You can start chatting now.`
-      );
     } catch (error) {
       console.error(error);
-      toast.error(error?.message || "Payment verification failed");
+      toast.error(error?.message || "Unable to claim question");
     }
   };
 
@@ -861,21 +676,17 @@ function UserContent() {
       toast.error("Select a question first");
       return;
     }
-
-    if (
-      selectedQuestion.status === "PENDING" ||
-      selectedQuestion.paymentStatus !== "SUCCESS"
-    ) {
-      toast.info("Complete payment before sending messages");
+    if (selectedQuestion.status === "CLOSED") {
+      toast.error("Conversation closed");
       return;
     }
-
     if (!messageInput.trim() && attachments.length === 0) {
       return;
     }
 
     setSending(true);
     try {
+      await ensureAssignment();
       let uploaded = [];
       if (attachments.length) {
         uploaded = await Promise.all(
@@ -890,7 +701,7 @@ function UserContent() {
       }
 
       const res = await fetch(
-        `/api/questions/${selectedQuestion.id}/messages`,
+        `/api/advance-chat/questions/${selectedQuestion.id}/messages`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -954,20 +765,18 @@ function UserContent() {
     }
   };
 
-  const closeChat = async () => {
+  const closeConversation = async () => {
     if (!selectedQuestion?.id) return;
     try {
-      const res = await fetch(`/api/questions/${selectedQuestion.id}`, {
+      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "CLOSED" }),
       });
-
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to close chat");
+        throw new Error(data.error || "Failed to close conversation");
       }
-
       const { question } = await res.json();
       setQuestions((prev) =>
         sortQuestionsByRecent(
@@ -978,121 +787,207 @@ function UserContent() {
       toast.success("Conversation closed.");
     } catch (error) {
       console.error(error);
-      toast.error(error?.message || "Unable to close chat");
+      toast.error(error?.message || "Unable to close conversation");
     }
   };
 
-  const canSendMessages =
-    selectedQuestion &&
-    selectedQuestion.status !== "CLOSED" &&
-    selectedQuestion.paymentStatus === "SUCCESS";
+  const reopenConversation = async () => {
+    if (!selectedQuestion?.id) return;
+    try {
+      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "ACTIVE" }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to reopen conversation");
+      }
+      const { question } = await res.json();
+      setQuestions((prev) =>
+        sortQuestionsByRecent(
+          prev.map((q) => (q.id === question.id ? question : q))
+        )
+      );
+      setSelectedQuestion(question);
+      toast.success("Conversation reopened.");
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to reopen conversation");
+    }
+  };
+
+  const handleDeleteConversation = async (deleteAttachments) => {
+    if (!selectedQuestion?.id || deletingConversation) return;
+    setDeletingConversation(true);
+    try {
+      const response = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deleteAttachments }),
+      });
+      let payload = {};
+      try {
+        payload = await response.json();
+      } catch (error) {
+        payload = {};
+      }
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to delete conversation");
+      }
+      attachments.forEach(
+        (item) => item.preview && URL.revokeObjectURL(item.preview)
+      );
+      setAttachments([]);
+      setQuestions((prev) =>
+        sortQuestionsByRecent(prev.filter((q) => q.id !== selectedQuestion.id))
+      );
+      setReadCounts((prev) => {
+        const next = { ...prev };
+        delete next[selectedQuestion.id];
+        return next;
+      });
+      setSelectedQuestion(null);
+      setMessages([]);
+      setMessageInput("");
+      setDeleteDialogOpen(false);
+      const deletedAttachments = payload.deletedAttachments ?? 0;
+      toast.success(
+        deleteAttachments
+          ? deletedAttachments
+            ? `Conversation and ${deletedAttachments} attachment${deletedAttachments === 1 ? "" : "s"
+            } deleted.`
+            : "Conversation deleted. No attachments found to remove."
+          : "Conversation deleted."
+      );
+      if (currentQuestionId) {
+        router.replace(`/dashboard/advance-chat`, { scroll: false });
+      }
+      setTimeout(() => fetchQuestions(), 0);
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.message || "Unable to delete conversation");
+    } finally {
+      setDeletingConversation(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:gap-6 min-h-[calc(100svh-4rem)] md:min-h-[calc(100dvh-4rem)] text-foreground">
-      <div className="md:hidden sticky top-0 z-30 flex  items-center justify-between gap-3 rounded-xl border border-primary/20 bg-white/90 px-4 py-3 shadow-sm backdrop-blur">
+      <div className="md:hidden flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-white/80 px-4 py-3 shadow-sm">
         <div className="min-w-0">
-          <h2 className="text-base font-semibold">My Questions</h2>
+          <h2 className="text-base font-semibold">Questions</h2>
           <p className="text-xs text-muted-foreground">
-            {selectedQuestion?.title ?? "Select a question to start"}
+            {selectedQuestion?.title ?? "Select a conversation to get started"}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Button
             size="sm"
             variant="outline"
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={() => setIsMobileDrawerOpen(true)}
           >
             Queue
           </Button>
           <Button size="sm" variant="outline" asChild>
-            <Link href="/user/history">History</Link>
+            <Link href="/dashboard/advance-chat/history">History</Link>
           </Button>
-          <Button size="sm" onClick={() => setQuestionModalOpen(true)}>
-            New
+          <Button
+            size="sm"
+            onClick={fetchQuestions}
+            disabled={loadingQuestions}
+          >
+            {loadingQuestions ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              "Refresh"
+            )}
           </Button>
         </div>
       </div>
 
-      <aside className="hidden md:flex md:w-80 lg:w-96 flex-col rounded-xl border border-primary/20 bg-white/95 shadow-sm">
+      <Dialog open={isMobileDrawerOpen} onOpenChange={setIsMobileDrawerOpen}>
+        <DialogContent className="max-w-lg w-[90vw] sm:w-[480px] p-0">
+          <DialogHeader className="px-4 pt-4 pb-2 text-left">
+            <DialogTitle className="text-lg font-semibold">
+              Questions Queue
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              Latest conversations appear first.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="px-4 pb-4 space-y-3">
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={fetchQuestions}
+                disabled={loadingQuestions}
+                className="flex-1"
+              >
+                {loadingQuestions ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  "Refresh"
+                )}
+              </Button>
+              <Button size="sm" variant="outline" asChild className="flex-1">
+                <Link href="/dashboard/advance-chat/history">History</Link>
+              </Button>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto rounded-lg border border-primary/20 bg-white/70 p-2 shadow-inner">
+              {renderQuestionList()}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <aside className="hidden md:flex md:w-80 lg:w-96 flex-col rounded-xl border border-primary/20 bg-white/90 shadow-sm">
         <div className="p-4 flex items-center justify-between gap-2 border-b border-primary/10">
-          <h2 className="text-lg font-semibold">My Questions</h2>
+          <h2 className="text-lg font-semibold">Questions</h2>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
-              <Link href="/user/history">History</Link>
+              <Link href="/dashboard/advance-chat/history">History</Link>
             </Button>
-            <Button size="sm" onClick={() => setQuestionModalOpen(true)}>
-              New
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={fetchQuestions}
+              disabled={loadingQuestions}
+            >
+              {loadingQuestions ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Refresh"
+              )}
             </Button>
           </div>
         </div>
         <div className="flex-1 overflow-y-auto p-3 space-y-3">
-          <QuestionList
-            questions={questions}
-            loading={loadingQuestions}
-            selectedQuestion={selectedQuestion}
-            currencyFormatter={currencyFormatter}
-            readCounts={readCounts}
-            onSelect={(question) => {
-              setSelectedQuestion(question);
-              shouldStickToBottomRef.current = true;
-              initialMessagesRenderRef.current = true;
-              setReadCounts((prev) => ({
-                ...prev,
-                [question.id]: question.messageCount ?? 0,
-              }));
-              if (currentQuestionId !== question.id) {
-                router.replace(`/user?question=${question.id}`, {
-                  scroll: false,
-                });
-              }
-              fetchMessages(question.id);
-            }}
-          />
+          {renderQuestionList()}
         </div>
       </aside>
 
-      <MobileQuestionDrawer
-        open={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-        onNewQuestion={() => setQuestionModalOpen(true)}
-        questions={questions}
-        loading={loadingQuestions}
-        selectedQuestion={selectedQuestion}
-        currencyFormatter={currencyFormatter}
-        readCounts={readCounts}
-        onSelect={(question) => {
-          setSelectedQuestion(question);
-          shouldStickToBottomRef.current = true;
-          initialMessagesRenderRef.current = true;
-          setReadCounts((prev) => ({
-            ...prev,
-            [question.id]: question.messageCount ?? 0,
-          }));
-          setIsDrawerOpen(false);
-          if (currentQuestionId !== question.id) {
-            router.replace(`/user?question=${question.id}`, { scroll: false });
-          }
-          fetchMessages(question.id);
-        }}
-      />
-
-      <div className="flex-1 flex min-h-0 flex-col rounded-xl border border-muted/40 bg-white/95 shadow-sm">
+      <main className="flex-1 flex min-h-0 flex-col rounded-xl border border-muted/40 bg-white/95 shadow-sm">
         {!selectedQuestion ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6 text-center text-muted-foreground">
-            <p>Select a question from the queue to view the conversation.</p>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setIsDrawerOpen(true)}>
-                View Questions
-              </Button>
-              <Button onClick={() => setQuestionModalOpen(true)}>
-                New Question
-              </Button>
-            </div>
+            <p>Select a question from the queue to review or respond.</p>
+            <Button
+              variant="outline"
+              onClick={fetchQuestions}
+              disabled={loadingQuestions}
+            >
+              {loadingQuestions ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Refresh Queue"
+              )}
+            </Button>
           </div>
         ) : (
           <>
             <header className="rounded-t-xl border-b border-muted/40 bg-white/95 p-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-1">
+              <div className="space-y-1 min-w-0 flex-1">
                 <ExpandableText
                   text={selectedQuestion.title}
                   maxLength={80}
@@ -1108,37 +1003,44 @@ function UserContent() {
                   />
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Status: {selectedQuestion.status?.toLowerCase()} • Payment:{" "}
-                  {selectedQuestion.paymentStatus?.toLowerCase()}
+                  From: {selectedQuestion.user?.name ?? "Anonymous"} (
+                  {selectedQuestion.user?.email ?? "N/A"})
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Amount:{" "}
+                  {selectedQuestion.price != null
+                    ? currencyFormatter.format(Number(selectedQuestion.price))
+                    : "—"}{" "}
+                  • Payment: {selectedQuestion.paymentStatus?.toLowerCase()}
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                {selectedQuestion.paymentStatus === "PENDING" && (
+                {selectedQuestion.status === "CLOSED" ? (
+                  <Button variant="secondary" onClick={reopenConversation}>
+                    Reopen
+                  </Button>
+                ) : (
                   <Button
-                    variant="outline"
-                    onClick={() => initiatePayment(selectedQuestion.id)}
-                    disabled={processingPayment}
+                    variant="secondary"
+                    onClick={closeConversation}
+                    disabled={!selectedQuestion}
                   >
-                    {processingPayment ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      "Complete Payment"
-                    )}
+                    Close Conversation
                   </Button>
                 )}
                 <Button
-                  variant="secondary"
-                  onClick={closeChat}
-                  disabled={selectedQuestion.status === "CLOSED"}
+                  variant="destructive"
+                  onClick={() => setDeleteDialogOpen(true)}
+                  disabled={deletingConversation}
                 >
-                  Close Chat
+                  Delete Conversation
                 </Button>
               </div>
             </header>
 
             <section
               ref={messagesContainerRef}
-              className="flex-1 overflow-y-auto p-4 pb-20 sm:pb-24 space-y-4 scroll-smooth"
+              className="flex-1 overflow-y-auto p-4 pb-24 sm:pb-28 space-y-4 scroll-smooth"
             >
               {loadingMessages ? (
                 <div className="flex h-full min-h-[160px] items-center justify-center text-sm text-muted-foreground">
@@ -1149,17 +1051,14 @@ function UserContent() {
                 </div>
               ) : messages.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
-                  No messages yet.{" "}
-                  {canSendMessages
-                    ? "Start the conversation when you're ready."
-                    : "Complete payment to enable messaging."}
+                  No messages yet. Reply to start the conversation.
                 </p>
               ) : (
                 messages.map((msg) => {
-                  const isUserMessage = msg.sender?.role !== "ADMIN";
-                  const senderLabel = isUserMessage
+                  const isAdminMessage = msg.sender?.role === "ADMIN";
+                  const senderLabel = isAdminMessage
                     ? "You"
-                    : msg.sender?.name || "Admin";
+                    : msg.sender?.name || msg.sender?.email || "User";
                   const messageTime = formatMessageTime(msg.createdAt);
 
                   return (
@@ -1167,13 +1066,13 @@ function UserContent() {
                       key={msg.id}
                       className={cn(
                         "flex",
-                        isUserMessage ? "justify-end" : "justify-start"
+                        isAdminMessage ? "justify-end" : "justify-start"
                       )}
                     >
                       <div
                         className={cn(
                           "max-w-lg rounded-2xl px-4 py-3 shadow-sm space-y-2",
-                          isUserMessage
+                          isAdminMessage
                             ? "bg-primary/10 text-foreground"
                             : "bg-muted/30 text-foreground"
                         )}
@@ -1232,10 +1131,10 @@ function UserContent() {
                                       className="block"
                                     >
                                       <Image
+                                        width={256}
+                                        height={256}
                                         src={file.url}
                                         alt={fileName}
-                                        width={384}
-                                        height={256}
                                         className="max-h-64 w-full object-cover"
                                       />
                                     </a>
@@ -1350,8 +1249,7 @@ function UserContent() {
                 <div
                   className={cn(
                     "flex items-end gap-2 rounded-full border border-muted/40 bg-white/95 px-3 py-2 shadow-sm transition focus-within:border-primary",
-                    isDragActive && "border-primary bg-primary/10",
-                    !canSendMessages && "opacity-90"
+                    isDragActive && "border-primary bg-primary/10"
                   )}
                 >
                   <button
@@ -1367,27 +1265,25 @@ function UserContent() {
                     <Plus className="h-5 w-5" />
                   </button>
                   <Input
-
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        if (canSendMessages && !sending) {
+                        if (selectedQuestion.status !== "CLOSED" && !sending) {
                           sendMessage();
                         }
                       }
                     }}
-                    className="flex-1 resize-none border-none bg-transparent px-0 py-2 text-sm leading-6 focus-visible:ring-0 focus-visible:ring-offset-0"
-                    placeholder="Ask anything..."
-                    disabled={!canSendMessages}
+                    className="flex-1 resize-none border-none bg-transparent px-0 py-2 text-sm leading-6 focus-visible:ring-0 focus-visible:ring-offset-0 my-auto"
+                    placeholder="Type your reply..."
+                    disabled={selectedQuestion.status === "CLOSED"}
                   />
                   <div className="flex items-center gap-2">
-
                     <Button
                       type="button"
                       onClick={sendMessage}
-                      disabled={!canSendMessages || sending}
+                      disabled={selectedQuestion.status === "CLOSED" || sending}
                       className="h-11 w-11 rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 my-auto"
                       size="icon"
                     >
@@ -1435,115 +1331,86 @@ function UserContent() {
                     ))}
                   </div>
                 )}
-                {canSendMessages ? (
-                  <p className="text-[11px] text-muted-foreground/70 mx-auto">
-                    Enter sends
-                    {isDragActive
-                      ? " • Drop files to attach"
-                      : " • Drag files here to attach"}
-                  </p>
-                ) : (
+                <p className="text-[11px] text-muted-foreground/70 mx-auto">
+                  Enter sends
+                  {isDragActive
+                    ? " • Drop files to attach"
+                    : " • Drag files here to attach"}
+                </p>
+                {selectedQuestion.status === "CLOSED" && (
                   <p className="text-[11px] text-destructive">
-                    {selectedQuestion.status === "CLOSED"
-                      ? "This chat is closed."
-                      : "Complete payment to enable messaging."}
+                    This conversation is closed.
                   </p>
                 )}
               </div>
             </footer>
           </>
         )}
-      </div>
+      </main>
 
-      <Dialog open={questionModalOpen} onOpenChange={setQuestionModalOpen}>
-        <DialogContent>
+      <Dialog
+        open={deleteDialogOpen}
+        onOpenChange={(open) => {
+          if (deletingConversation) return;
+          setDeleteDialogOpen(open);
+        }}
+      >
+        <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Ask a new question</DialogTitle>
+            <DialogTitle>Delete this conversation?</DialogTitle>
+            <DialogDescription>
+              This will remove the entire chat for{" "}
+              {selectedQuestion?.user?.email ?? "the user"}. You can also delete
+              any files that were uploaded in this thread.
+            </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            {formattedQuestionPrice && (
-              <p className="text-sm text-gray-500">
-                Each consultation costs{" "}
-                <span className="font-semibold text-gray-700">
-                  {formattedQuestionPrice}
-                </span>{" "}
-                (charged via Razorpay immediately after you submit).
-              </p>
-            )}
-            {questionPrice > 0 && (
-              <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
-                <input
-                  id="pay-immediately"
-                  type="checkbox"
-                  checked={payImmediately}
-                  onChange={(event) => setPayImmediately(event.target.checked)}
-                  className="mt-1 h-4 w-4"
-                />
-                <label
-                  htmlFor="pay-immediately"
-                  className="text-sm text-left text-gray-600"
-                >
-                  Pay immediately after submitting this question. Unchecking
-                  this will save the question as pending so you can pay later
-                  from the list.
-                </label>
-              </div>
-            )}
-            <div>
-              <label className="text-sm font-medium text-gray-700">
-                Question Title
-              </label>
-              <Input
-                value={newQuestion.title}
-                onChange={(e) =>
-                  setNewQuestion((prev) => ({ ...prev, title: e.target.value }))
-                }
-                placeholder="Summarize your question"
-                maxLength={100}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                {newQuestion.title.length}/100 characters
-              </p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">
-                Details
-              </label>
-              <Textarea
-                rows={4}
-                value={newQuestion.description}
-                onChange={(e) =>
-                  setNewQuestion((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-                placeholder="Provide relevant background, deadlines, etc."
-                maxLength={500}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                {newQuestion.description.length}/500 characters
-              </p>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setQuestionModalOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleCreateQuestion}
-                disabled={creatingQuestion}
-              >
-                {creatingQuestion ? (
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <p>
+              Deleting the conversation cannot be undone. If you also remove the
+              media, the files will be permanently deleted from DigitalOcean
+              Spaces.
+            </p>
+            <p className="text-xs text-muted-foreground/80">
+              Tip: choose “Delete chat only” to keep the files available in the
+              media library.
+            </p>
+          </div>
+          <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+              disabled={deletingConversation}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => handleDeleteConversation(false)}
+              disabled={deletingConversation}
+            >
+              {deletingConversation ? (
+                <span className="flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  `Create & Pay${formattedQuestionPrice ? ` ${formattedQuestionPrice}` : ""
-                  }`
-                )}
-              </Button>
-            </div>
+                  Deleting…
+                </span>
+              ) : (
+                "Delete chat only"
+              )}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => handleDeleteConversation(true)}
+              disabled={deletingConversation}
+            >
+              {deletingConversation ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Deleting files…
+                </span>
+              ) : (
+                "Delete chat & media"
+              )}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -1551,18 +1418,19 @@ function UserContent() {
   );
 }
 
-function UserPageFallback() {
+function QuestionsFallback() {
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-gray-50 text-sm text-gray-500">
-      Loading your workspace…
+    <div className="flex h-[100dvh] items-center justify-center bg-gray-50 text-sm text-gray-500">
+      Loading questions workspace…
     </div>
   );
 }
 
-export default function User() {
+export default function AdminQuestionsPage() {
   return (
-    <Suspense fallback={<UserPageFallback />}>
-      <UserContent />
+    <Suspense fallback={<QuestionsFallback />}>
+      <AdminQuestionsContent />
     </Suspense>
   );
 }
+

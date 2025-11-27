@@ -11,17 +11,32 @@ export async function DELETE(_request, { params }) {
   }
 
   try {
-    const attachment = await prisma.attachment.findUnique({
+    let attachment = await prisma.attachment.findUnique({
       where: { id: params.id },
       select: { id: true, key: true },
     });
+
+    let type = "GENERAL";
+
+    if (!attachment) {
+      attachment = await prisma.advanceAttachment.findUnique({
+        where: { id: params.id },
+        select: { id: true, key: true },
+      });
+      type = "ADVANCE";
+    }
 
     if (!attachment) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
     await deleteObject(attachment.key);
-    await prisma.attachment.delete({ where: { id: params.id } });
+
+    if (type === "GENERAL") {
+      await prisma.attachment.delete({ where: { id: params.id } });
+    } else {
+      await prisma.advanceAttachment.delete({ where: { id: params.id } });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {

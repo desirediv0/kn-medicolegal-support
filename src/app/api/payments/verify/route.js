@@ -12,10 +12,10 @@ export async function POST(request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { questionId, razorpayPaymentId, razorpayOrderId, razorpaySignature } =
+  const { questionId, advanceQuestionId, razorpayPaymentId, razorpayOrderId, razorpaySignature } =
     await request.json();
 
-  if (!questionId || !razorpayPaymentId || !razorpayOrderId || !razorpaySignature) {
+  if ((!questionId && !advanceQuestionId) || !razorpayPaymentId || !razorpayOrderId || !razorpaySignature) {
     return NextResponse.json(
       { error: "Missing payment parameters" },
       { status: 400 }
@@ -29,9 +29,20 @@ export async function POST(request) {
     );
   }
 
-  const question = await prisma.question.findUnique({
-    where: { id: questionId },
-  });
+  let question;
+  let isAdvance = false;
+
+  // Check if it's an advance question
+  if (advanceQuestionId) {
+    question = await prisma.advanceQuestion.findUnique({
+      where: { id: advanceQuestionId },
+    });
+    isAdvance = true;
+  } else {
+    question = await prisma.question.findUnique({
+      where: { id: questionId },
+    });
+  }
 
   if (!question) {
     return NextResponse.json({ error: "Question not found" }, { status: 404 });
@@ -47,12 +58,22 @@ export async function POST(request) {
     .digest("hex");
 
   if (expectedSignature !== razorpaySignature) {
-    await prisma.question.update({
-      where: { id: question.id },
-      data: {
-        paymentStatus: "FAILED",
-      },
-    });
+    // Update the appropriate table with FAILED status
+    if (isAdvance) {
+      await prisma.advanceQuestion.update({
+        where: { id: question.id },
+        data: {
+          paymentStatus: "FAILED",
+        },
+      });
+    } else {
+      await prisma.question.update({
+        where: { id: question.id },
+        data: {
+          paymentStatus: "FAILED",
+        },
+      });
+    }
 
     return NextResponse.json(
       { error: "Invalid signature" },
@@ -60,17 +81,31 @@ export async function POST(request) {
     );
   }
 
-  const updated = await prisma.question.update({
-    where: { id: question.id },
-    data: {
-      paymentStatus: "SUCCESS",
-      status: "ACTIVE",
-      razorpayPaymentId,
-      razorpayOrderId,
-      razorpaySignature,
-    },
-  });
+  // Update the appropriate table with SUCCESS status
+  let updated;
+  if (isAdvance) {
+    updated = await prisma.advanceQuestion.update({
+      where: { id: question.id },
+      data: {
+        paymentStatus: "SUCCESS",
+        status: "ACTIVE",
+        razorpayPaymentId,
+        razorpayOrderId,
+        razorpaySignature,
+      },
+    });
+  } else {
+    updated = await prisma.question.update({
+      where: { id: question.id },
+      data: {
+        paymentStatus: "SUCCESS",
+        status: "ACTIVE",
+        razorpayPaymentId,
+        razorpayOrderId,
+        razorpaySignature,
+      },
+    });
+  }
 
   return NextResponse.json({ question: updated });
 }
-

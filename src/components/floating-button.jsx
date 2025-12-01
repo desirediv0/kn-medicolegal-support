@@ -6,7 +6,22 @@ import { FaUser, FaUserShield, FaSignInAlt } from "react-icons/fa";
 import { CiChat1 } from "react-icons/ci";
 import { motion } from "framer-motion";
 
-const publicRoutes = ["/", "/about", "/faq", "/contact", "/services","/knowledge-hub","/gallery"];
+const publicRoutes = [
+  "/",
+  "/about",
+  "/faq",
+  "/contact",
+  "/services",
+  "/index",
+  "/knowledge-hub",
+  "/gallery",
+  "/fee-packages",
+  "/privacy-policy",
+  "/terms-and-conditions",
+  "/refund-policy",
+  "/cookie-policy",
+  "/disclaimer",
+];
 
 export function FloatingButton() {
   const { data: session, status } = useSession();

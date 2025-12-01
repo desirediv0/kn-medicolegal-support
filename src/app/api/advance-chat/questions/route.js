@@ -120,7 +120,7 @@ export async function POST(request) {
     }
 
     const data = await request.json();
-    const { title, description } = data;
+    const { title, description, paymentType = "RAZORPAY" } = data;
 
     if (!title) {
         return NextResponse.json({ error: "Title is required" }, { status: 400 });
@@ -135,8 +135,9 @@ export async function POST(request) {
             description,
             userId: session.user.id,
             price,
+            paymentType: price > 0 ? paymentType : null,
             paymentStatus: price > 0 ? "PENDING" : "NOT_REQUIRED",
-            status: price > 0 ? "PENDING" : "ACTIVE",
+            status: price > 0 && paymentType === "CASH" ? "PENDING" : price > 0 ? "PENDING" : "ACTIVE",
         },
     });
 

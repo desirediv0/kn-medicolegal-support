@@ -26,6 +26,11 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum PaymentType {
+  RAZORPAY
+  CASH
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -127,6 +132,7 @@ model Question {
   adminId           String?
   status            QuestionStatus @default(PENDING)
   paymentStatus     PaymentStatus  @default(PENDING)
+  paymentType       PaymentType?   @default(RAZORPAY)
   price             Decimal        @db.Decimal(10, 2)
   razorpayOrderId   String?        @unique
   razorpayPaymentId String?        @unique
@@ -141,6 +147,7 @@ model Question {
 
   @@index([userId])
   @@index([adminId])
+  @@index([paymentStatus, paymentType])
 }
 
 model Message {
@@ -222,6 +229,7 @@ model AdvanceQuestion {
   adminId           String?
   status            QuestionStatus @default(PENDING)
   paymentStatus     PaymentStatus  @default(PENDING)
+  paymentType       PaymentType?   @default(RAZORPAY)
   price             Decimal        @db.Decimal(10, 2)
   razorpayOrderId   String?        @unique
   razorpayPaymentId String?        @unique
@@ -238,6 +246,7 @@ model AdvanceQuestion {
   @@index([adminId])
   @@index([status])
   @@index([paymentStatus])
+  @@index([paymentStatus, paymentType])
 }
 
 // Advance Chat Messages

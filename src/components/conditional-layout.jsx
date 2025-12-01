@@ -5,7 +5,22 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 import { FloatingButton } from "./floating-button";
 
-const publicRoutes = ["/", "/about", "/faq", "/contact", "/services", "/index","/knowledge-hub", "/gallery","/fee-packages"];
+const publicRoutes = [
+  "/",
+  "/about",
+  "/faq",
+  "/contact",
+  "/services",
+  "/index",
+  "/knowledge-hub",
+  "/gallery",
+  "/fee-packages",
+  "/privacy-policy",
+  "/terms-and-conditions",
+  "/refund-policy",
+  "/cookie-policy",
+  "/disclaimer",
+];
 
 const isPublicRoute = (pathname) => {
   if (!pathname) return false;

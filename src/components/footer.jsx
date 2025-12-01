@@ -23,22 +23,34 @@ export function Footer() {
             </p>
             <ul className="space-y-2.5 text-white/80">
               <li>
-                <Link href="/" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                <Link
+                  href="/"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
                   <span className="text-primary-foreground">→</span> Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                <Link
+                  href="/about"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
                   <span className="text-primary-foreground">→</span> About Us
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                <Link
+                  href="/services"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
                   <span className="text-primary-foreground">→</span> Services
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                <Link
+                  href="/faq"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
                   <span className="text-primary-foreground">→</span> FAQ
                 </Link>
               </li>
@@ -52,31 +64,77 @@ export function Footer() {
             </p>
             <ul className="space-y-2.5 text-white/80">
               <li>
-                <Link href="/knowledge-hub" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
-                  <span className="text-primary-foreground">→</span> Knowledge Hub
+                <Link
+                  href="/knowledge-hub"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
+                  <span className="text-primary-foreground">→</span> Knowledge
+                  Hub
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                <Link
+                  href="/gallery"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
                   <span className="text-primary-foreground">→</span> Gallery
                 </Link>
               </li>
               <li>
-                <Link href="/fee-packages" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
-                  <span className="text-primary-foreground">→</span> Fee & Packages
+                <Link
+                  href="/fee-packages"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
+                  <span className="text-primary-foreground">→</span> Fee &
+                  Packages
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
+                <Link
+                  href="/contact"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
                   <span className="text-primary-foreground">→</span> Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="/user/auth" className="transition hover:text-primary-foreground inline-flex items-center gap-2">
-                  <span className="text-primary-foreground">→</span> Login / Register
+                <Link
+                  href="/user/auth"
+                  className="transition hover:text-primary-foreground inline-flex items-center gap-2"
+                >
+                  <span className="text-primary-foreground">→</span> Login /
+                  Register
                 </Link>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Legal & Policies */}
+        <div className="space-y-4 text-sm">
+          <p className="font-semibold uppercase tracking-[0.15em] text-white">
+            Legal & Policies
+          </p>
+          <div className="flex flex-wrap gap-4 md:gap-6 text-white/80">
+            <Link
+              href="/terms-and-conditions"
+              className="transition hover:text-primary-foreground inline-flex items-center gap-2 text-sm"
+            >
+              <span className="text-primary-foreground">→</span> Terms and
+              Conditions
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="transition hover:text-primary-foreground inline-flex items-center gap-2 text-sm"
+            >
+              <span className="text-primary-foreground">→</span> Privacy Policy
+            </Link>
+            <Link
+              href="/refund-policy"
+              className="transition hover:text-primary-foreground inline-flex items-center gap-2 text-sm"
+            >
+              <span className="text-primary-foreground">→</span> Refund Policy
+            </Link>
           </div>
         </div>
 
@@ -86,7 +144,8 @@ export function Footer() {
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-white/60 leading-relaxed text-center sm:text-left">
-            © {new Date().getFullYear()} KN Medicolegal Support. All rights reserved.
+            © {new Date().getFullYear()} KN Medicolegal Support. All rights
+            reserved.
           </p>
           <p className="text-xs text-white/60 leading-relaxed text-center sm:text-right">
             Upholding patient confidentiality and regulatory compliance.

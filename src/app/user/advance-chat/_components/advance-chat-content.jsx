@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-  useRef,
-} from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -79,10 +73,16 @@ const truncateText = (text, maxLength = 60) => {
   return text.substring(0, maxLength) + "...";
 };
 
-const ExpandableText = ({ text, maxLength = 60, className = "", as: Component = "span" }) => {
+const ExpandableText = ({
+  text,
+  maxLength = 60,
+  className = "",
+  as: Component = "span",
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const shouldTruncate = text && text.length > maxLength;
-  const displayText = isExpanded || !shouldTruncate ? text : truncateText(text, maxLength);
+  const displayText =
+    isExpanded || !shouldTruncate ? text : truncateText(text, maxLength);
 
   if (!text) return null;
 
@@ -341,6 +341,7 @@ function UserContent() {
   const [sending, setSending] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
   const [payImmediately, setPayImmediately] = useState(true);
+  const [paymentType, setPaymentType] = useState("RAZORPAY");
   const [readCounts, setReadCounts] = useState({});
   const selectedQuestionRef = useRef(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -367,7 +368,9 @@ function UserContent() {
     if (status !== "authenticated") return;
     setLoadingQuestions(true);
     try {
-      const res = await fetch("/api/advance-chat/questions?limit=15", { cache: "no-store" });
+      const res = await fetch("/api/advance-chat/questions?limit=15", {
+        cache: "no-store",
+      });
       if (!res.ok) {
         throw new Error("Failed to load questions");
       }
@@ -464,9 +467,12 @@ function UserContent() {
         setLoadingMessages(true);
       }
       try {
-        const res = await fetch(`/api/advance-chat/questions/${questionId}/messages`, {
-          cache: "no-store",
-        });
+        const res = await fetch(
+          `/api/advance-chat/questions/${questionId}/messages`,
+          {
+            cache: "no-store",
+          }
+        );
         if (!res.ok) {
           throw new Error("Failed to load messages");
         }
@@ -558,7 +564,8 @@ function UserContent() {
     if (loadingQuestions) return;
     if (!questions.length) {
       if (selectedQuestion) setSelectedQuestion(null);
-      if (currentQuestionId) router.replace("/user/advance-chat", { scroll: false });
+      if (currentQuestionId)
+        router.replace("/user/advance-chat", { scroll: false });
       return;
     }
 
@@ -681,7 +688,10 @@ function UserContent() {
       const res = await fetch("/api/advance-chat/questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newQuestion),
+        body: JSON.stringify({
+          ...newQuestion,
+          paymentType: paymentType,
+        }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -696,7 +706,9 @@ function UserContent() {
         [question.id]: question.messageCount ?? 0,
       }));
       setSelectedQuestion(question);
-      router.replace(`/user/advance-chat?question=${question.id}`, { scroll: false });
+      router.replace(`/user/advance-chat?question=${question.id}`, {
+        scroll: false,
+      });
       setQuestionModalOpen(false);
       setNewQuestion({ title: "", description: "" });
       const amountText =
@@ -704,7 +716,12 @@ function UserContent() {
           ? currencyFormatter.format(Number(question.price))
           : formattedQuestionPrice ?? "";
       if (question.paymentStatus === "PENDING") {
-        if (payImmediately) {
+        if (question.paymentType === "CASH") {
+          toast.success(
+            `Question created with cash payment. Waiting for admin approval.${amountText ? ` Amount: ${amountText}` : ""
+            }`
+          );
+        } else if (payImmediately) {
           toast.success(
             `Question created. Redirecting you to pay${amountText ? ` ${amountText}` : ""
             } now.`
@@ -813,7 +830,9 @@ function UserContent() {
       );
       setSelectedQuestion(question);
       if (currentQuestionId !== question.id) {
-        router.replace(`/user/advance-chat?question=${question.id}`, { scroll: false });
+        router.replace(`/user/advance-chat?question=${question.id}`, {
+          scroll: false,
+        });
       }
       const paidAmount =
         question.price != null
@@ -956,11 +975,14 @@ function UserContent() {
   const closeChat = async () => {
     if (!selectedQuestion?.id) return;
     try {
-      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "CLOSED" }),
-      });
+      const res = await fetch(
+        `/api/advance-chat/questions/${selectedQuestion.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "CLOSED" }),
+        }
+      );
 
       if (!res.ok) {
         const data = await res.json();
@@ -1069,7 +1091,9 @@ function UserContent() {
           }));
           setIsDrawerOpen(false);
           if (currentQuestionId !== question.id) {
-            router.replace(`/user/advance-chat?question=${question.id}`, { scroll: false });
+            router.replace(`/user/advance-chat?question=${question.id}`, {
+              scroll: false,
+            });
           }
           fetchMessages(question.id);
         }}
@@ -1106,24 +1130,70 @@ function UserContent() {
                     as="p"
                   />
                 )}
-                <p className="text-xs text-muted-foreground">
-                  Status: {selectedQuestion.status?.toLowerCase()} • Payment:{" "}
-                  {selectedQuestion.paymentStatus?.toLowerCase()}
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                {selectedQuestion.paymentStatus === "PENDING" && (
-                  <Button
-                    variant="outline"
-                    onClick={() => initiatePayment(selectedQuestion.id)}
-                    disabled={processingPayment}
-                  >
-                    {processingPayment ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      "Complete Payment"
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Status:</span>
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${selectedQuestion.status === "ACTIVE"
+                          ? "bg-green-100 text-green-700"
+                          : selectedQuestion.status === "PENDING"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}
+                    >
+                      {selectedQuestion.status?.toLowerCase()}
+                    </span>
+                  </div>
+                  <span className="text-muted-foreground/60">•</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Payment:</span>
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${selectedQuestion.paymentStatus === "SUCCESS"
+                          ? "bg-green-100 text-green-700"
+                          : selectedQuestion.paymentStatus === "PENDING"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : selectedQuestion.paymentStatus === "FAILED"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-gray-100 text-gray-700"
+                        }`}
+                    >
+                      {selectedQuestion.paymentStatus?.toLowerCase()}
+                    </span>
+                    {selectedQuestion.paymentType === "CASH" && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-medium text-blue-700">
+                        Cash
+                      </span>
                     )}
-                  </Button>
+                    {selectedQuestion.paymentType === "RAZORPAY" && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[11px] font-medium text-purple-700">
+                        Online
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 mt-2">
+                {selectedQuestion.paymentStatus === "PENDING" &&
+                  selectedQuestion.paymentType === "CASH" ? (
+                  <div className="rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-2">
+                    <p className="text-sm text-yellow-800 font-medium">
+                      Waiting for admin approval of cash payment
+                    </p>
+                  </div>
+                ) : (
+                  selectedQuestion.paymentStatus === "PENDING" && (
+                    <Button
+                      variant="outline"
+                      onClick={() => initiatePayment(selectedQuestion.id)}
+                      disabled={processingPayment}
+                    >
+                      {processingPayment ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        "Complete Payment"
+                      )}
+                    </Button>
+                  )
                 )}
                 <Button
                   variant="secondary"
@@ -1366,7 +1436,6 @@ function UserContent() {
                     <Plus className="h-5 w-5" />
                   </button>
                   <Input
-
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
                     onKeyDown={(e) => {
@@ -1382,7 +1451,6 @@ function UserContent() {
                     disabled={!canSendMessages}
                   />
                   <div className="flex items-center gap-2">
-
                     <Button
                       type="button"
                       onClick={sendMessage}
@@ -1466,27 +1534,75 @@ function UserContent() {
                 <span className="font-semibold text-gray-700">
                   {formattedQuestionPrice}
                 </span>{" "}
-                (charged via Razorpay immediately after you submit).
+                (payment required to start chat).
               </p>
             )}
             {questionPrice > 0 && (
-              <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
-                <input
-                  id="pay-immediately"
-                  type="checkbox"
-                  checked={payImmediately}
-                  onChange={(event) => setPayImmediately(event.target.checked)}
-                  className="mt-1 h-4 w-4"
-                />
-                <label
-                  htmlFor="pay-immediately"
-                  className="text-sm text-left text-gray-600"
-                >
-                  Pay immediately after submitting this question. Unchecking
-                  this will save the question as pending so you can pay later
-                  from the list.
-                </label>
-              </div>
+              <>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Payment Method
+                  </label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="RAZORPAY"
+                        checked={paymentType === "RAZORPAY"}
+                        onChange={(e) => setPaymentType(e.target.value)}
+                        className="h-4 w-4"
+                      />
+                      <span className="text-sm text-gray-700">
+                        Online (Razorpay)
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="CASH"
+                        checked={paymentType === "CASH"}
+                        onChange={(e) => setPaymentType(e.target.value)}
+                        className="h-4 w-4"
+                      />
+                      <span className="text-sm text-gray-700">
+                        Cash (Offline)
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                {paymentType === "RAZORPAY" && (
+                  <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
+                    <input
+                      id="pay-immediately"
+                      type="checkbox"
+                      checked={payImmediately}
+                      onChange={(event) =>
+                        setPayImmediately(event.target.checked)
+                      }
+                      className="mt-1 h-4 w-4"
+                    />
+                    <label
+                      htmlFor="pay-immediately"
+                      className="text-sm text-left text-gray-600"
+                    >
+                      Pay immediately after submitting this question. Unchecking
+                      this will save the question as pending so you can pay
+                      later from the list.
+                    </label>
+                  </div>
+                )}
+                {paymentType === "CASH" && (
+                  <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2">
+                    <p className="text-sm text-blue-800">
+                      Cash payment selected. Your question will be created and
+                      admin will approve it after receiving cash payment. You&apos;ll
+                      be notified once approved.
+                    </p>
+                  </div>
+                )}
+              </>
             )}
             <div>
               <label className="text-sm font-medium text-gray-700">
@@ -1537,6 +1653,9 @@ function UserContent() {
               >
                 {creatingQuestion ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
+                ) : paymentType === "CASH" ? (
+                  `Create Question${formattedQuestionPrice ? ` (₹${questionPrice})` : ""
+                  }`
                 ) : (
                   `Create & Pay${formattedQuestionPrice ? ` ${formattedQuestionPrice}` : ""
                   }`

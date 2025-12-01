@@ -23,6 +23,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Paperclip,
   Loader2,
   X,
@@ -30,6 +38,9 @@ import {
   Download,
   Plus,
   SendHorizontal,
+  MoreVertical,
+  CheckCircle2,
+  ArrowLeftRight,
 } from "lucide-react";
 import imageCompression from "browser-image-compression";
 import { format, formatDistanceToNow } from "date-fns";
@@ -102,10 +113,10 @@ const getActivityTimestamp = (question) => {
   return latest
     ? new Date(latest).getTime()
     : updated
-      ? new Date(updated).getTime()
-      : created
-        ? new Date(created).getTime()
-        : 0;
+    ? new Date(updated).getTime()
+    : created
+    ? new Date(created).getTime()
+    : 0;
 };
 
 const sortQuestionsByRecent = (list = []) =>
@@ -164,8 +175,9 @@ const StatusChip = ({ status }) => {
   );
   return (
     <span
-      className={`px-2 py-1 rounded-full text-xs font-medium ${map[status] || "bg-gray-200 text-gray-700"
-        }`}
+      className={`px-2 py-1 rounded-full text-xs font-medium ${
+        map[status] || "bg-gray-200 text-gray-700"
+      }`}
     >
       {status}
     </span>
@@ -301,9 +313,12 @@ function AdminQuestionsContent() {
         setLoadingMessages(true);
       }
       try {
-        const response = await fetch(`/api/advance-chat/questions/${questionId}/messages`, {
-          cache: "no-store",
-        });
+        const response = await fetch(
+          `/api/advance-chat/questions/${questionId}/messages`,
+          {
+            cache: "no-store",
+          }
+        );
         if (!response.ok) throw new Error("Failed to fetch messages");
         const data = await response.json();
         const nextMessages = (data.messages ?? []).map((msg) => ({
@@ -320,11 +335,11 @@ function AdminQuestionsContent() {
           const updated = prevQuestions.map((q) =>
             q.id === questionId
               ? {
-                ...q,
-                messageCount: data.messages?.length ?? q.messageCount ?? 0,
-                latestMessage: latest ?? q.latestMessage,
-                unreadCount: 0,
-              }
+                  ...q,
+                  messageCount: data.messages?.length ?? q.messageCount ?? 0,
+                  latestMessage: latest ?? q.latestMessage,
+                  unreadCount: 0,
+                }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -547,8 +562,8 @@ function AdminQuestionsContent() {
                 selectedQuestion?.id === question.id
                   ? "bg-primary/10 border-primary/50"
                   : unread > 0
-                    ? "bg-primary/5 border-primary/30"
-                    : "bg-white/5"
+                  ? "bg-primary/5 border-primary/30"
+                  : "bg-white/5"
               )}
               onClick={() => handleQuestionSelect(question)}
             >
@@ -577,8 +592,8 @@ function AdminQuestionsContent() {
                   <span className="text-[11px] text-muted-foreground">
                     {lastActivity
                       ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
-                        addSuffix: true,
-                      })}`
+                          addSuffix: true,
+                        })}`
                       : "No activity yet"}
                   </span>
                 </div>
@@ -590,21 +605,50 @@ function AdminQuestionsContent() {
                   {question.user?.email ?? "Unknown"}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                <span>Amount: {amountText}</span>
-                <span className="hidden sm:inline text-muted-foreground/60">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <div className="flex items-center gap-1">
+                  <span className="text-muted-foreground">Amount:</span>
+                  <span className="font-semibold text-foreground">
+                    {amountText}
+                  </span>
+                </div>
+                <span className="text-muted-foreground/60 hidden sm:inline">
                   •
                 </span>
-                <span className="capitalize">
-                  Payment: {question.paymentStatus?.toLowerCase()}
-                </span>
-              </p>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-muted-foreground">Payment:</span>
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                      question.paymentStatus === "SUCCESS"
+                        ? "bg-green-100 text-green-700"
+                        : question.paymentStatus === "PENDING"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : question.paymentStatus === "FAILED"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    {question.paymentStatus?.toLowerCase()}
+                  </span>
+                  {question.paymentType === "CASH" && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-700">
+                      💵 Cash
+                    </span>
+                  )}
+                  {question.paymentType === "RAZORPAY" && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-medium text-purple-700">
+                      💳 Online
+                    </span>
+                  )}
+                </div>
+              </div>
               <div className="text-xs text-foreground italic">
                 {question.latestMessage?.sender?.role
-                  ? `${question.latestMessage.sender.role === "ADMIN"
-                    ? "You"
-                    : "User"
-                  }: `
+                  ? `${
+                      question.latestMessage.sender.role === "ADMIN"
+                        ? "You"
+                        : "User"
+                    }: `
                   : ""}
                 <ExpandableText
                   text={lastMessagePreview}
@@ -623,11 +667,14 @@ function AdminQuestionsContent() {
     if (!session?.user?.id || !selectedQuestion?.id) return;
     if (selectedQuestion.adminId === session.user.id) return;
     try {
-      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adminId: session.user.id }),
-      });
+      const res = await fetch(
+        `/api/advance-chat/questions/${selectedQuestion.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminId: session.user.id }),
+        }
+      );
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || "Failed to claim question");
@@ -733,10 +780,10 @@ function AdminQuestionsContent() {
           const updated = prevQuestions.map((q) =>
             q.id === selectedQuestion.id
               ? {
-                ...q,
-                latestMessage: message,
-                messageCount: next.length,
-              }
+                  ...q,
+                  latestMessage: message,
+                  messageCount: next.length,
+                }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -744,10 +791,10 @@ function AdminQuestionsContent() {
         setSelectedQuestion((prevSelected) =>
           prevSelected && prevSelected.id === selectedQuestion.id
             ? {
-              ...prevSelected,
-              latestMessage: message,
-              messageCount: next.length,
-            }
+                ...prevSelected,
+                latestMessage: message,
+                messageCount: next.length,
+              }
             : prevSelected
         );
         return next;
@@ -768,11 +815,14 @@ function AdminQuestionsContent() {
   const closeConversation = async () => {
     if (!selectedQuestion?.id) return;
     try {
-      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "CLOSED" }),
-      });
+      const res = await fetch(
+        `/api/advance-chat/questions/${selectedQuestion.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "CLOSED" }),
+        }
+      );
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || "Failed to close conversation");
@@ -794,11 +844,14 @@ function AdminQuestionsContent() {
   const reopenConversation = async () => {
     if (!selectedQuestion?.id) return;
     try {
-      const res = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "ACTIVE" }),
-      });
+      const res = await fetch(
+        `/api/advance-chat/questions/${selectedQuestion.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "ACTIVE" }),
+        }
+      );
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || "Failed to reopen conversation");
@@ -821,11 +874,14 @@ function AdminQuestionsContent() {
     if (!selectedQuestion?.id || deletingConversation) return;
     setDeletingConversation(true);
     try {
-      const response = await fetch(`/api/advance-chat/questions/${selectedQuestion.id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deleteAttachments }),
-      });
+      const response = await fetch(
+        `/api/advance-chat/questions/${selectedQuestion.id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ deleteAttachments }),
+        }
+      );
       let payload = {};
       try {
         payload = await response.json();
@@ -855,8 +911,9 @@ function AdminQuestionsContent() {
       toast.success(
         deleteAttachments
           ? deletedAttachments
-            ? `Conversation and ${deletedAttachments} attachment${deletedAttachments === 1 ? "" : "s"
-            } deleted.`
+            ? `Conversation and ${deletedAttachments} attachment${
+                deletedAttachments === 1 ? "" : "s"
+              } deleted.`
             : "Conversation deleted. No attachments found to remove."
           : "Conversation deleted."
       );
@@ -1006,17 +1063,271 @@ function AdminQuestionsContent() {
                   From: {selectedQuestion.user?.name ?? "Anonymous"} (
                   {selectedQuestion.user?.email ?? "N/A"})
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  Amount:{" "}
-                  {selectedQuestion.price != null
-                    ? currencyFormatter.format(Number(selectedQuestion.price))
-                    : "—"}{" "}
-                  • Payment: {selectedQuestion.paymentStatus?.toLowerCase()}
-                </p>
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Amount:</span>
+                    <span className="font-semibold text-foreground">
+                      {selectedQuestion.price != null
+                        ? currencyFormatter.format(
+                            Number(selectedQuestion.price)
+                          )
+                        : "—"}
+                    </span>
+                  </div>
+                  <span className="text-muted-foreground/60">•</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Payment:</span>
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                        selectedQuestion.paymentStatus === "SUCCESS"
+                          ? "bg-green-100 text-green-700"
+                          : selectedQuestion.paymentStatus === "PENDING"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : selectedQuestion.paymentStatus === "FAILED"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {selectedQuestion.paymentStatus?.toLowerCase()}
+                    </span>
+                    {selectedQuestion.paymentType === "CASH" && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-medium text-blue-700">
+                        Cash
+                      </span>
+                    )}
+                    {selectedQuestion.paymentType === "RAZORPAY" && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[11px] font-medium text-purple-700">
+                        Online
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2 mt-2">
+                {(selectedQuestion.paymentStatus === "PENDING" &&
+                  selectedQuestion.paymentType === "CASH") ||
+                (selectedQuestion.paymentStatus === "PENDING" &&
+                  (selectedQuestion.paymentType === "RAZORPAY" ||
+                    !selectedQuestion.paymentType)) ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <MoreVertical className="h-4 w-4" />
+                        Payment Actions
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuLabel>Payment Options</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {selectedQuestion.paymentStatus === "PENDING" &&
+                        selectedQuestion.paymentType === "CASH" && (
+                          <DropdownMenuItem
+                            onClick={async () => {
+                              try {
+                                const res = await fetch(
+                                  "/api/payments/approve-cash",
+                                  {
+                                    method: "POST",
+                                    headers: {
+                                      "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                      advanceQuestionId: selectedQuestion.id,
+                                    }),
+                                  }
+                                );
+                                if (!res.ok) {
+                                  const data = await res.json();
+                                  throw new Error(
+                                    data.error || "Failed to approve payment"
+                                  );
+                                }
+                                toast.success(
+                                  "Cash payment approved successfully!"
+                                );
+                                const questionRes = await fetch(
+                                  `/api/advance-chat/questions/${selectedQuestion.id}`
+                                );
+                                if (questionRes.ok) {
+                                  const { question } = await questionRes.json();
+                                  setSelectedQuestion({
+                                    ...question,
+                                    price:
+                                      question.price != null
+                                        ? Number(question.price)
+                                        : null,
+                                  });
+                                  setQuestions((prev) =>
+                                    prev.map((q) =>
+                                      q.id === question.id
+                                        ? {
+                                            ...question,
+                                            price:
+                                              question.price != null
+                                                ? Number(question.price)
+                                                : null,
+                                          }
+                                        : q
+                                    )
+                                  );
+                                }
+                              } catch (error) {
+                                toast.error(
+                                  error?.message || "Failed to approve payment"
+                                );
+                              }
+                            }}
+                            className="text-green-700 cursor-pointer"
+                          >
+                            <CheckCircle2 className="h-4 w-4 mr-2" />
+                            Approve Cash Payment
+                          </DropdownMenuItem>
+                        )}
+                      {selectedQuestion.paymentStatus === "PENDING" && (
+                        <>
+                          {selectedQuestion.paymentType === "CASH" ? (
+                            <DropdownMenuItem
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch(
+                                    "/api/payments/change-to-razorpay",
+                                    {
+                                      method: "POST",
+                                      headers: {
+                                        "Content-Type": "application/json",
+                                      },
+                                      body: JSON.stringify({
+                                        advanceQuestionId: selectedQuestion.id,
+                                      }),
+                                    }
+                                  );
+                                  if (!res.ok) {
+                                    const data = await res.json();
+                                    throw new Error(
+                                      data.error ||
+                                        "Failed to change payment type"
+                                    );
+                                  }
+                                  toast.success(
+                                    "Payment type changed to Razorpay."
+                                  );
+                                  // Refresh the question
+                                  const questionRes = await fetch(
+                                    `/api/advance-chat/questions/${selectedQuestion.id}`
+                                  );
+                                  if (questionRes.ok) {
+                                    const { question } =
+                                      await questionRes.json();
+                                    setSelectedQuestion({
+                                      ...question,
+                                      price:
+                                        question.price != null
+                                          ? Number(question.price)
+                                          : null,
+                                    });
+                                    setQuestions((prev) =>
+                                      prev.map((q) =>
+                                        q.id === question.id
+                                          ? {
+                                              ...question,
+                                              price:
+                                                question.price != null
+                                                  ? Number(question.price)
+                                                  : null,
+                                            }
+                                          : q
+                                      )
+                                    );
+                                  }
+                                } catch (error) {
+                                  toast.error(
+                                    error?.message ||
+                                      "Failed to change payment type"
+                                  );
+                                }
+                              }}
+                              className="cursor-pointer"
+                            >
+                              <ArrowLeftRight className="h-4 w-4 mr-2" />
+                              Change to Online Payment
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch(
+                                    "/api/payments/change-to-cash",
+                                    {
+                                      method: "POST",
+                                      headers: {
+                                        "Content-Type": "application/json",
+                                      },
+                                      body: JSON.stringify({
+                                        advanceQuestionId: selectedQuestion.id,
+                                      }),
+                                    }
+                                  );
+                                  if (!res.ok) {
+                                    const data = await res.json();
+                                    throw new Error(
+                                      data.error ||
+                                        "Failed to change payment type"
+                                    );
+                                  }
+                                  toast.success(
+                                    "Payment type changed to cash. You can now approve it."
+                                  );
+                                  const questionRes = await fetch(
+                                    `/api/advance-chat/questions/${selectedQuestion.id}`
+                                  );
+                                  if (questionRes.ok) {
+                                    const { question } =
+                                      await questionRes.json();
+                                    setSelectedQuestion({
+                                      ...question,
+                                      price:
+                                        question.price != null
+                                          ? Number(question.price)
+                                          : null,
+                                    });
+                                    setQuestions((prev) =>
+                                      prev.map((q) =>
+                                        q.id === question.id
+                                          ? {
+                                              ...question,
+                                              price:
+                                                question.price != null
+                                                  ? Number(question.price)
+                                                  : null,
+                                            }
+                                          : q
+                                      )
+                                    );
+                                  }
+                                } catch (error) {
+                                  toast.error(
+                                    error?.message ||
+                                      "Failed to change payment type"
+                                  );
+                                }
+                              }}
+                              className="cursor-pointer"
+                            >
+                              <ArrowLeftRight className="h-4 w-4 mr-2" />
+                              Change to Cash Payment
+                            </DropdownMenuItem>
+                          )}
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : null}
                 {selectedQuestion.status === "CLOSED" ? (
-                  <Button variant="secondary" onClick={reopenConversation}>
+                  <Button
+                    variant="secondary"
+                    onClick={reopenConversation}
+                    size="sm"
+                  >
                     Reopen
                   </Button>
                 ) : (
@@ -1024,6 +1335,7 @@ function AdminQuestionsContent() {
                     variant="secondary"
                     onClick={closeConversation}
                     disabled={!selectedQuestion}
+                    size="sm"
                   >
                     Close Conversation
                   </Button>
@@ -1032,6 +1344,7 @@ function AdminQuestionsContent() {
                   variant="destructive"
                   onClick={() => setDeleteDialogOpen(true)}
                   disabled={deletingConversation}
+                  size="sm"
                 >
                   Delete Conversation
                 </Button>
@@ -1277,13 +1590,19 @@ function AdminQuestionsContent() {
                     }}
                     className="flex-1 resize-none border-none bg-transparent px-0 py-2 text-sm leading-6 focus-visible:ring-0 focus-visible:ring-offset-0 my-auto"
                     placeholder="Type your reply..."
-                    disabled={selectedQuestion.status === "CLOSED"}
+                    disabled={
+                      !selectedQuestion || selectedQuestion.status === "CLOSED"
+                    }
                   />
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
                       onClick={sendMessage}
-                      disabled={selectedQuestion.status === "CLOSED" || sending}
+                      disabled={
+                        !selectedQuestion ||
+                        selectedQuestion.status === "CLOSED" ||
+                        sending
+                      }
                       className="h-11 w-11 rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 my-auto"
                       size="icon"
                     >
@@ -1433,4 +1752,3 @@ export default function AdminQuestionsPage() {
     </Suspense>
   );
 }
-

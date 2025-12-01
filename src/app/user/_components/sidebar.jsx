@@ -13,6 +13,7 @@ import {
   FileText,
   LogOut,
   MessageCircle,
+  QrCode,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -137,19 +138,16 @@ export function UserSidebar({ onWidthChange }) {
         <div className="flex items-center justify-between px-2 mb-6">
           {!isCollapsed && (
             <div className="flex items-center gap-1">
-
               <span className="font-semibold text-sm text-foreground/90">
-                Hello,{" "}
-                {profileData ? profileData.name.split(" ")[0]
-                  : "User"}
+                Hello, {profileData ? profileData.name.split(" ")[0] : "User"}
               </span>
-
             </div>
           )}
           <motion.button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`flex p-1 hover:bg-primary-foreground/10 rounded-lg transition-colors ${isCollapsed ? "mx-auto" : ""
-              }`}
+            className={`flex p-1 hover:bg-primary-foreground/10 rounded-lg transition-colors ${
+              isCollapsed ? "mx-auto" : ""
+            }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -162,8 +160,16 @@ export function UserSidebar({ onWidthChange }) {
 
         {/* Primary navigation */}
         {[
-          { label: "General Chat", href: "/user", icon: <MessageCircle size={18} /> },
-          { label: "Advance Chat", href: "/user/advance-chat", icon: <MessageCircle size={18} className="text-primary" /> },
+          {
+            label: "General Chat",
+            href: "/user",
+            icon: <MessageCircle size={18} />,
+          },
+          {
+            label: "Advance Chat",
+            href: "/user/advance-chat",
+            icon: <MessageCircle size={18} className="text-primary" />,
+          },
           {
             label: "General Chat History",
             href: "/user/history",
@@ -174,12 +180,17 @@ export function UserSidebar({ onWidthChange }) {
             href: "/user/advance-chat/history",
             icon: <Clock size={18} className="text-primary" />,
           },
+          {
+            label: "Payment",
+            href: "/user/payment",
+            icon: <QrCode size={18} />,
+          },
           { label: "Profile", href: "/user/profile", icon: <User size={18} /> },
           {
             label: "Terms & Policies",
             href: "/user/terms-policies",
             icon: <FileText className="w-4 h-4" />,
-          }
+          },
         ].map((item) => {
           const isActive =
             item.href === "/user"
@@ -195,7 +206,9 @@ export function UserSidebar({ onWidthChange }) {
               className={cn(
                 "flex items-center text-start gap-2 px-3 py-2 rounded-md text-sm font-medium text-foreground/80 transition-colors hover:bg-muted",
                 isCollapsed && "justify-center",
-                isActive && !isCollapsed ? "bg-accent text-accent-foreground" : ""
+                isActive && !isCollapsed
+                  ? "bg-accent text-accent-foreground"
+                  : ""
               )}
               title={isCollapsed ? item.label : ""}
             >
@@ -258,17 +271,15 @@ export function UserSidebar({ onWidthChange }) {
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: "/user/auth" })}
-          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-4 text-red-500 ${isCollapsed ? "justify-center" : ""}`}
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-4 text-red-500 ${
+            isCollapsed ? "justify-center" : ""
+          }`}
         >
           <LogOut className="w-4 h-4" />
           {!isCollapsed && (
-            <span className="text-sm font-medium">
-              Sign Out
-            </span>
+            <span className="text-sm font-medium">Sign Out</span>
           )}
         </button>
-
-
       </motion.aside>
     </>
   );

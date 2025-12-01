@@ -134,7 +134,12 @@ export async function POST(request) {
       price,
       paymentType: price > 0 ? paymentType : null,
       paymentStatus: price > 0 ? "PENDING" : "NOT_REQUIRED",
-      status: price > 0 && paymentType === "CASH" ? "PENDING" : price > 0 ? "PENDING" : "ACTIVE",
+      status:
+        price > 0 && paymentType === "CASH"
+          ? "PENDING"
+          : price > 0
+          ? "PENDING"
+          : "ACTIVE",
     },
   });
 

@@ -49,11 +49,11 @@ export function Header() {
         >
           <Link
             href="/"
-            className="relative h-16 w-auto overflow-hidden flex items-center justify-center scale-125 md:scale-175 transition-shadow"
+            className="relative h-16 w-auto overflow-hidden flex items-center justify-center  md:scale-x-110 transition-shadow"
             onClick={closeMenu}
           >
             <Image
-              src="/kn-logo.png"
+              src="/logo.png"
               alt="KN Medicolegal Support logo"
               width={120}
               height={120}

@@ -136,6 +136,21 @@ const caseLawsData = [
 export default function KnowledgeHubPage() {
     const { data: session } = useSession();
 
+    const handleDownload = (pdfPath, title) => {
+        if (!pdfPath || typeof window === "undefined") return;
+        const url = pdfPath.startsWith("http")
+            ? pdfPath
+            : new URL(pdfPath, window.location.href).toString();
+        const link = document.createElement("a");
+        link.href = url;
+        const safeTitle = title ? `${title}.pdf` : "";
+        link.setAttribute("download", safeTitle);
+        link.setAttribute("rel", "noopener");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <main className="min-h-screen bg-white text-gray-900">
             {/* Introduction */}
@@ -208,7 +223,7 @@ export default function KnowledgeHubPage() {
                                                 View
                                             </button>
                                             <button
-                                                onClick={() => window.open(act.pdfPath, "_blank")}
+                                                onClick={() => handleDownload(act.pdfPath, act.title)}
                                                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                                             >
                                                 <Download className="h-4 w-4" />
@@ -261,7 +276,7 @@ export default function KnowledgeHubPage() {
                                                 Read
                                             </button>
                                             <button
-                                                onClick={() => window.open(caseLaw.pdfPath, "_blank")}
+                                                onClick={() => handleDownload(caseLaw.pdfPath, caseLaw.title)}
                                                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                                             >
                                                 <Download className="h-4 w-4" />

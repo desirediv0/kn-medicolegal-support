@@ -19,11 +19,6 @@ import {
   RefreshCw,
   Award,
   ArrowRight,
-  MessageSquare,
-  MessageCircle,
-  Clock,
-  Gavel,
-  AlertCircle,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";

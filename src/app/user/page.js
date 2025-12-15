@@ -348,7 +348,7 @@ function UserContent() {
   const [sending, setSending] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
   const [payImmediately, setPayImmediately] = useState(true);
-  const [paymentType, setPaymentType] = useState("RAZORPAY");
+  const [paymentType, setPaymentType] = useState("CASH");
   const [readCounts, setReadCounts] = useState({});
   const selectedQuestionRef = useRef(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -1127,10 +1127,10 @@ function UserContent() {
                     <span className="text-muted-foreground">Status:</span>
                     <span
                       className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${selectedQuestion.status === "ACTIVE"
-                          ? "bg-green-100 text-green-700"
-                          : selectedQuestion.status === "PENDING"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-gray-100 text-gray-700"
+                        ? "bg-green-100 text-green-700"
+                        : selectedQuestion.status === "PENDING"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-gray-100 text-gray-700"
                         }`}
                     >
                       {selectedQuestion.status?.toLowerCase()}
@@ -1141,12 +1141,12 @@ function UserContent() {
                     <span className="text-muted-foreground">Payment:</span>
                     <span
                       className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${selectedQuestion.paymentStatus === "SUCCESS"
-                          ? "bg-green-100 text-green-700"
-                          : selectedQuestion.paymentStatus === "PENDING"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : selectedQuestion.paymentStatus === "FAILED"
-                              ? "bg-red-100 text-red-700"
-                              : "bg-gray-100 text-gray-700"
+                        ? "bg-green-100 text-green-700"
+                        : selectedQuestion.paymentStatus === "PENDING"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : selectedQuestion.paymentStatus === "FAILED"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-700"
                         }`}
                     >
                       {selectedQuestion.paymentStatus?.toLowerCase()}
@@ -1535,20 +1535,20 @@ function UserContent() {
                   <label className="text-sm font-medium text-gray-700">
                     Payment Method
                   </label>
-                  <div className="flex gap-4">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="paymentType"
-                        value="RAZORPAY"
-                        checked={paymentType === "RAZORPAY"}
-                        onChange={(e) => setPaymentType(e.target.value)}
-                        className="h-4 w-4"
-                      />
-                      <span className="text-sm text-gray-700">
-                        Online (Razorpay)
-                      </span>
-                    </label>
+                  <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+                    {/* <label className="flex items-center gap-2 cursor-pointer">
+                                       <input
+                                         type="radio"
+                                         name="paymentType"
+                                         value="RAZORPAY"
+                                         checked={paymentType === "RAZORPAY"}
+                                         onChange={(e) => setPaymentType(e.target.value)}
+                                         className="h-4 w-4"
+                                       />
+                                       <span className="text-sm text-gray-700">
+                                         Online (Razorpay)
+                                       </span>
+                                     </label> */}
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="radio"
@@ -1559,12 +1559,22 @@ function UserContent() {
                         className="h-4 w-4"
                       />
                       <span className="text-sm text-gray-700">
-                        Cash (Offline)
+                        QR Payment
                       </span>
                     </label>
+                    <div className="relative h-36 w-36 rounded-md border border-blue-200 bg-white p-2">
+                      <Image
+                        src="/sm-qr.jpeg"
+                        alt="Payment QR"
+                        fill
+                        className="object-contain rounded"
+                        sizes="150px"
+                      />
+
+                    </div>
                   </div>
                 </div>
-                {paymentType === "RAZORPAY" && (
+                {/* {paymentType === "RAZORPAY" && (
                   <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
                     <input
                       id="pay-immediately"
@@ -1586,14 +1596,32 @@ function UserContent() {
                   </div>
                 )}
                 {paymentType === "CASH" && (
-                  <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2">
-                    <p className="text-sm text-blue-800">
-                      Cash payment selected. Your question will be created and
-                      admin will approve it after receiving cash payment. You&apos;ll
-                      be notified once approved.
-                    </p>
+                  <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-[1.2fr_1fr] gap-3 sm:gap-4 items-center">
+                      <div className="space-y-2">
+                        <p className="text-sm text-blue-900 font-medium">
+                          Cash payment selected.
+                        </p>
+                        <p className="text-sm text-blue-800">
+                          Scan the QR to pay via UPI. Your question will be created and
+                          admin will approve it after receiving cash/UPI confirmation.
+                          You&apos;ll be notified once approved.
+                        </p>
+                      </div>
+                      <div className="flex justify-center">
+                        <div className="relative h-32 w-32 rounded-md border border-blue-200 bg-white p-2">
+                          <Image
+                            src="/qr.jpeg"
+                            alt="Payment QR"
+                            fill
+                            className="object-contain rounded"
+                            sizes="128px"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
+                )} */}
               </>
             )}
             <div>

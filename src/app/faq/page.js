@@ -175,7 +175,7 @@ export default function FAQPage() {
 
       {/* FAQ Accordion */}
       <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-12 md:py-20 lg:px-16">
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
@@ -183,17 +183,18 @@ export default function FAQPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.02 }}
-              className="rounded-xl border border-foreground/10 bg-white shadow-md overflow-hidden"
+              className="rounded-lg border border-foreground/10 bg-white overflow-hidden"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex items-start justify-between gap-4 p-6 text-left hover:bg-foreground/5 transition-colors"
+                aria-expanded={openIndex === index}
+                className="w-full flex items-start justify-between gap-4 p-5 md:p-6 text-left hover:bg-foreground/5 transition-colors"
               >
                 <div className="flex items-start gap-3 flex-1">
-                  <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/10 to-purple-500/10 mt-0.5">
-                    <HelpCircle className="h-4 w-4 text-blue-600" />
+                  <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground/5 mt-0.5">
+                    <HelpCircle className="h-4 w-4 text-foreground/70" />
                   </div>
-                  <h3 className="text-base md:text-lg font-medium text-foreground pr-4">
+                  <h3 className="text-base md:text-lg font-semibold text-foreground pr-2">
                     {faq.question}
                   </h3>
                 </div>
@@ -215,8 +216,8 @@ export default function FAQPage() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-6 pl-17">
-                      <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
+                    <div className="px-5 md:px-6 pb-5 md:pb-6">
+                      <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
                         {faq.answer}
                       </p>
                     </div>

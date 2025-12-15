@@ -19,6 +19,11 @@ import {
   RefreshCw,
   Award,
   ArrowRight,
+  MessageSquare,
+  MessageCircle,
+  Clock,
+  Gavel,
+  AlertCircle,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
@@ -37,152 +42,234 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-background text-foreground">
-        {/* Subtle Background Gradients */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(196,248,42,0.08),transparent_50%)]" />
-
-        {/* Decorative Star Elements */}
-        <div className="absolute top-32 right-32 text-primary-foreground text-3xl opacity-60 animate-pulse hidden lg:block">
-          ✦
-        </div>
-        <div
-          className="absolute bottom-48 left-16 text-primary-foreground text-2xl opacity-40 animate-pulse hidden lg:block"
-          style={{ animationDelay: "0.5s" }}
-        >
-          ✦
-        </div>
-
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 md:py-20 lg:px-16">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-6 md:space-y-8 ">
-              {/* Tagline with animation */}
+      <section className="relative overflow-hidden bg-white text-foreground py-12 md:py-16 lg:py-20">
+        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+            {/* Left Column - Primary Content */}
+            <div className="space-y-6 md:space-y-8">
+              {/* Trust Tagline */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-foreground/60">
-                  Your Partner in Safe, Secure Clinical Practice
+                <p className="text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-gray-600">
+                  Your Partner in Safe & Secure Clinical Practice
                 </p>
               </motion.div>
 
-              {/* Main Heading with animation */}
+              {/* Main Headline */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-gray-900">
+                  Medicolegal Support for Doctors & Hospitals
+                  <span className="block mt-3 text-gray-700 font-normal text-3xl md:text-4xl lg:text-5xl">
+                    Protect. Prepare. Defend.
+                  </span>
+                </h1>
+              </motion.div>
+
+              {/* Supporting Paragraph */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.1] tracking-tight">
-                  Welcome to{" "}
-                  <span className="block mt-2 md:mt-3">
-                    KN Medicolegal{" "}
-                    <span className="bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
-                      Support
-                    </span>
-                  </span>
-                </h1>
-              </motion.div>
-
-              {/* Description with animation */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                <p className="text-sm md:text-base lg:text-lg text-foreground/70 leading-relaxed">
-                  We are here to support doctors and hospitals in navigating the
-                  increasingly complex medicolegal landscape. Whether you need
-                  preventive guidance, help with documentation, support during a
-                  complication, or assistance in responding to legal/court
-                  notices, we&apos;re just a call away.
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  Expert medicolegal guidance for documentation, compliance, and risk management.
+                  Comprehensive support for legal notices, court matters, and medical council cases.
                 </p>
               </motion.div>
 
-              {/* CTA Buttons with animation */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-                className="space-y-4"
-              >
-                <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-                  <Link
-                    href={profileData.role === "ADMIN" ? "/dashboard" : profileData.role === "USER" ? "/user" : "/user/auth?mode=register"}
-                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
-                  >
-                    {profileData.role === "ADMIN" ? "Dashboard" : profileData.role === "USER" ? "User" : "Registration"}
-                  </Link>
-                  <Link
-                    href={
-                      profileData.role === "ADMIN"
-                        ? "/dashboard/questions"
-                        : "/user"
-                    }
-                    className="inline-flex items-center justify-center rounded-full border-2 border-primary-foreground px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-foreground shadow-sm transition hover:bg-foreground/5 hover:border-primary-foreground"
-                  >
-                    Chat
-                  </Link>
-                  <Link
-                    href={
-                      profileData.role === "ADMIN"
-                        ? "/dashboard/advance-chat"
-                        : "/user/advance-chat"
-                    }
-                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
-                  >
-                    Advanced Chat
-                  </Link>
-                </div>
-                <p className="text-xs md:text-sm text-foreground/60 italic text-center">
-                  *Advanced Chat is a paid service. Users get extended support & priority responses.
-                </p>
-              </motion.div>
             </div>
 
-            {/* Right Content - Image */}
+            {/* Right Column - Image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="relative "
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative lg:mt-8"
             >
-              <div className="relative w-full aspect-[4/3] lg:aspect-square rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden border border-gray-200">
                 <Image
                   src="/hero-banner1.jpg"
                   alt="Medical and Legal Professional Support"
                   fill
                   className="object-cover"
                   priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 500px"
                 />
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent" />
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* Confidentiality Statement */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-          className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-8 lg:px-16"
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="pt-4"
         >
-          <div className="flex items-center justify-center gap-3 md:gap-4 rounded-2xl border-2 border-primary-foreground/30 bg-gradient-to-r from-primary-foreground/10 via-primary-foreground/5 to-primary-foreground/10 px-6 md:px-8 py-5 md:py-6 shadow-lg hover:shadow-xl transition-shadow">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground shrink-0 h-6 w-6 md:h-7 md:w-7">
-              <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            <p className="text-base md:text-lg font-semibold text-foreground text-center">
-              We ensure the confidentiality of all individual user information shared with us.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto px-4 sm:px-6 lg:px-16">
+            {[
+              {
+                id: 1,
+                title: "Free Registration",
+                icon: BookOpen,
+                iconBg: "bg-green-50",
+                iconColor: "text-gray-600",
+                borderColor: "border-gray-200",
+                hoverBorder: "hover:border-gray-300",
+                bgGradient: "from-green-50/50 to-white",
+                for: "Doctors & Hospitals",
+                access: "Knowledge Hub",
+                validity: "Lifetime",
+                price: null,
+                priceNote: null,
+                ctaText: "Register Free",
+
+                href: profileData.role === "ADMIN" ? "/dashboard" : profileData.role === "USER" ? "/user" : "/user/auth?mode=register"
+              },
+              {
+                id: 2,
+                title: "Chat Subscription",
+                icon: MessageSquare,
+                iconBg: "bg-green-50",
+                iconColor: "text-gray-600",
+                borderColor: "border-gray-200",
+                hoverBorder: "hover:border-gray-300",
+                bgGradient: "from-green-50/50 to-white",
+                for: "General medicolegal queries",
+                access: "Group chat with experts",
+                validity: "Lifetime",
+                price: "₹1,000",
+                priceNote: "(one-time)",
+                ctaText: "Start Chat",
+
+                href: profileData.role === "ADMIN" ? "/dashboard/questions" : profileData.role === "USER" ? "/user" : "/user/payment"
+              },
+              {
+                id: 3,
+                title: "Advanced Chat",
+                icon: MessageCircle,
+                iconBg: "bg-green-50",
+                iconColor: "text-gray-600",
+                borderColor: "border-gray-200",
+                hoverBorder: "hover:border-gray-300",
+                bgGradient: "from-green-50/50 to-white col-span-1 md:col-span-2",
+                for: "Case-specific complaints",
+                access: "Chat + phone + in-person consultation",
+                validity: "1 month",
+                price: "₹10,000",
+                priceNote: null,
+                ctaText: "Consult Now",
+
+                href: profileData.role === "ADMIN" ? "/dashboard/advance-chat" : profileData.role === "USER" ? "/user/advance-chat" : "/user/advance-chat"
+              }
+            ].map((card) => {
+              const IconComponent = card.icon;
+              return (
+                <Link
+                  key={card.id}
+                  href={card.href}
+                  className={`block w-full bg-gradient-to-br ${card.bgGradient} border-2 ${card.borderColor} ${card.hoverBorder} rounded-lg p-5 hover:shadow-md transition-all`}
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-10 w-10 rounded-lg ${card.iconBg} flex items-center justify-center shrink-0`}>
+                        <IconComponent className={`h-5 w-5 ${card.iconColor}`} />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-base font-semibold text-gray-900">{card.title}</h3>
+                        {card.price && (
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-sm font-semibold text-gray-900">{card.price}</span>
+                            {card.priceNote && (
+                              <span className="text-xs text-gray-500">{card.priceNote}</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 text-sm text-gray-700 ml-12">
+                      <p>
+                        <span className="font-semibold text-gray-900">For:</span> {card.for}
+                      </p>
+                      <p>
+                        <span className="font-semibold text-gray-900">Access:</span> {card.access}
+                      </p>
+                      <p className="flex items-center gap-1.5">
+                        <Clock className={`h-3.5 w-3.5 ${card.iconColor}`} />
+                        <span>
+                          <span className="font-semibold text-gray-900">Validity:</span> {card.validity}
+                        </span>
+                      </p>
+                    </div>
+
+                    <div className="pt-2">
+                      <span className={`inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors`}>
+                        {card.ctaText}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </motion.div>
 
-        {/* Bottom Subtle Line */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+        {/* Philosophy Strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16 mt-12 md:mt-16"
+        >
+          <div className="grid md:grid-cols-3 gap-4 md:gap-6 border-t border-gray-200 pt-8 md:pt-12">
+            {/* Prevention */}
+            <div className="flex items-start gap-4">
+              <div className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                <Shield className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Prevention</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Proactive systems and protocols to prevent medicolegal disputes before they arise.
+                </p>
+              </div>
+            </div>
+
+            {/* Anticipation */}
+            <div className="flex items-start gap-4">
+              <div className="h-10 w-10 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
+                <AlertCircle className="h-5 w-5 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Anticipation</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Early identification and resolution of potential medicolegal issues at the earliest stage.
+                </p>
+              </div>
+            </div>
+
+            {/* Action - Medicolegal Defence */}
+            <div className="flex items-start gap-4">
+              <div className="h-10 w-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+                <Gavel className="h-5 w-5 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Action</h3>
+                <p className="text-xs font-medium text-gray-500 mb-1">Medicolegal Defence</p>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Comprehensive defense support for legal notices, court cases, and medical council complaints.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* About Section */}
@@ -598,11 +685,11 @@ export default function Home() {
               <div className="flex items-start gap-4 mb-4">
                 <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
                   <Image
-                    src="/dr-kohli.png"
+                    src="/pkk.png"
                     alt="Dr. Promod Kumar Kohli"
                     width={80}
                     height={80}
-                    className="object-cover"
+                    className="object-cover w-full h-full"
                   />
                 </div>
                 <div>
@@ -638,7 +725,7 @@ export default function Home() {
               <div className="flex items-start gap-4 mb-4">
                 <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10">
                   <Image
-                    src="/dr-narula.png"
+                    src="/sanjay-narula.jpeg"
                     alt="Dr. Sanjay Narula"
                     width={80}
                     height={80}

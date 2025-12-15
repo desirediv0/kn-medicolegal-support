@@ -1,275 +1,110 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
-import {
-  UserCircle,
-  Award,
-  BookOpen,
-  Scale,
-  FileCheck,
-  Building,
-  Users as UsersIcon,
-  Briefcase,
-} from "lucide-react";
 
 export default function AboutPage() {
+  const experts = [
+    {
+      name: "Dr. Promod Kumar Kohli",
+      title: "Medicolegal Expert & Surgeon",
+      photo: "/pkk.png",
+      bio: [
+        "Qualified surgeon and seasoned medicolegal expert with leadership roles across hospitals as Consultant Surgeon, Dean of Medical Education, and Medical Director.",
+        "Medicolegal experience since 2003 with a focus on documentation strength, compliance, and defence strategy.",
+      ],
+    },
+    {
+      name: "Dr. Sanjay Narula",
+      title: "MBBS, MS, FIAGES — Medicolegal Expert",
+      photo: "/sanjay-narula.jpeg",
+      bio: [
+        "General surgeon with 36+ years of clinical experience; extensive medicolegal practice including high-profile investigations.",
+        "Former Chairman, District Medical Negligence Board; contributor to disaster management and patient safety guidelines.",
+      ],
+    },
+  ];
+
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-background border-b border-foreground/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(196,248,42,0.08),transparent_50%)]" />
-
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 md:py-20 lg:px-16">
-          <div className="text-center">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4"
-            >
-              Prevention, Anticipation, and Defence
-            </motion.p>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-medium"
-            >
-              <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
-                About
-              </span>{" "}
-              Us
-            </motion.h1>
+    <main className="min-h-screen bg-white text-gray-900">
+      {/* Intro Section */}
+      <section className="border-b border-gray-200 bg-white">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-10 py-12 md:py-16">
+          <div className="space-y-4">
+            <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-gray-600">
+              KN Medicolegal Support
+            </p>
+            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 leading-tight">
+              Experts in Medicolegal Guidance for Healthcare Professionals
+            </h1>
+            <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-3xl">
+              We are experienced clinicians and medicolegal specialists focused on preventing, anticipating, and defending medicolegal risks with clear, actionable guidance tailored to hospitals and doctors.
+            </p>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 md:py-20 lg:px-16">
-        {/* Introduction */}
-        <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg"
-          >
-            <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
-              KN Medicolegal Support has been established by two highly
-              experienced & reputed surgeons who share a passion for risk
-              management within the healthcare ecosystem. They have been
-              providing medicolegal support services since 2003, informally &
-              individually. Now they have provided a formal platform to render
-              these services in a more structured manner collectively.
+      {/* Experts Section */}
+      <section className="border-b border-gray-200 bg-white">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-10 py-12 md:py-16">
+          <div className="space-y-4 mb-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">Our Expert Team</h2>
+            <p className="text-gray-700 max-w-3xl">
+              Seasoned medicolegal professionals with decades of clinical leadership and case experience.
             </p>
-          </motion.div>
-        </section>
-
-        {/* Founder Photographs Placeholder */}
-        {/* <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="rounded-2xl border-2 border-dashed border-foreground/20 bg-foreground/5 p-8 md:p-12 text-center"
-          >
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary-foreground/10 mb-4">
-              <UserCircle className="h-8 w-8 text-primary-foreground" />
-            </div>
-            <h3 className="text-xl md:text-2xl font-medium text-foreground mb-2">
-              Founder Photographs
-            </h3>
-            <p className="text-sm md:text-base text-foreground/60">
-              Photographs will be added soon
-            </p>
-          </motion.div>
-        </section> */}
-
-        {/* Our Expert Team */}
-        <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-4">
-              Our Expert Team
-            </h2>
-            <p className="text-foreground/60 max-w-2xl mx-auto">
-              Meet the experienced professionals dedicated to your medicolegal
-              support
-            </p>
-          </motion.div>
-
-          <div className="grid gap-8 lg:grid-cols-2">
-            {/* Dr. Promod Kumar Kohli */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
-            >
-              <div className="flex items-start gap-4 mb-6">
-                <div className="inline-flex h-24 w-24 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
-                  <Image
-                    src="/dr-kohli.png"
-                    alt="Dr. Promod Kumar Kohli"
-                    width={80}
-                    height={80}
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-medium text-foreground">
-                    Dr. Promod Kumar Kohli
-                  </h3>
-                  <p className="text-sm text-foreground/60">
-                    Medicolegal Expert & Surgeon
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-foreground/80 leading-relaxed mb-6">
-                Dr Promod Kumar Kohli is a qualified & experienced surgeon and a
-                qualified & experienced Medicolegal expert. His experience has
-                seen him in different capacities in practically all categories
-                of hospitals – as a consultant surgeon, Dean of Medical
-                Education, and as Medical Director.
-              </p>
-
-              <div className="pt-4 border-t border-foreground/10 mb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <Award className="h-5 w-5 text-blue-600" />
-                  <p className="font-semibold text-foreground">
-                    Qualifications:
-                  </p>
-                </div>
-                <ul className="space-y-2 text-sm text-foreground/70">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>Graduated in 1973 from Medical College, Rohtak</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>
-                      MS (Surgery), MNAMS (Surgery), PhD (Surgery) from PGIMER,
-                      Chandigarh
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>LLB (DU), PGD-MLS (Pune), PGD-HHM (Pune)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>Medicolegal experience since 2003</span>
-                  </li>
-                </ul>
-              </div>
-
-              <p className="pt-4 border-t border-foreground/10 italic text-sm text-foreground/70">
-                Retired from active clinical work since 2021 and now devotes his
-                professional time & energy only to medicolegal services.
-              </p>
-            </motion.div>
-
-            {/* Dr. Sanjay Narula */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
-            >
-              <div className="flex items-start gap-4 mb-6">
-                <div className="inline-flex h-24 w-24 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10">
-                  <Image
-                    src="/sanjay-narula.jpeg"
-                    alt="Dr. Sanjay Narula"
-                    width={80}
-                    height={80}
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-medium text-foreground">
-                    Dr. Sanjay Narula
-                  </h3>
-                  <p className="text-sm text-foreground/60">MBBS, MS, FIAGES</p>
-                </div>
-              </div>
-
-              <p className="text-foreground/80 leading-relaxed mb-6">
-                Dr Sanjay Narula is a qualified general surgeon and experienced
-                medicolegal expert. He has 36 years of surgical experience
-                following his MS in General Surgery from PGIMS, Rohtak, in 1989.
-              </p>
-
-              <div className="pt-4 border-t border-foreground/10">
-                <div className="flex items-center gap-2 mb-3">
-                  <Award className="h-5 w-5 text-green-600" />
-                  <p className="font-semibold text-foreground">
-                    Key Achievements:
-                  </p>
-                </div>
-                <ul className="space-y-2 text-sm text-foreground/70">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>
-                      Chairman of District Medical Negligence Board (many years)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>Conducted more than 600 enquiries</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>
-                      Instrumental in making the first disaster management plan
-                      for Haryana
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>
-                      Contributing author to &quot;patient safety
-                      guidelines&quot; published by Government of India
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>
-                      Conducted more than 2000 postmortem examinations
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>Done hundreds of MLC cases</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>Part of SIT, member of State crisis committee</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary-foreground mt-0.5">•</span>
-                    <span>
-                      Associated with medicolegal investigations in high-profile
-                      cases
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </motion.div>
           </div>
-        </section>
-      </div>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            {experts.map((expert) => (
+              <div
+                key={expert.name}
+                className="rounded-xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm"
+              >
+                <div className="flex flex-col items-center text-center mb-6">
+                  <div className="h-32 w-32 md:h-40 md:w-40 rounded-lg overflow-hidden bg-gray-100 border-2 border-gray-200 mb-4 shadow-sm">
+                    <Image
+                      src={expert.photo}
+                      alt={expert.name}
+                      width={160}
+                      height={160}
+                      className="h-full w-full object-cover"
+                      priority
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl md:text-2xl font-semibold text-gray-900">{expert.name}</h3>
+                    <p className="text-sm md:text-base font-medium text-gray-700">{expert.title}</p>
+                  </div>
+                </div>
+                <div className="space-y-2 text-gray-700 leading-relaxed text-center md:text-left">
+                  {expert.bio.map((line, idx) => (
+                    <p key={idx} className="text-sm md:text-base">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Long Description */}
+      <section className="bg-white">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-10 py-12 md:py-16">
+          <div className="space-y-6 max-w-4xl text-gray-800 leading-relaxed">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">Our Approach</h2>
+            <p className="text-base md:text-lg">
+              KN Medicolegal Support was founded by seasoned surgeons who have worked across the full spectrum of healthcare settings. Since 2003, they have provided structured guidance to strengthen documentation, ensure compliance, and build defensible clinical practice systems.
+            </p>
+            <p className="text-base md:text-lg">
+              We prioritize clear, pragmatic advice tailored to real-world clinical workflows. Our focus spans preventive protocols, early issue recognition, and robust defence strategies for legal notices, court matters, and medical council cases.
+            </p>
+            <p className="text-base md:text-lg">
+              Every engagement is handled with confidentiality and professionalism—aimed at protecting patient safety and clinician credibility.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

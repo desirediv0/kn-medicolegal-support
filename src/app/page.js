@@ -42,234 +42,120 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white text-foreground py-12 md:py-16 lg:py-20">
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Left Column - Primary Content */}
-            <div className="space-y-6 md:space-y-8">
-              {/* Trust Tagline */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <p className="text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-gray-600">
-                  Your Partner in Safe & Secure Clinical Practice
-                </p>
-              </motion.div>
-
-              {/* Main Headline */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-gray-900">
-                  Medicolegal Support for Doctors & Hospitals
-                  <span className="block mt-3 text-gray-700 font-normal text-3xl md:text-4xl lg:text-5xl">
-                    Protect. Prepare. Defend.
-                  </span>
+      <section className="bg-white text-foreground py-12 md:py-16 lg:py-20">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+            {/* Left Column - Text Only */}
+            <div className="space-y-6 md:space-y-7">
+              <p className="text-[11px] md:text-xs font-medium uppercase tracking-[0.3em] text-gray-600">
+                YOUR PARTNER IN SAFE & SECURE CLINICAL PRACTICE
+              </p>
+              <div className="space-y-2">
+                <h1 className="text-4xl md:text-5xl font-semibold leading-tight text-gray-900">
+                  Medicolegal Support
+                  <br className="hidden md:block" />
+                  <span className="block">for Doctors & Hospitals</span>
                 </h1>
-              </motion.div>
-
-              {/* Supporting Paragraph */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  Expert medicolegal guidance for documentation, compliance, and risk management.
-                  Comprehensive support for legal notices, court matters, and medical council cases.
+                <p className="text-sm md:text-base font-semibold text-gray-700">
+                  Protect · Prepare · Defend
                 </p>
-              </motion.div>
-
+              </div>
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-3xl">
+                Structured medicolegal guidance for documentation, compliance, litigation preparedness, and response to legal notices, court proceedings, and medical council matters.
+              </p>
             </div>
 
-            {/* Right Column - Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative lg:mt-8"
-            >
-              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden border border-gray-200">
+            {/* Right Column - Contextual Image */}
+            <div className="relative lg:mt-2">
+              <div className="relative w-full aspect-[3/2] rounded-sm overflow-hidden border border-gray-200">
                 <Image
                   src="/hero-banner1.jpg"
-                  alt="Medical and Legal Professional Support"
+                  alt="Medicolegal support for clinicians"
                   fill
                   className="object-cover"
                   priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 500px"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 520px"
                 />
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="pt-4"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto px-4 sm:px-6 lg:px-16">
+      </section>
+
+      {/* How You Can Engage With Us */}
+      <section className="bg-white border-t border-gray-200 py-10 md:py-12">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16 space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">How You Can Engage With Us</h2>
+            <p className="text-sm md:text-base text-gray-700">Clear, straightforward options for medico-legal support.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {[
               {
                 id: 1,
                 title: "Free Registration",
-                icon: BookOpen,
-                iconBg: "bg-green-50",
-                iconColor: "text-gray-600",
-                borderColor: "border-gray-200",
-                hoverBorder: "hover:border-gray-300",
-                bgGradient: "from-green-50/50 to-white",
-                for: "Doctors & Hospitals",
-                access: "Knowledge Hub",
-                validity: "Lifetime",
-                price: null,
-                priceNote: null,
-                ctaText: "Register Free",
-
-                href: profileData.role === "ADMIN" ? "/dashboard" : profileData.role === "USER" ? "/user" : "/user/auth?mode=register"
+                description: "Access to Knowledge Hub",
+                validity: "Validity: Lifetime",
+                cta: "Register Free",
+                href:
+                  profileData.role === "ADMIN"
+                    ? "/dashboard"
+                    : profileData.role === "USER"
+                      ? "/user"
+                      : "/user/auth?mode=register",
               },
               {
                 id: 2,
-                title: "Chat Subscription",
-                icon: MessageSquare,
-                iconBg: "bg-green-50",
-                iconColor: "text-gray-600",
-                borderColor: "border-gray-200",
-                hoverBorder: "hover:border-gray-300",
-                bgGradient: "from-green-50/50 to-white",
-                for: "General medicolegal queries",
-                access: "Group chat with experts",
-                validity: "Lifetime",
-                price: "₹1,000",
-                priceNote: "(one-time)",
-                ctaText: "Start Chat",
-
-                href: profileData.role === "ADMIN" ? "/dashboard/questions" : profileData.role === "USER" ? "/user" : "/user/payment"
+                title: "Chat Subscription – ₹1,000",
+                description: "General medico-legal discussions",
+                validity: "Validity: Indefinite",
+                cta: "Start Chat",
+                href:
+                  profileData.role === "ADMIN"
+                    ? "/dashboard/questions"
+                    : profileData.role === "USER"
+                      ? "/user"
+                      : "/user/payment",
               },
               {
                 id: 3,
-                title: "Advanced Chat",
-                icon: MessageCircle,
-                iconBg: "bg-green-50",
-                iconColor: "text-gray-600",
-                borderColor: "border-gray-200",
-                hoverBorder: "hover:border-gray-300",
-                bgGradient: "from-green-50/50 to-white col-span-1 md:col-span-2",
-                for: "Case-specific complaints",
-                access: "Chat + phone + in-person consultation",
-                validity: "1 month",
-                price: "₹10,000",
-                priceNote: null,
-                ctaText: "Consult Now",
-
-                href: profileData.role === "ADMIN" ? "/dashboard/advance-chat" : profileData.role === "USER" ? "/user/advance-chat" : "/user/advance-chat"
-              }
-            ].map((card) => {
-              const IconComponent = card.icon;
-              return (
-                <Link
-                  key={card.id}
-                  href={card.href}
-                  className={`block w-full bg-gradient-to-br ${card.bgGradient} border-2 ${card.borderColor} ${card.hoverBorder} rounded-lg p-5 hover:shadow-md transition-all`}
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className={`h-10 w-10 rounded-lg ${card.iconBg} flex items-center justify-center shrink-0`}>
-                        <IconComponent className={`h-5 w-5 ${card.iconColor}`} />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-base font-semibold text-gray-900">{card.title}</h3>
-                        {card.price && (
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-sm font-semibold text-gray-900">{card.price}</span>
-                            {card.priceNote && (
-                              <span className="text-xs text-gray-500">{card.priceNote}</span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5 text-sm text-gray-700 ml-12">
-                      <p>
-                        <span className="font-semibold text-gray-900">For:</span> {card.for}
-                      </p>
-                      <p>
-                        <span className="font-semibold text-gray-900">Access:</span> {card.access}
-                      </p>
-                      <p className="flex items-center gap-1.5">
-                        <Clock className={`h-3.5 w-3.5 ${card.iconColor}`} />
-                        <span>
-                          <span className="font-semibold text-gray-900">Validity:</span> {card.validity}
-                        </span>
-                      </p>
-                    </div>
-
-                    <div className="pt-2">
-                      <span className={`inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors`}>
-                        {card.ctaText}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+                title: "Advanced Chat – ₹10,000",
+                description: "Case-specific medico-legal consultation",
+                validity: "Validity: 1 Month",
+                cta: "Consult Now",
+                href:
+                  profileData.role === "ADMIN"
+                    ? "/dashboard/advance-chat"
+                    : profileData.role === "USER"
+                      ? "/user/advance-chat"
+                      : "/user/advance-chat",
+              },
+            ].map((item) => (
+              <Link
+                key={item.id}
+                href={item.href}
+                className="block rounded-lg border border-gray-200 bg-white p-4 md:p-5 space-y-2 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+              >
+                <h3 className="text-base font-semibold text-gray-900">{item.title}</h3>
+                <p className="text-sm text-gray-700">{item.description}</p>
+                <p className="text-xs text-gray-600">{item.validity}</p>
+                <span className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors">
+                  {item.cta}
+                </span>
+              </Link>
+            ))}
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-        {/* Philosophy Strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16 mt-12 md:mt-16"
-        >
-          <div className="grid md:grid-cols-3 gap-4 md:gap-6 border-t border-gray-200 pt-8 md:pt-12">
-            {/* Prevention */}
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                <Shield className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">Prevention</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Proactive systems and protocols to prevent medicolegal disputes before they arise.
-                </p>
-              </div>
-            </div>
-
-            {/* Anticipation */}
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
-                <AlertCircle className="h-5 w-5 text-amber-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">Anticipation</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Early identification and resolution of potential medicolegal issues at the earliest stage.
-                </p>
-              </div>
-            </div>
-
-            {/* Action - Medicolegal Defence */}
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
-                <Gavel className="h-5 w-5 text-red-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">Action</h3>
-                <p className="text-xs font-medium text-gray-500 mb-1">Medicolegal Defence</p>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Comprehensive defense support for legal notices, court cases, and medical council complaints.
-                </p>
-              </div>
-            </div>
+      {/* Philosophy Strip */}
+      <section className="border-t border-gray-200 bg-gray-50">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-3 py-4 text-sm md:text-base text-gray-700">
+            <span className="font-semibold text-gray-900">Prevention · Anticipation · Action</span>
+            <span className="text-gray-600 md:ml-3">Medicolegal Defence</span>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* About Section */}

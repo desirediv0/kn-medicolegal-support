@@ -5,9 +5,15 @@ import Image from "next/image";
 import { PlayCircle, X } from "lucide-react";
 
 const images = [
-    { src: "/hero-banner1.jpg", title: "Workshop: Risk Management", description: "In-person training session" },
-    { src: "/dr-kohli.png", title: "Expert Panel", description: "Medicolegal discussion" },
-    { src: "/dr-narula.png", title: "Clinical Guidance", description: "Case preparation" },
+    { src: "/gallery/img1.jpeg" },
+    { src: "/gallery/img2.jpeg" },
+    { src: "/gallery/img3.jpeg" },
+    { src: "/gallery/img4.jpeg" },
+    { src: "/gallery/img5.jpeg" },
+    { src: "/gallery/img6.jpeg" },
+    { src: "/gallery/img7.jpeg" },
+    { src: "/gallery/img8.jpeg" },
+    { src: "/gallery/img9.jpeg" },
 ];
 
 const videos = [
@@ -27,15 +33,18 @@ export default function GalleryPage() {
     const [activeTab, setActiveTab] = useState("images");
     const [modalItem, setModalItem] = useState(null);
     const [modalType, setModalType] = useState(null); // "image" or "video"
+    const [modalImageIndex, setModalImageIndex] = useState(null);
 
-    const openModal = (item, type) => {
+    const openModal = (item, type, index = null) => {
         setModalItem(item);
         setModalType(type);
+        setModalImageIndex(index);
     };
 
     const closeModal = () => {
         setModalItem(null);
         setModalType(null);
+        setModalImageIndex(null);
     };
 
     return (
@@ -78,25 +87,22 @@ export default function GalleryPage() {
             <section className="py-12 md:py-16">
                 <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
                     {activeTab === "images" && (
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {images.map((img) => (
+                        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {images.map((img, index) => (
                                 <button
                                     key={img.src}
-                                    onClick={() => openModal(img, "image")}
-                                    className="group rounded-lg border border-gray-200 bg-white overflow-hidden text-left focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+                                    onClick={() => openModal(img, "image", index)}
+                                    className="group relative rounded-lg border border-gray-200 bg-white overflow-hidden focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all hover:shadow-lg hover:border-gray-300"
                                 >
                                     <div className="relative aspect-[4/3] w-full">
                                         <Image
                                             src={img.src}
-                                            alt={img.title}
+                                            alt={`Gallery Image ${index + 1}`}
                                             fill
-                                            className="object-cover"
+                                            className={`object-cover ${index === 1 ? 'object-top' : ''} group-hover:scale-105 transition-transform duration-300`}
                                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
                                         />
-                                    </div>
-                                    <div className="p-4 space-y-1">
-                                        <h3 className="text-sm font-semibold text-gray-900">{img.title}</h3>
-                                        <p className="text-xs text-gray-600">{img.description}</p>
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                                     </div>
                                 </button>
                             ))}
@@ -135,11 +141,7 @@ export default function GalleryPage() {
                         className="bg-white rounded-lg max-w-5xl w-full overflow-hidden shadow-xl"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-                            <div>
-                                <h3 className="text-base font-semibold text-gray-900">{modalItem.title}</h3>
-                                {modalItem.description && <p className="text-xs text-gray-600">{modalItem.description}</p>}
-                            </div>
+                        <div className="flex items-center justify-end px-4 py-3 border-b border-gray-200">
                             <button
                                 onClick={closeModal}
                                 className="p-2 rounded-md text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-300"
@@ -150,15 +152,16 @@ export default function GalleryPage() {
                         </div>
 
                         <div className="bg-black">
-                            {modalType === "image" && (
-                                <div className="relative w-full h-full min-h-[320px]">
-                                    <div className="relative aspect-[16/9] w-full">
+                            {modalType === "image" && modalItem && (
+                                <div className="relative w-full flex items-center justify-center" style={{ minHeight: '400px', maxHeight: '90vh', height: '80vh' }}>
+                                    <div className="relative w-full h-full">
                                         <Image
                                             src={modalItem.src}
-                                            alt={modalItem.title}
+                                            alt="Gallery Image"
                                             fill
-                                            className="object-contain bg-black"
+                                            className={`bg-black ${modalImageIndex === 1 ? 'object-top object-cover' : 'object-contain'}`}
                                             sizes="100vw"
+                                            priority
                                         />
                                     </div>
                                 </div>

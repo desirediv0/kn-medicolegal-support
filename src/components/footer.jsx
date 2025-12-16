@@ -141,6 +141,79 @@ export function Footer() {
         {/* Divider */}
         <div className="h-px bg-white/10" />
 
+        {/* Contact Information */}
+        <div className="space-y-4 text-sm">
+          <p className="font-semibold uppercase tracking-[0.15em] text-white">
+            Contact
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4 text-white/80">
+            <div>
+              <p className="font-medium text-white mb-2">Email:</p>
+              <div className="space-y-1 text-xs">
+                <p>
+                  <a
+                    href="mailto:support@knmedicolegal.com"
+                    className="hover:text-primary-foreground transition-colors"
+                  >
+                    support@knmedicolegal.com
+                  </a>
+                  <span className="text-white/60 ml-2">(Support)</span>
+                </p>
+                <p>
+                  <a
+                    href="mailto:info@knmedicolegal.com"
+                    className="hover:text-primary-foreground transition-colors"
+                  >
+                    info@knmedicolegal.com
+                  </a>
+                  <span className="text-white/60 ml-2">(General)</span>
+                </p>
+                <p>
+                  <a
+                    href="mailto:compliance@knmedicolegal.com"
+                    className="hover:text-primary-foreground transition-colors"
+                  >
+                    compliance@knmedicolegal.com
+                  </a>
+                  <span className="text-white/60 ml-2">(Compliance)</span>
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="font-medium text-white mb-2">Phone:</p>
+              <div className="space-y-1 text-xs">
+                <p>
+                  <a
+                    href="tel:+919876543210"
+                    className="hover:text-primary-foreground transition-colors"
+                  >
+                    +91 98765 43210
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href="tel:+919717891104"
+                    className="hover:text-primary-foreground transition-colors"
+                  >
+                    +91 97178 91104
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href="tel:+919810433402"
+                    className="hover:text-primary-foreground transition-colors"
+                  >
+                    +91 98104 33402
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="h-px bg-white/10" />
+
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-white/60 leading-relaxed text-center sm:text-left">

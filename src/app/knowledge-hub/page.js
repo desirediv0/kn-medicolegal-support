@@ -163,8 +163,7 @@ export default function KnowledgeHubPage() {
                             anticipation, ethical practice, documentation strength, and effective litigation management.
                         </p>
                         <div className="rounded-md border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700">
-                            Knowledge Hub content is accessible to registered users. Paid services are not mixed with educational
-                            material.
+                            Knowledge Hub content is accessible to registered users. Paid users can download Knowledge Hub content.
                         </div>
                     </div>
                 </div>
@@ -189,6 +188,12 @@ export default function KnowledgeHubPage() {
                                         <p key={idx}>{line}</p>
                                     ))}
                                 </div>
+                                <Link
+                                    href={`/knowledge-hub/topic/${topic.title.toLowerCase().replace(/\s+/g, '-')}`}
+                                    className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                                >
+                                    Click here to read more
+                                </Link>
                             </div>
                         ))}
                     </div>
@@ -317,6 +322,12 @@ export default function KnowledgeHubPage() {
                                 <p>Penalties: Cognizable, non-bailable, non-compoundable offences; suspension/cancellation of registration; professional suspension for violations.</p>
                                 <p>Procedure: Inspections by appropriate authority, show-cause notices, potential criminal proceedings for violations.</p>
                             </div>
+                            <Link
+                                href="/knowledge-hub/topic/pc-pndt-act"
+                                className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                            >
+                                Click here to read more
+                            </Link>
                         </article>
 
                         <article className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
@@ -326,6 +337,12 @@ export default function KnowledgeHubPage() {
                                 <p>Privacy: Do not post clinical images or details; avoid informal consultations; use disclaimers for educational posts.</p>
                                 <p>Misuse handling: Preserve evidence, report/flag content, issue formal clarifications, seek legal remedies for defamation or harassment.</p>
                             </div>
+                            <Link
+                                href="/knowledge-hub/topic/social-media-in-healthcare"
+                                className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                            >
+                                Click here to read more
+                            </Link>
                         </article>
 
                         <article className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
@@ -337,6 +354,12 @@ export default function KnowledgeHubPage() {
                                 <p>Data protection: De-identify data; comply with privacy laws; avoid unapproved platforms.</p>
                                 <p>Liability: Over-reliance or exaggerated claims can constitute deficiency in service or misrepresentation.</p>
                             </div>
+                            <Link
+                                href="/knowledge-hub/topic/artificial-intelligence-ai-in-healthcare"
+                                className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                            >
+                                Click here to read more
+                            </Link>
                         </article>
                     </div>
                 </div>

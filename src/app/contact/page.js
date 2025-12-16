@@ -24,24 +24,66 @@ export default function ContactPage() {
       {/* Contact Information Section */}
       <section className="py-12 md:py-16 border-b border-gray-200">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {/* Office Address */}
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+            {/* Email IDs */}
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <div className="flex items-start gap-4">
                 <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
-                  <MapPin className="h-6 w-6 text-gray-700" />
+                  <Mail className="h-6 w-6 text-gray-700" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-base font-semibold text-gray-900 mb-2">
-                    Office Address
+                  <h3 className="text-base font-semibold text-gray-900 mb-4">
+                    Email IDs
                   </h3>
-                  <address className="text-sm text-gray-700 leading-relaxed not-italic">
-                    KN Medicolegal Support<br />
-                    [Office Address Line 1]<br />
-                    [Office Address Line 2]<br />
-                    [City, State - PIN Code]<br />
-                    India
-                  </address>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-1">
+                        <a
+                          href="mailto:support@knmedicolegal.com"
+                          className="hover:text-gray-700 transition-colors break-all"
+                        >
+                          support@knmedicolegal.com
+                        </a>
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        User support & queries
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-1">
+                        <a
+                          href="mailto:info@knmedicolegal.com"
+                          className="hover:text-gray-700 transition-colors break-all"
+                        >
+                          info@knmedicolegal.com
+                        </a>
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        General information
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-1">
+                        <a
+                          href="mailto:compliance@knmedicolegal.com"
+                          className="hover:text-gray-700 transition-colors break-all"
+                        >
+                          compliance@knmedicolegal.com
+                        </a>
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Compliance & legal correspondence
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <p className="text-xs text-gray-600 leading-relaxed">
+                      <strong className="text-gray-900">When to use which email:</strong><br />
+                      Use <strong>support@knmedicolegal.com</strong> for account issues, service queries, and technical support.<br />
+                      Use <strong>info@knmedicolegal.com</strong> for general inquiries and information requests.<br />
+                      Use <strong>compliance@knmedicolegal.com</strong> for legal matters, compliance issues, and formal correspondence.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -53,47 +95,28 @@ export default function ContactPage() {
                   <Phone className="h-6 w-6 text-gray-700" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-base font-semibold text-gray-900 mb-2">
+                  <h3 className="text-base font-semibold text-gray-900 mb-4">
                     Phone Numbers
                   </h3>
-                  <div className="space-y-2 text-sm text-gray-700">
+                  <div className="space-y-3 text-sm text-gray-700">
                     <p>
-                      <a href="tel:+911234567890" className="hover:text-gray-900 transition-colors">
-                        +91 1234567890
+                      <a href="tel:+919876543210" className="hover:text-gray-900 transition-colors font-medium">
+                        +91 98765 43210
                       </a>
                     </p>
                     <p>
-                      <a href="tel:+919876543210" className="hover:text-gray-900 transition-colors">
-                        +91 9876543210
+                      <a href="tel:+919717891104" className="hover:text-gray-900 transition-colors font-medium">
+                        +91 97178 91104
                       </a>
                     </p>
-                    <p className="text-xs text-gray-600 mt-3">
-                      Available: Monday - Saturday, 9:00 AM - 6:00 PM IST
+                    <p>
+                      <a href="tel:+919810433402" className="hover:text-gray-900 transition-colors font-medium">
+                        +91 98104 33402
+                      </a>
                     </p>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Official Email */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
-                  <Mail className="h-6 w-6 text-gray-700" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-base font-semibold text-gray-900 mb-2">
-                    Official Email
-                  </h3>
-                  <p className="text-sm text-gray-700 mb-1">
-                    <a
-                      href="mailto:info@knmedicolegal.com"
-                      className="hover:text-gray-900 transition-colors break-all"
-                    >
-                      info@knmedicolegal.com
-                    </a>
-                  </p>
-                  <p className="text-xs text-gray-600 mt-3">
+                  <p className="text-xs text-gray-600 mt-4 pt-4 border-t border-gray-200">
+                    Available: Monday - Saturday, 9:00 AM - 6:00 PM IST<br />
                     We respond within 24-48 hours
                   </p>
                 </div>

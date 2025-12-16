@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutPage() {
   const experts = [
@@ -10,7 +11,7 @@ export default function AboutPage() {
       photo: "/pkk.png",
       bio: [
         "Qualified surgeon and seasoned medicolegal expert with leadership roles across hospitals as Consultant Surgeon, Dean of Medical Education, and Medical Director.",
-        "Medicolegal experience since 2003 with a focus on documentation strength, compliance, and defence strategy.",
+        "Medicolegal experience with a focus on documentation strength, compliance, and defence strategy.",
       ],
     },
     {
@@ -82,6 +83,14 @@ export default function AboutPage() {
                     </p>
                   ))}
                 </div>
+                <div className="mt-4 text-center md:text-left">
+                  <Link
+                    href={`/about/expert/${expert.name.toLowerCase().replace(/\s+/g, '-').replace('dr.-', '')}`}
+                    className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                  >
+                    Click here to read more
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
@@ -94,7 +103,7 @@ export default function AboutPage() {
           <div className="space-y-6 max-w-4xl text-gray-800 leading-relaxed">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">Our Approach</h2>
             <p className="text-base md:text-lg">
-              KN Medicolegal Support was founded by seasoned surgeons who have worked across the full spectrum of healthcare settings. Since 2003, they have provided structured guidance to strengthen documentation, ensure compliance, and build defensible clinical practice systems.
+              KN Medicolegal Support was founded by seasoned surgeons who have worked across the full spectrum of healthcare settings. For several decades they have been providing structured guidance to strengthen documentation, ensure compliance, and build defensible clinical practice systems.
             </p>
             <p className="text-base md:text-lg">
               We prioritize clear, pragmatic advice tailored to real-world clinical workflows. Our focus spans preventive protocols, early issue recognition, and robust defence strategies for legal notices, court matters, and medical council cases.

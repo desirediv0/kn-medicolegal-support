@@ -17,17 +17,17 @@ const sections = [
       "Medical Information: Medical records, case documents, consent forms, and clinical notes that you choose to share with us.",
       "Legal Information: Legal notices, court documents, complaints, and related correspondence shared for advisory purposes.",
       "Technical Information: IP address, browser type, device information, cookies, and usage patterns when you interact with our platform.",
-      "Payment Information: Billing details, payment history, and transaction records (payment card details are processed securely through third-party payment gateways and are not stored on our servers).",
+      "Payment Information: Billing details, payment history, and transaction records (payment details are processed securely and are not stored on our servers).",
       "Communication Records: Messages, emails, chat transcripts, and other communications exchanged through our platform.",
     ],
   },
   {
     title: "How We Use Your Information",
     items: [
-      "Service Delivery: To provide medicolegal consultations, document reviews, compliance assistance, and other requested services.",
+      "Service Delivery: To provide medicolegal consultations, medicolegal audits, drafting of legal documents, compliance assistance, and other requested services.",
       "Account Management: To create and manage your account, process registrations, and authenticate your identity.",
       "Communication: To respond to your inquiries, send service updates, notifications, and important information about your account.",
-      "Payment Processing: To process payments, manage subscriptions, and handle billing-related communications.",
+      "Payment Processing: To process payments, manage subscriptions, and handle billing-related communications. Payments are processed through secure methods including UPI, bank transfers, and cash payments as agreed.",
       "Improvement of Services: To analyze usage patterns, improve our services, develop new features, and enhance user experience.",
       "Legal Compliance: To comply with applicable laws, regulations, court orders, and regulatory requirements.",
       "Security: To detect, prevent, and address fraud, unauthorized access, and other security threats.",
@@ -59,7 +59,7 @@ const sections = [
       "We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this policy.",
       "Medical and legal documents are retained in accordance with legal and regulatory requirements, which may extend beyond the termination of services.",
       "Account information is retained for a minimum period required by law and business needs, typically 7 years from the last interaction.",
-      "You may request deletion of your data, subject to legal and regulatory retention requirements.",
+      "You may request (in writing) deletion of your data, subject to legal and regulatory retention requirements.",
     ],
   },
   {
@@ -98,7 +98,7 @@ const sections = [
     items: [
       "Our website may contain links to third-party websites or services. We are not responsible for the privacy practices of these external sites.",
       "We encourage you to review the privacy policies of any third-party services you access through our platform.",
-      "Payment processing is handled by secure third-party payment gateways (e.g., Razorpay) that comply with PCI DSS standards.",
+      "Payment processing is handled through secure methods including UPI, bank transfers, and cash payments as agreed with clients.",
     ],
   },
   {

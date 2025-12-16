@@ -19,6 +19,8 @@ import {
   RefreshCw,
   Award,
   ArrowRight,
+  Mail,
+  Phone,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
@@ -89,7 +91,7 @@ export default function Home() {
               {
                 id: 1,
                 title: "Free Registration",
-                description: "Access to Knowledge Hub",
+                description: "Access to the contents of Knowledge Hub.",
                 validity: "Validity: Lifetime",
                 cta: "Register Free",
                 href:
@@ -148,7 +150,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-3 py-4 text-sm md:text-base text-gray-700">
             <span className="font-semibold text-gray-900">Prevention · Anticipation · Action</span>
-            <span className="text-gray-600 md:ml-3">Medicolegal Defence</span>
+            <span className="text-gray-600 md:ml-3 font-bold">Medicolegal Defence</span>
           </div>
         </div>
       </section>
@@ -170,7 +172,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4"
             >
-              Prevention • Anticipation • Defence
+              Medicolegal Support.
             </motion.p>
 
             <motion.h2
@@ -273,6 +275,117 @@ export default function Home() {
             </motion.div>
           </div>
 
+          {/* Expert Team Section */}
+          <div className="mb-10">
+            <div className="text-center mb-10">
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4"
+              >
+                Meet Our Experts
+              </motion.p>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-3xl md:text-4xl lg:text-5xl font-medium"
+              >
+                <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
+                  Expert
+                </span>{" "}
+                Team
+              </motion.h2>
+            </div>
+
+            {/* Team Cards */}
+            <div className="grid gap-4 md:gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+              {/* Dr. Promod Kumar Kohli */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
+                    <Image
+                      src="/pkk.png"
+                      alt="Dr. Promod Kumar Kohli"
+                      width={80}
+                      height={80}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-medium text-foreground">
+                      Dr. Promod Kumar Kohli
+                    </h3>
+                    <p className="text-sm text-foreground/60">
+                      Medicolegal Expert & Surgeon
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-sm text-foreground/70 leading-relaxed mb-4">
+                  Qualified & experienced surgeon and medicolegal expert with
+                  experience as consultant surgeon, Dean of Medical Education, and
+                  Medical Director.
+                </p>
+
+                <div className="flex items-center gap-2 text-xs text-foreground/60">
+                  <Award className="h-4 w-4 text-blue-600" />
+                  <span>MS, PhD (Surgery), LLB, PGD-MLS | PGD-HHM.</span>
+                </div>
+              </motion.div>
+
+              {/* Dr. Sanjay Narula */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10">
+                    <Image
+                      src="/sanjay-narula.jpeg"
+                      alt="Dr. Sanjay Narula"
+                      width={80}
+                      height={80}
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-medium text-foreground">
+                      Dr. Sanjay Narula
+                    </h3>
+                    <p className="text-sm text-foreground/60">MBBS, MS, FIAGES</p>
+                  </div>
+                </div>
+
+                <p className="text-sm text-foreground/70 leading-relaxed mb-4">
+                  Qualified general surgeon and experienced medicolegal expert
+                  with 36 years of surgical experience. Former Chairman of
+                  District Medical Negligence Board.
+                </p>
+
+                <div className="flex items-center gap-2 text-xs text-foreground/60">
+                  <Award className="h-4 w-4 text-green-600" />
+                  <span>
+                    600+ Enquiries | 2000+ Postmortems | High-profile Cases
+                  </span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
           {/* Why Choose Us  */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -332,9 +445,8 @@ export default function Home() {
               className="text-3xl md:text-4xl lg:text-5xl font-medium"
             >
               <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
-                Our services
-              </span>{" "}
-              help to resolve your situation
+                Medicolegal Risk Management.
+              </span>
             </motion.h2>
 
             <motion.p
@@ -373,7 +485,7 @@ export default function Home() {
                 <p className="text-sm  text-foreground/70 leading-relaxed">
                   We help you put systems in place that prevent disputes, reduce
                   risk, and ensure regulatory compliance. We also help you in anticipating a medicolegal dispute and help resolve it at that stage itself. This includes
-                  documentation audits, SOP development, consent system review,
+                  documentation, audits, SOP development, consent system review,
                   and staff training.
                 </p>
               </div>
@@ -522,121 +634,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Expert Team Section */}
-      <section className="relative overflow-hidden bg-background py-12">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(196,248,42,0.05),transparent_50%)]" />
-
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
-          {/* Header */}
-          <div className="text-center mb-10">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-foreground/60 mb-4"
-            >
-              Meet Our Experts
-            </motion.p>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-medium"
-            >
-              <span className="bg-gradient-to-r from-[hsl(var(--contact-gradient-from))] to-[hsl(var(--contact-gradient-to))] bg-clip-text text-transparent">
-                Expert
-              </span>{" "}
-              Team
-            </motion.h2>
-          </div>
-
-          {/* Team Cards */}
-          <div className="grid gap-4 md:gap-8 md:grid-cols-2 max-w-5xl mx-auto">
-            {/* Dr. Promod Kumar Kohli */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
-            >
-              <div className="flex items-start gap-4 mb-4">
-                <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
-                  <Image
-                    src="/pkk.png"
-                    alt="Dr. Promod Kumar Kohli"
-                    width={80}
-                    height={80}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium text-foreground">
-                    Dr. Promod Kumar Kohli
-                  </h3>
-                  <p className="text-sm text-foreground/60">
-                    Medicolegal Expert & Surgeon
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-sm text-foreground/70 leading-relaxed mb-4">
-                Qualified & experienced surgeon and medicolegal expert with
-                experience as consultant surgeon, Dean of Medical Education, and
-                Medical Director.
-              </p>
-
-              <div className="flex items-center gap-2 text-xs text-foreground/60">
-                <Award className="h-4 w-4 text-blue-600" />
-                <span>MS, PhD (Surgery), LLB, PGD-MLS | Since 2003</span>
-              </div>
-            </motion.div>
-
-            {/* Dr. Sanjay Narula */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow"
-            >
-              <div className="flex items-start gap-4 mb-4">
-                <div className="inline-flex h-20 w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10">
-                  <Image
-                    src="/sanjay-narula.jpeg"
-                    alt="Dr. Sanjay Narula"
-                    width={80}
-                    height={80}
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium text-foreground">
-                    Dr. Sanjay Narula
-                  </h3>
-                  <p className="text-sm text-foreground/60">MBBS, MS, FIAGES</p>
-                </div>
-              </div>
-
-              <p className="text-sm text-foreground/70 leading-relaxed mb-4">
-                Qualified general surgeon and experienced medicolegal expert
-                with 36 years of surgical experience. Former Chairman of
-                District Medical Negligence Board.
-              </p>
-
-              <div className="flex items-center gap-2 text-xs text-foreground/60">
-                <Award className="h-4 w-4 text-green-600" />
-                <span>
-                  600+ Enquiries | 2000+ Postmortems | High-profile Cases
-                </span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Testimonials Section */}
       {/* <div className="max-w-7xl mx-auto px-4 ">
@@ -799,7 +796,7 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(196,248,42,0.05),transparent_50%)]" />
 
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 md:py-20 lg:px-16">
+        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 py-12  lg:px-16">
           {/* Header */}
           <div className="text-center mb-12">
             <motion.h2
@@ -817,27 +814,8 @@ export default function Home() {
           </div>
 
           {/* Content Grid */}
-          <div className="grid gap-8 lg:gap-12 lg:grid-cols-2 items-start">
-            {/* Left - Image */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative order-2 lg:order-1"
-            >
-              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=800&fit=crop"
-                  alt="Professional consultation"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
-                />
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
-              </div>
-            </motion.div>
+          <div>
+
 
             {/* Right - Contact Form */}
             <motion.div
@@ -845,17 +823,105 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="order-1 lg:order-2"
+              className="grid gap-4 lg:gap-12 lg:grid-cols-2 items-start"
             >
               <div className="rounded-2xl border border-foreground/10 bg-white p-6 md:p-8 shadow-lg">
                 <ContactForm />
               </div>
+              {/* Contact Details */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="mt-6 rounded-2xl border border-foreground/10 bg-white p-6 shadow-lg"
+              >
+                <h3 className="text-lg md:text-xl font-medium text-foreground mb-4">
+                  Contact Details
+                </h3>
+
+                {/* Email IDs */}
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Mail className="h-5 w-5 text-primary" />
+                    <h4 className="text-base font-semibold text-foreground">Email IDs</h4>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm font-medium text-foreground mb-1">
+                        <a
+                          href="mailto:support@knmedicolegal.com"
+                          className="hover:text-primary transition-colors break-all"
+                        >
+                          support@knmedicolegal.com
+                        </a>
+                      </p>
+                      <p className="text-xs text-foreground/70">
+                        User support & queries
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground mb-1">
+                        <a
+                          href="mailto:info@knmedicolegal.com"
+                          className="hover:text-primary transition-colors break-all"
+                        >
+                          info@knmedicolegal.com
+                        </a>
+                      </p>
+                      <p className="text-xs text-foreground/70">
+                        General information
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground mb-1">
+                        <a
+                          href="mailto:compliance@knmedicolegal.com"
+                          className="hover:text-primary transition-colors break-all"
+                        >
+                          compliance@knmedicolegal.com
+                        </a>
+                      </p>
+                      <p className="text-xs text-foreground/70">
+                        Compliance & legal correspondence
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Phone Numbers */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Phone className="h-5 w-5 text-primary" />
+                    <h4 className="text-base font-semibold text-foreground">Phone Numbers</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm text-foreground">
+                      <a href="tel:+919876543210" className="hover:text-primary transition-colors font-medium">
+                        +91 98765 43210
+                      </a>
+                    </p>
+                    <p className="text-sm text-foreground">
+                      <a href="tel:+919717891104" className="hover:text-primary transition-colors font-medium">
+                        +91 97178 91104
+                      </a>
+                    </p>
+                    <p className="text-sm text-foreground">
+                      <a href="tel:+919810433402" className="hover:text-primary transition-colors font-medium">
+                        +91 98104 33402
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Contact us for */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className=" rounded-2xl border border-foreground/10 bg-white p-6 shadow-lg md:col-span-2"
               >
                 <h3 className="text-lg md:text-xl font-medium text-foreground mb-4">
                   Contact us for:

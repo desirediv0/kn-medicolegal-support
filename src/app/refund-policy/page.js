@@ -14,9 +14,9 @@ const sections = [
     title: "Payment Terms",
     items: [
       "All invoices raised within the client portal or via direct engagements are payable in advance unless otherwise specified in writing.",
-      "Payment methods accepted include credit/debit cards, net banking, UPI, and other online payment options as available on our payment gateway.",
+      "Payment methods accepted include UPI, bank transfers, and cash payments as agreed with clients.",
       "Payment confirmation will be sent to your registered email address upon successful transaction completion.",
-      "All payments are processed securely through third-party payment gateways (e.g., Razorpay) that comply with industry security standards.",
+      "All payments are processed securely through agreed payment methods including UPI, bank transfers, and cash payments.",
     ],
   },
   {
@@ -24,7 +24,7 @@ const sections = [
     items: [
       "Once a payment is successfully completed, the fee becomes non-refundable. This includes situations where the client elects to discontinue a matter after we have initiated expert allocation, document preparation, or liaison activities.",
       "Services that have been partially or fully delivered are not eligible for refunds.",
-      "Payments made for completed consultations, document reviews, training sessions, or advisory services that have been provided are non-refundable.",
+      "Payments made for completed consultations, medicolegal audits, drafting of legal documents, training sessions, or advisory services that have been provided are non-refundable.",
       "Subscription fees, advance payments for ongoing services, and retainer fees are non-refundable once services have commenced.",
       "No refunds will be provided for services that have been delivered as per the agreed scope, even if the client is not satisfied with the outcome.",
     ],
@@ -35,7 +35,7 @@ const sections = [
       "Duplicate Payments: If a payment is charged twice due to technical errors, we will process a full refund for the duplicate transaction within 7-10 business days after verification.",
       "Failed Services: If we are unable to deliver the service due to our technical failure or unavailability, and the client has not received any service, a full or partial refund may be issued at our discretion.",
       "Cancellation Before Service Commencement: If a service is cancelled by the client before any work has been initiated, a refund may be considered on a case-by-case basis, subject to administrative fees if applicable.",
-      "Payment Gateway Errors: If a payment is processed but the service was not activated due to technical issues on our end, we will either activate the service or provide a full refund.",
+      "Payment Processing Errors: If a payment is processed but the service was not activated due to technical issues on our end, we will either activate the service or provide a full refund.",
     ],
   },
   {
@@ -55,7 +55,7 @@ const sections = [
       "If a payment fails due to technical issues, our support desk will assist in reconciling the transaction or issuing a fresh payment link.",
       "If money is debited from your account but the transaction failed, please contact us immediately with transaction details.",
       "We will investigate the issue and either complete the transaction or initiate a refund within 7-10 business days after verification.",
-      "For payment gateway-related issues, we coordinate with our payment processor to resolve discrepancies and process refunds as needed.",
+      "For payment processing-related issues, we coordinate to resolve discrepancies and process refunds as needed.",
     ],
   },
   {

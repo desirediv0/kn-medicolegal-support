@@ -14,7 +14,7 @@ export default function FeePackagesPage() {
                             Fee & Packages
                         </h1>
                         <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-                            Transparent medico-legal services as per official documentation. No assumptions, no marketing.
+                            Transparent medico-legal services as per official documentation. No assumptions, no marketing. No hidden charges.
                         </p>
                     </div>
                 </div>
@@ -128,7 +128,7 @@ export default function FeePackagesPage() {
                         </h2>
                         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
                             Fee will be decided during the Advanced Chat. It depends on the complexity of the document (simple,
-                            complex, or very complex). No fixed pricing is displayed here.
+                            complex, or very complex) and other services. No fixed pricing is displayed here.
                         </p>
                     </div>
                 </div>
@@ -193,182 +193,260 @@ export default function FeePackagesPage() {
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Consultations / Chats (online and/or offline)
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Advance Chats (online and/or offline)
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Discussion of the case with the advocate (on panel or otherwise)
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Medicolegal screening of medical records in litigation cases
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Preparing the Defence Strategy
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Reply to Legal Notice
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Reply to Administrative Notices
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Drafting of documents in litigation (Medical Negligence cases) in SMC / NMC / Consumer Courts
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Drafting of documents in litigation (other than Medical Negligence cases – PNDT, ART, Criminal cases)
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Drafting of Expert Opinion
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Medical research on contentious issues in dispute
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Legal research for case laws
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Medicolegal audit of morbidity / mortality cases (for self-improvement or litigation)
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
-                                        <td className="px-4 py-3 text-center text-sm font-medium text-gray-900 border-l border-gray-200">
-                                            {/* YES/NO - Update from document */}
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
+                                                YES/NO
+                                            </span>
                                         </td>
                                     </tr>
                                 </tbody>

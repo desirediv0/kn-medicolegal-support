@@ -4,7 +4,7 @@ const sections = [
   {
     title: "Terms of Service",
     items: [
-      "KN Medicolegal Support provides medico-legal coordination, documentation, and advisory services strictly for registered clients and partner organisations.",
+      "KN Medicolegal Support provides medico-legal coordination, drafting of legal documents, and advisory services strictly for registered clients and partner organisations.",
       "All users must ensure that shared information is accurate, lawful, and provided with appropriate authorisations.",
       "Services are delivered in accordance with the scope agreed during onboarding, including any addenda shared via email or within the client portal.",
       "Users are responsible for maintaining the confidentiality of their account credentials and for all activities that occur under their account.",
@@ -24,7 +24,7 @@ const sections = [
   {
     title: "Service Scope",
     items: [
-      "Our services include medicolegal consultations, document reviews, compliance assistance, training programs, and crisis management support.",
+      "Our services include medicolegal consultations, medicolegal audits, drafting of legal documents, compliance assistance, training programs, and crisis management support.",
       "Service availability may vary based on geographic location, technical constraints, and resource availability.",
       "We reserve the right to modify, suspend, or discontinue any aspect of our services at any time with reasonable notice to users.",
       "We provide expert advisory services but do not replace the need for qualified legal representation in formal legal proceedings.",

@@ -26,10 +26,8 @@ export default function FeePackagesPage() {
                     <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8">
                         <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">General Note</h2>
                         <div className="space-y-3 text-sm md:text-base text-gray-700 leading-relaxed">
-                            <p>Registration on the site is free.</p>
                             <p>
-                                Free registration permits access to the Knowledge Hub, which contains important medico-legal
-                                information and is updated periodically.
+                                Registration on this site is free. It permits you to access the contents of the Knowledge Hub, which has important medicolegal information and is updated periodically.
                             </p>
                         </div>
                     </div>
@@ -52,13 +50,7 @@ export default function FeePackagesPage() {
                                 <span className="text-sm font-semibold text-gray-900">₹0</span>
                             </div>
                             <p className="text-sm text-gray-700 leading-relaxed">
-                                Access: Knowledge Hub
-                                <br />
-                                Validity: Lifetime
-                            </p>
-                            <p className="text-sm text-gray-700 leading-relaxed">
-                                Free registration permits access to the Knowledge Hub, which contains important medico-legal
-                                information and is updated periodically.
+                                Registration on this site is free. It permits you to access the contents of the Knowledge Hub, which has important medicolegal information and is updated periodically.
                             </p>
                             <Link
                                 href="/user/auth?mode=register"
@@ -74,12 +66,9 @@ export default function FeePackagesPage() {
                                 <h3 className="text-lg font-semibold text-gray-900">General Chat</h3>
                                 <span className="text-sm font-semibold text-gray-900">₹1,000 (one-time)</span>
                             </div>
-                            <ul className="space-y-1 text-sm text-gray-700 leading-relaxed">
-                                <li>Access: Group chat with medico-legal experts</li>
-                                <li>Usage: Any number of times</li>
-                                <li>Limitation: Case-specific complaints are NOT addressed</li>
-                                <li>Validity: Indefinite</li>
-                            </ul>
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                                Login credentials are obtained through a one-time payment of Rs 1000/-. It allows you to chat with the medicolegal experts as many times as you like, for an indefinite period. However, specific case-based complaints are not addressed on this chat.
+                            </p>
                             <Link
                                 href="/user"
                                 className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
@@ -94,20 +83,9 @@ export default function FeePackagesPage() {
                                 <h3 className="text-lg font-semibold text-gray-900">Advanced Chat</h3>
                                 <span className="text-sm font-semibold text-gray-900">₹10,000</span>
                             </div>
-                            <ul className="space-y-1 text-sm text-gray-700 leading-relaxed">
-                                <li>Purpose: Complaint-related medico-legal consultation</li>
-                                <li>
-                                    Covers: Civil, Criminal, Consumer Court complaints, Medical Board or Medical Council proceedings,
-                                    and legal notices
-                                </li>
-                                <li>
-                                    Mode: Online and/or offline chat or discussion, phone consultation, and in-person consultation
-                                </li>
-                                <li>Usage: Any number of times for a specific complaint</li>
-                                <li>Validity: 1 month</li>
-                                <li>Additional privilege: Upload and download documents</li>
-                                <li>All case-related communication accessible on the user dashboard</li>
-                            </ul>
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                                This is the communication for complaint-related medicolegal consultation. Login credentials for this are obtained through payment of Rs 10,000/-. This permits you to have online and/or offline chat or consultation on a medicolegal complaint (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice). This consultation is permitted any number of times for a specific complaint, for a period of one month. This also has the privilege of uploading & downloading documents. All the communication related to the particular case is accessible on the Dashboard of the login person.
+                            </p>
                             <Link
                                 href="/user/advance-chat"
                                 className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
@@ -127,8 +105,7 @@ export default function FeePackagesPage() {
                             Drafting of Medicolegal Documents
                         </h2>
                         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                            Fee will be decided during the Advanced Chat. It depends on the complexity of the document (simple,
-                            complex, or very complex) and other services. No fixed pricing is displayed here.
+                            The fee for this will be decided on the advanced chat and will depend on the complexity of the document to be drafted – simple, complex, or very complex document.
                         </p>
                     </div>
                 </div>
@@ -142,7 +119,7 @@ export default function FeePackagesPage() {
                             Annual Package for Individual Doctors
                         </h2>
                         <p className="text-gray-600 text-sm md:text-base">
-                            Annual medicolegal support packages with comprehensive services
+                            Services are offered according to the selected category (Category I, II, or III). The essential features of different categories of membership are:
                         </p>
                     </div>
 
@@ -171,8 +148,11 @@ export default function FeePackagesPage() {
                             <table className="w-full">
                                 <thead>
                                     <tr className="bg-gray-50 border-b border-gray-200">
+                                        <th className="px-4 py-3 text-center text-sm font-semibold text-gray-900 w-16">
+                                            S.no
+                                        </th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
-                                            Services
+                                            Nature of service
                                         </th>
                                         <th className="px-4 py-3 text-center text-sm font-semibold text-gray-900 border-l border-gray-200">
                                             Category I<br />
@@ -190,263 +170,291 @@ export default function FeePackagesPage() {
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
                                     <tr>
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">1</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Consultations / Chats (online and/or offline)
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">2</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Advance Chats (online and/or offline)
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">3</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Discussion of the case with the advocate (on panel or otherwise)
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">4</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Medicolegal screening of medical records in litigation cases
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">5</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Preparing the Defence Strategy
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">6</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Reply to Legal Notice
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">7</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
-                                            Reply to Administrative Notices
+                                            Reply to Administrative notices
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">8</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
-                                            Drafting of documents in litigation (Medical Negligence cases) in SMC / NMC / Consumer Courts
+                                            Drafting of Documents in litigation (Medical Negligence cases) in SMC / NMC / Consumer courts
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">9</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
-                                            Drafting of documents in litigation (other than Medical Negligence cases – PNDT, ART, Criminal cases)
+                                            Drafting of Documents in litigation (other than Medical Negligence cases), eg, PNDT, ART, Criminal cases
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">10</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
-                                            Drafting of Expert Opinion
+                                            Drafting of Expert opinion
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">11</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Medical research on contentious issues in dispute
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr className="bg-gray-50">
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">12</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
                                             Legal research for case laws
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td className="px-4 py-3 text-center text-sm text-gray-600 font-medium">13</td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
-                                            Medicolegal audit of morbidity / mortality cases (for self-improvement or litigation)
+                                            Medicolegal Audit of morbidity / mortality cases (for self-improvement on a prophylaxis basis or in litigation)
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
+                                                NO
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-center border-l border-gray-200">
-                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-gray-100 text-gray-600 border border-gray-300">
-                                                YES/NO
+                                            <span className="inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-md text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                YES
                                             </span>
+                                        </td>
+                                    </tr>
+                                    <tr className="bg-gray-100 border-t-2 border-gray-300">
+                                        <td className="px-4 py-3 text-center text-sm font-semibold text-gray-900">14</td>
+                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900">
+                                            Fee per annum
+                                        </td>
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="text-base font-bold text-gray-900">Rs. 15,000</span>
+                                        </td>
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="text-base font-bold text-gray-900">Rs. 25,000</span>
+                                        </td>
+                                        <td className="px-4 py-3 text-center border-l border-gray-200">
+                                            <span className="text-base font-bold text-gray-900">Rs. 35,000</span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -681,7 +689,7 @@ export default function FeePackagesPage() {
 
                     {/* Services Included */}
                     <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 space-y-4">
-                        <h3 className="text-lg font-semibold text-gray-900">Services Included</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">The services include the following</h3>
                         <ul className="space-y-2 text-sm md:text-base text-gray-700 leading-relaxed list-disc list-inside">
                             <li>General medicolegal consultations</li>
                             <li>Specific consultation / discussion on medicolegal issues</li>
@@ -689,12 +697,14 @@ export default function FeePackagesPage() {
                             <li>File audit of medical records (up to 10 files per month)</li>
                             <li>Medical research on contentious issues related to specific complaints</li>
                             <li>Legal research on case laws related to specific complaints</li>
-                            <li>One lecture or group discussion on a medicolegal issue per month</li>
-                            <li>Site visits (not more than twice a month)</li>
-                            <li>Online communication (synchronous & asynchronous) any number of times</li>
+                            <li>One lecture or group discussion on a medicolegal issue per month (on a day &amp; time of mutual convenience)</li>
+                            <li>
+                                Site visit to be fixed, not more than twice a month. Online communication – synchronous &amp;
+                                asynchronous – may be undertaken any number of times.
+                            </li>
                         </ul>
                         <div className="text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-md p-4">
-                            <strong>Important Note:</strong> The retainership services apply to ALL doctors and staff of the hospital.
+                            <strong>Important Note:</strong> The services will apply to ALL the doctors &amp; staff of the hospital.
                         </div>
                     </div>
                 </div>

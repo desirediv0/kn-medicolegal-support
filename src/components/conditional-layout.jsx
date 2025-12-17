@@ -20,6 +20,8 @@ const publicRoutes = [
   "/refund-policy",
   "/cookie-policy",
   "/disclaimer",
+  "/about/expert/promod-kumar-kohli", 
+  "/about/expert/sanjay-narula",
 ];
 
 const isPublicRoute = (pathname) => {

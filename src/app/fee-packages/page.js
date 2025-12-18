@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 
 export default function FeePackagesPage() {
     return (
@@ -52,12 +50,9 @@ export default function FeePackagesPage() {
                             <p className="text-sm text-gray-700 leading-relaxed">
                                 Registration on this site is free. It permits you to access the contents of the Knowledge Hub, which has important medicolegal information and is updated periodically.
                             </p>
-                            <Link
-                                href="/user/auth?mode=register"
-                                className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
-                            >
-                                Register Free
-                            </Link>
+                            <p className="text-xs text-gray-600 mt-2">
+                                <strong>Validity:</strong> Lifetime
+                            </p>
                         </div>
 
                         {/* General Chat Card */}
@@ -69,12 +64,9 @@ export default function FeePackagesPage() {
                             <p className="text-sm text-gray-700 leading-relaxed">
                                 Login credentials are obtained through a one-time payment of Rs 1000/-. It allows you to chat with the medicolegal experts as many times as you like, for an indefinite period. However, specific case-based complaints are not addressed on this chat.
                             </p>
-                            <Link
-                                href="/user"
-                                className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
-                            >
-                                Start Chat
-                            </Link>
+                            <p className="text-xs text-gray-600 mt-2">
+                                <strong>Validity:</strong> Indefinite
+                            </p>
                         </div>
 
                         {/* Advanced Chat Card */}
@@ -86,12 +78,9 @@ export default function FeePackagesPage() {
                             <p className="text-sm text-gray-700 leading-relaxed">
                                 This is the communication for complaint-related medicolegal consultation. Login credentials for this are obtained through payment of Rs 10,000/-. This permits you to have online and/or offline chat or consultation on a medicolegal complaint (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice). This consultation is permitted any number of times for a specific complaint, for a period of one month. This also has the privilege of uploading & downloading documents. All the communication related to the particular case is accessible on the Dashboard of the login person.
                             </p>
-                            <Link
-                                href="/user/advance-chat"
-                                className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
-                            >
-                                Consult Now
-                            </Link>
+                            <p className="text-xs text-gray-600 mt-2">
+                                <strong>Validity:</strong> 1 Month
+                            </p>
                         </div>
                     </div>
                 </div>

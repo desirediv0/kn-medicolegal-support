@@ -333,15 +333,21 @@ export default function Home() {
                 </div>
 
                 <p className="text-sm text-foreground/70 leading-relaxed mb-4">
-                  Qualified & experienced surgeon and medicolegal expert with
-                  experience as consultant surgeon, Dean of Medical Education, and
-                  Medical Director.
+                  Qualified surgeon and seasoned medicolegal expert with leadership roles across hospitals as Consultant Surgeon, Dean of Medical Education, and Medical Director.
                 </p>
 
-                <div className="flex items-center gap-2 text-xs text-foreground/60">
+                <div className="flex items-center gap-2 text-xs text-foreground/60 mb-4">
                   <Award className="h-4 w-4 text-blue-600" />
                   <span>MS, PhD (Surgery), LLB, PGD-MLS | PGD-HHM.</span>
                 </div>
+
+                <Link
+                  href="/about/expert/promod-kumar-kohli"
+                  className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+                >
+                  Read more
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </Link>
               </motion.div>
 
               {/* Dr. Sanjay Narula */}
@@ -371,17 +377,23 @@ export default function Home() {
                 </div>
 
                 <p className="text-sm text-foreground/70 leading-relaxed mb-4">
-                  Qualified general surgeon and experienced medicolegal expert
-                  with 36 years of surgical experience. Former Chairman of
-                  District Medical Negligence Board.
+                  General surgeon with 36+ years of clinical experience; extensive medicolegal practice including high-profile investigations. Former Chairman, District Medical Negligence Board.
                 </p>
 
-                <div className="flex items-center gap-2 text-xs text-foreground/60">
+                <div className="flex items-center gap-2 text-xs text-foreground/60 mb-4">
                   <Award className="h-4 w-4 text-green-600" />
                   <span>
                     600+ Enquiries | 2000+ Postmortems | High-profile Cases
                   </span>
                 </div>
+
+                <Link
+                  href="/about/expert/sanjay-narula"
+                  className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+                >
+                  Read more
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </Link>
               </motion.div>
             </div>
           </div>

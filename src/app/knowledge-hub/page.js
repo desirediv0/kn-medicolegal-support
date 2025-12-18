@@ -7,6 +7,7 @@ import { FileText, Download } from "lucide-react";
 const coreTopics = [
     {
         title: "Golden Rules for Doctors & Hospitals",
+        slug: "golden-rules-for-doctors-and-hospitals",
         body: [
             "Healthcare is no longer a 'bed of roses'. It is associated with significant risk to doctors, staff, and equipment. Prudence demands that such risks be prevented, anticipated, and managed properly to maintain the dignity & grace of medical practice and for the safety of doctors, staff & equipment.",
             "Medical litigation has emerged as a growing concern in modern clinical practice, following the inclusion of medical services under the purview of the Consumer Protection Act, 1986, as per a Supreme Court order in 1995, and reinforced by the enactment of the new Consumer Protection Act in 2019.",
@@ -14,59 +15,27 @@ const coreTopics = [
         ],
     },
     {
-        title: "Healthcare Risk Prevention & Management",
+        title: "Healthcare Risk Prevention",
+        slug: "healthcare-risk-prevention",
         body: [
-            "Audit adverse events and near-misses; foster a learning culture.",
-            "Regular training, CMEs, adherence to SOPs, guidelines, and protocols.",
-            "Identify and mitigate operational risks across departments.",
+            "Prevention of litigations through ethical medical practice, respect for patient dignity, continuous professional development, effective communication, proper documentation, and proactive risk management.",
+            "Key focus areas include ethical practice, patient dignity & privacy, continuous professional development, communication skills, second opinions & referrals, managing complications, critical patient transfer protocols, medical records, proper indemnity insurance, adverse events management, grievance redressal, and hospital violence prevention.",
         ],
     },
     {
-        title: "Medical Records & Documentation",
+        title: "Healthcare Risk Management",
+        slug: "healthcare-risk-management",
         body: [
-            "Clear, dated, timed, factual entries are your strongest defence.",
-            "Emphasize initial assessment, progress notes, operation notes, and specialty-specific documentation.",
-            "Never fabricate or manipulate records; ensure accessibility and traceability.",
+            "Effective management of healthcare risks through systematic approaches to prevent, anticipate, and respond to medicolegal challenges.",
+            "Focuses on proper documentation, consent processes, managing complications, critical patient transfers, schedule of hospital charges, adverse events handling, grievance redressal mechanisms, and hospital violence management.",
         ],
     },
     {
-        title: "Consent Process & Ethical Practice",
+        title: "Management of Litigation",
+        slug: "management-of-litigation",
         body: [
-            "Use patient- and procedure-specific consent with risk/benefit discussion.",
-            "Consent must be voluntary, comprehensible, and properly recorded.",
-            "Respect patient autonomy and cultural sensitivities.",
-        ],
-    },
-    {
-        title: "Management of Complications",
-        body: [
-            "Detect complications early; communicate promptly and honestly.",
-            "Follow guidelines for stabilization and escalation; seek second opinions when needed.",
-            "Document chronology, decisions, and discussions thoroughly.",
-        ],
-    },
-    {
-        title: "Hospital Violence: Prevention & Handling",
-        body: [
-            "Zero-tolerance policies; train staff on de-escalation and crowd management.",
-            "Maintain incident response protocols; coordinate with security and authorities.",
-            "Preserve documentation and evidence; communicate via designated spokespersons.",
-        ],
-    },
-    {
-        title: "Litigation Management (Legal Notices, Consumer Court, Police Summons)",
-        body: [
-            "On receiving notice/summons: analyze allegations, secure records, draft factual replies.",
-            "Engage medicolegal counsel; notify insurer where applicable.",
-            "For criminal matters: cooperate, prepare written statements, understand bail provisions.",
-        ],
-    },
-    {
-        title: "Proper Indemnity Insurance",
-        body: [
-            "Maintain adequate professional indemnity; know coverage, exclusions, limits.",
-            "Align coverage with practice scope and institution size.",
-            "Keep policies updated; document notifications and claims correspondence.",
+            "Comprehensive guidance on managing legal proceedings when facing medical litigation, including legal notices, consumer court cases, police summons, FIR, and criminal proceedings.",
+            "Covers strategies for responding to legal notices, consumer court complaints, selecting medicolegal consultants/advocates, handling police summons, and understanding FIR & criminal proceedings including bail provisions.",
         ],
     },
 ];
@@ -189,10 +158,10 @@ export default function KnowledgeHubPage() {
                                     ))}
                                 </div>
                                 <Link
-                                    href={`/knowledge-hub/topic/${topic.title.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and').replace(/:/g, '').replace(/[()]/g, '').replace(/,/g, '-')}`}
+                                    href={`/knowledge-hub/topic/${topic.slug}`}
                                     className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
                                 >
-                                    Click here to read more
+                                    Read more
                                 </Link>
                             </div>
                         ))}

@@ -5,6 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { Loader2, Send } from "lucide-react";
 
@@ -13,6 +20,7 @@ export function ContactForm() {
     name: "",
     email: "",
     phone: "",
+    category: "",
     message: "",
   });
   const [loading, setLoading] = useState(false);
@@ -22,10 +30,14 @@ export function ContactForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleCategoryChange = (value) => {
+    setFormData((prev) => ({ ...prev, category: value }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name || !formData.email || !formData.category || !formData.message) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -54,6 +66,7 @@ export function ContactForm() {
         name: "",
         email: "",
         phone: "",
+        category: "",
         message: "",
       });
     } catch (error) {
@@ -116,6 +129,30 @@ export function ContactForm() {
           disabled={loading}
           className="bg-white border-gray-300 focus:border-gray-900 transition-colors"
         />
+      </Field>
+
+      <Field>
+        <FieldLabel htmlFor="category" className="text-gray-700 font-medium">
+          Message Category <span className="text-red-500">*</span>
+        </FieldLabel>
+        <Select
+          value={formData.category}
+          onValueChange={handleCategoryChange}
+          disabled={loading}
+          required
+        >
+          <SelectTrigger
+            id="category"
+            className="bg-white border-gray-300 focus:border-gray-900 transition-colors"
+          >
+            <SelectValue placeholder="Select a category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Information">Information</SelectItem>
+            <SelectItem value="Support">Support</SelectItem>
+            <SelectItem value="Grievance Redressal">Grievance Redressal</SelectItem>
+          </SelectContent>
+        </Select>
       </Field>
 
       <Field>

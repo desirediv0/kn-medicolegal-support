@@ -15,27 +15,30 @@ const coreTopics = [
         ],
     },
     {
-        title: "Healthcare Risk Prevention",
-        slug: "healthcare-risk-prevention",
+        title: "Pre-conception and Pre-natal Diagnostic Techniques (Prohibition of Sex Selection) Act, 1994 (PC-PNDT Act)",
+        slug: "pc-pndt-act",
         body: [
-            "Prevention of litigations through ethical medical practice, respect for patient dignity, continuous professional development, effective communication, proper documentation, and proactive risk management.",
-            "Key focus areas include ethical practice, patient dignity & privacy, continuous professional development, communication skills, second opinions & referrals, managing complications, critical patient transfer protocols, medical records, proper indemnity insurance, adverse events management, grievance redressal, and hospital violence prevention.",
+            "The Pre-conception and Pre-natal Diagnostic Techniques (Prohibition of Sex Selection) Act, 1994 (PC-PNDT Act) is a central legislation enacted to prevent female foeticide and regulate the use of diagnostic techniques such as ultrasonography and genetic testing. It prohibits the use of any technique for sex determination of the foetus before or after conception, and restricts prenatal diagnostic procedures solely to detect genetic or congenital abnormalities.",
+            "The Act mandates registration of all genetic counselling centres, laboratories, and ultrasound clinics, prescribes strict record-keeping and reporting requirements, and empowers Appropriate Authorities to inspect, search, seize equipment, and initiate prosecution for violations. Offences are cognizable, non-bailable, and non-compoundable, attracting imprisonment and fine, with disciplinary action by Medical Councils against erring practitioners.",
+            "Remember, PC-PNDT compliance requires accurate record-keeping, mandatory forms, and strict adherence to rules. Even clerical errors can attract penalties. Regular audits are essential.",
         ],
     },
     {
-        title: "Healthcare Risk Management",
-        slug: "healthcare-risk-management",
+        title: "Social Media in Healthcare",
+        slug: "social-media-in-healthcare",
         body: [
-            "Effective management of healthcare risks through systematic approaches to prevent, anticipate, and respond to medicolegal challenges.",
-            "Focuses on proper documentation, consent processes, managing complications, critical patient transfers, schedule of hospital charges, adverse events handling, grievance redressal mechanisms, and hospital violence management.",
+            "Social media has emerged as a powerful tool in modern healthcare, transforming the way medical professionals, institutions, and patients communicate and share information. Platforms such as Facebook, X (Twitter), Instagram, LinkedIn, and YouTube enable rapid dissemination of health education, disease awareness, public health alerts, and professional collaboration.",
+            "For healthcare providers, social media offers opportunities to engage with the community, promote preventive health, and participate in academic discourse. However, its open and informal nature also poses ethical, legal, and professional challenges - particularly concerning patient confidentiality, data privacy, misinformation, and unregulated self-promotion.",
+            "Responsible, ethical, and policy-guided use of social media is therefore essential to harness its benefits while safeguarding patient interests and the integrity of the medical profession. This section covers proper and ethical use, misuse by patients/public, and management strategies.",
         ],
     },
     {
-        title: "Management of Litigation",
-        slug: "management-of-litigation",
+        title: "Artificial Intelligence (AI) in Healthcare",
+        slug: "artificial-intelligence-ai-in-healthcare",
         body: [
-            "Comprehensive guidance on managing legal proceedings when facing medical litigation, including legal notices, consumer court cases, police summons, FIR, and criminal proceedings.",
-            "Covers strategies for responding to legal notices, consumer court complaints, selecting medicolegal consultants/advocates, handling police summons, and understanding FIR & criminal proceedings including bail provisions.",
+            "Artificial Intelligence (AI) in healthcare refers to the use of algorithms, machine learning, and data analytics to assist in diagnosis, treatment planning, patient monitoring, and administrative efficiency. When used properly, AI can enhance clinical accuracy, reduce errors, and optimize patient care.",
+            "However, because AI systems depend on data quality, algorithmic design, and human interpretation, doctors must exercise professional judgment and ethical vigilance while integrating AI tools into patient-specific practice. Artificial Intelligence can greatly enhance medical care - but it must serve as a clinical assistant, not an autonomous decision-maker.",
+            "The doctor's ethical judgment, compassion, and accountability remain central to safe practice. Responsible use of AI requires awareness, transparency, and documentation, combined with strict adherence to professional ethics and data protection norms.",
         ],
     },
 ];
@@ -161,7 +164,7 @@ export default function KnowledgeHubPage() {
                                     href={`/knowledge-hub/topic/${topic.slug}`}
                                     className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
                                 >
-                                    Read more
+                                    Read more →
                                 </Link>
                             </div>
                         ))}
@@ -220,7 +223,7 @@ export default function KnowledgeHubPage() {
             </section>
 
             {/* Relevant Case Laws */}
-            <section className="py-12 md:py-16 border-b border-gray-200">
+            <section className="py-12 md:py-16">
                 <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16 space-y-6">
                     <div>
                         <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">Relevant Case Laws</h2>
@@ -268,65 +271,6 @@ export default function KnowledgeHubPage() {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Special Topics */}
-            <section className="py-12 md:py-16">
-                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16 space-y-8">
-                    <div>
-                        <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">Special Topics</h2>
-                        <p className="text-sm md:text-base text-gray-700 mt-2">
-                            Documentation-style overviews for high-risk areas.
-                        </p>
-                    </div>
-
-                    <div className="space-y-8 max-w-5xl">
-                        <article className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
-                            <h3 className="text-lg font-semibold text-gray-900">Pre-conception and Pre-natal Diagnostic Techniques (Prohibition of Sex Selection) Act, 1994 (PC-PNDT Act)</h3>
-                            <div className="space-y-2 text-sm text-gray-700 leading-relaxed">
-                                <p>The Pre-conception and Pre-natal Diagnostic Techniques (Prohibition of Sex Selection) Act, 1994 (PC-PNDT Act) is a central legislation enacted to prevent female foeticide and regulate the use of diagnostic techniques such as ultrasonography and genetic testing. It prohibits the use of any technique for sex determination of the foetus before or after conception, and restricts prenatal diagnostic procedures solely to detect genetic or congenital abnormalities.</p>
-                                <p>The Act mandates registration of all genetic counselling centres, laboratories, and ultrasound clinics, prescribes strict record-keeping and reporting requirements, and empowers Appropriate Authorities to inspect, search, seize equipment, and initiate prosecution for violations. Offences are cognizable, non-bailable, and non-compoundable, attracting imprisonment and fine, with disciplinary action by Medical Councils against erring practitioners.</p>
-                                <p>Remember, PC-PNDT compliance requires accurate record-keeping, mandatory forms, and strict adherence to rules. Even clerical errors can attract penalties. Regular audits are essential.</p>
-                            </div>
-                            <Link
-                                href="/knowledge-hub/topic/pc-pndt-act"
-                                className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
-                            >
-                                Click here to read more
-                            </Link>
-                        </article>
-
-                        <article className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
-                            <h3 className="text-lg font-semibold text-gray-900">Social Media in Healthcare</h3>
-                            <div className="space-y-2 text-sm text-gray-700 leading-relaxed">
-                                <p>Social media has emerged as a powerful tool in modern healthcare, transforming the way medical professionals, institutions, and patients communicate and share information. Platforms such as Facebook, X (Twitter), Instagram, LinkedIn, and YouTube enable rapid dissemination of health education, disease awareness, public health alerts, and professional collaboration.</p>
-                                <p>For healthcare providers, social media offers opportunities to engage with the community, promote preventive health, and participate in academic discourse. However, its open and informal nature also poses ethical, legal, and professional challenges - particularly concerning patient confidentiality, data privacy, misinformation, and unregulated self-promotion.</p>
-                                <p>Responsible, ethical, and policy-guided use of social media is therefore essential to harness its benefits while safeguarding patient interests and the integrity of the medical profession. This section covers proper and ethical use, misuse by patients/public, and management strategies.</p>
-                            </div>
-                            <Link
-                                href="/knowledge-hub/topic/social-media-in-healthcare"
-                                className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
-                            >
-                                Click here to read more
-                            </Link>
-                        </article>
-
-                        <article className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
-                            <h3 className="text-lg font-semibold text-gray-900">Artificial Intelligence (AI) in Healthcare</h3>
-                            <div className="space-y-2 text-sm text-gray-700 leading-relaxed">
-                                <p>Artificial Intelligence (AI) in healthcare refers to the use of algorithms, machine learning, and data analytics to assist in diagnosis, treatment planning, patient monitoring, and administrative efficiency. When used properly, AI can enhance clinical accuracy, reduce errors, and optimize patient care.</p>
-                                <p>However, because AI systems depend on data quality, algorithmic design, and human interpretation, doctors must exercise professional judgment and ethical vigilance while integrating AI tools into patient-specific practice. Artificial Intelligence can greatly enhance medical care - but it must serve as a clinical assistant, not an autonomous decision-maker.</p>
-                                <p>The doctor&apos;s ethical judgment, compassion, and accountability remain central to safe practice. Responsible use of AI requires awareness, transparency, and documentation, combined with strict adherence to professional ethics and data protection norms.</p>
-                            </div>
-                            <Link
-                                href="/knowledge-hub/topic/artificial-intelligence-ai-in-healthcare"
-                                className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
-                            >
-                                Click here to read more
-                            </Link>
-                        </article>
                     </div>
                 </div>
             </section>

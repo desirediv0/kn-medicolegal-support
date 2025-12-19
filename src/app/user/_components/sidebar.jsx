@@ -14,6 +14,7 @@ import {
   LogOut,
   MessageCircle,
   QrCode,
+  HelpCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -267,11 +268,30 @@ export function UserSidebar({ onWidthChange }) {
           </div>
         </div>
 
+        {/* Help / Guide Button */}
+        <button
+          type="button"
+          onClick={() => {
+            // Clear session flag and trigger guide to show
+            sessionStorage.removeItem("userWelcomeGuideSeenInSession");
+            // Dispatch custom event to open guide
+            window.dispatchEvent(new CustomEvent("openWelcomeGuide"));
+          }}
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-blue-500/30 rounded-xl hover:bg-blue-500/20 cursor-pointer border border-blue-500/10 hover:border-blue-500/40 hover:shadow-sm transition-all group mt-4 text-blue-600 ${
+            isCollapsed ? "justify-center" : ""
+          }`}
+        >
+          <HelpCircle className="w-4 h-4" />
+          {!isCollapsed && (
+            <span className="text-sm font-medium">Show Guide</span>
+          )}
+        </button>
+
         {/* Bottom Profile + Logout */}
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: "/user/auth" })}
-          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-4 text-red-500 ${
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-2 text-red-500 ${
             isCollapsed ? "justify-center" : ""
           }`}
         >

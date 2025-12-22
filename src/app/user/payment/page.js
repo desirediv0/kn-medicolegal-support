@@ -83,10 +83,10 @@ export default function PaymentPage() {
           <p className="text-xs text-foreground/70 md:text-sm">
             Need help with payment? Contact us at{" "}
             <a
-              href="mailto:support@knmedicolegal.com"
+              href="mailto:knmedicolegal@gmail.com"
               className="font-semibold text-primary underline-offset-2 hover:underline"
             >
-              support@knmedicolegal.com
+              knmedicolegal@gmail.com
             </a>
           </p>
         </div>

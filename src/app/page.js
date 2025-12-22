@@ -860,43 +860,16 @@ export default function Home() {
                   </div>
                   <div className="space-y-3">
                     <div>
+                      <span className="text-xs text-foreground/70">User support & queries</span>
                       <p className="text-sm font-medium text-foreground mb-1">
                         <a
-                          href="mailto:support@knmedicolegal.com"
+                          href="mailto:knmedicolegal@gmail.com"
                           className="hover:text-primary transition-colors break-all"
                         >
-                          support@knmedicolegal.com
+                          knmedicolegal@gmail.com
                         </a>
                       </p>
-                      <p className="text-xs text-foreground/70">
-                        User support & queries
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground mb-1">
-                        <a
-                          href="mailto:info@knmedicolegal.com"
-                          className="hover:text-primary transition-colors break-all"
-                        >
-                          info@knmedicolegal.com
-                        </a>
-                      </p>
-                      <p className="text-xs text-foreground/70">
-                        General information
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground mb-1">
-                        <a
-                          href="mailto:compliance@knmedicolegal.com"
-                          className="hover:text-primary transition-colors break-all"
-                        >
-                          compliance@knmedicolegal.com
-                        </a>
-                      </p>
-                      <p className="text-xs text-foreground/70">
-                        Compliance & legal correspondence
-                      </p>
+
                     </div>
                   </div>
                 </div>
@@ -908,11 +881,7 @@ export default function Home() {
                     <h4 className="text-base font-semibold text-foreground">Phone Numbers</h4>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-sm text-foreground">
-                      <a href="tel:+919876543210" className="hover:text-primary transition-colors font-medium">
-                        +91 98765 43210
-                      </a>
-                    </p>
+
                     <p className="text-sm text-foreground">
                       <a href="tel:+919717891104" className="hover:text-primary transition-colors font-medium">
                         +91 97178 91104

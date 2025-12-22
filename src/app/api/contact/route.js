@@ -16,18 +16,18 @@ export async function POST(request) {
     let adminEmail;
     switch (category) {
       case "Information":
-        adminEmail = "info@knmedicolegal.com";
+        adminEmail = "knmedicolegal@gmail.com";
         break;
       case "Support":
-        adminEmail = "support@knmedicolegal.com";
+        adminEmail = "knmedicolegal@gmail.com";
         break;
       case "Grievance Redressal":
-        adminEmail = "compliance@knmedicolegal.com";
+        adminEmail = "knmedicolegal@gmail.com";
         break;
       default:
-        adminEmail = process.env.NEXT_PUBLIC_FROM_EMAIL || "support@knmedicolegal.com";
+        adminEmail = process.env.NEXT_PUBLIC_FROM_EMAIL || "knmedicolegal@gmail.com";
     }
-    
+
     await sendOtpEmail({
       to: adminEmail,
       subject: subject || `Contact Form [${category}]: ${name}`,

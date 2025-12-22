@@ -39,49 +39,22 @@ export default function ContactPage() {
                     <div>
                       <p className="text-sm font-medium text-gray-900 mb-1">
                         <a
-                          href="mailto:support@knmedicolegal.com"
+                          href="mailto:knmedicolegal@gmail.com"
                           className="hover:text-gray-700 transition-colors break-all"
                         >
-                          support@knmedicolegal.com
+                          knmedicolegal@gmail.com
                         </a>
                       </p>
                       <p className="text-xs text-gray-600">
                         User support & queries
                       </p>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900 mb-1">
-                        <a
-                          href="mailto:info@knmedicolegal.com"
-                          className="hover:text-gray-700 transition-colors break-all"
-                        >
-                          info@knmedicolegal.com
-                        </a>
-                      </p>
-                      <p className="text-xs text-gray-600">
-                        General information
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900 mb-1">
-                        <a
-                          href="mailto:compliance@knmedicolegal.com"
-                          className="hover:text-gray-700 transition-colors break-all"
-                        >
-                          compliance@knmedicolegal.com
-                        </a>
-                      </p>
-                      <p className="text-xs text-gray-600">
-                        Compliance & legal correspondence
-                      </p>
-                    </div>
+
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <p className="text-xs text-gray-600 leading-relaxed">
                       <strong className="text-gray-900">When to use which email:</strong><br />
-                      Use <strong>support@knmedicolegal.com</strong> for account issues, service queries, and technical support.<br />
-                      Use <strong>info@knmedicolegal.com</strong> for general inquiries and information requests.<br />
-                      Use <strong>compliance@knmedicolegal.com</strong> for legal matters, compliance issues, and formal correspondence.
+                      Use <strong>knmedicolegal@gmail.com</strong> for account issues, service queries, and technical support.<br />
                     </p>
                   </div>
                 </div>
@@ -99,11 +72,6 @@ export default function ContactPage() {
                     Phone Numbers
                   </h3>
                   <div className="space-y-3 text-sm text-gray-700">
-                    <p>
-                      <a href="tel:+919876543210" className="hover:text-gray-900 transition-colors font-medium">
-                        +91 98765 43210
-                      </a>
-                    </p>
                     <p>
                       <a href="tel:+919717891104" className="hover:text-gray-900 transition-colors font-medium">
                         +91 97178 91104

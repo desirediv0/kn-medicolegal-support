@@ -146,9 +146,8 @@ export function UserSidebar({ onWidthChange }) {
           )}
           <motion.button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`flex p-1 hover:bg-primary-foreground/10 rounded-lg transition-colors ${
-              isCollapsed ? "mx-auto" : ""
-            }`}
+            className={`flex p-1 hover:bg-primary-foreground/10 rounded-lg transition-colors ${isCollapsed ? "mx-auto" : ""
+              }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -277,9 +276,8 @@ export function UserSidebar({ onWidthChange }) {
             // Dispatch custom event to open guide
             window.dispatchEvent(new CustomEvent("openWelcomeGuide"));
           }}
-          className={`w-full flex items-center gap-3 p-3 duration-200 bg-blue-500/30 rounded-xl hover:bg-blue-500/20 cursor-pointer border border-blue-500/10 hover:border-blue-500/40 hover:shadow-sm transition-all group mt-4 text-blue-600 ${
-            isCollapsed ? "justify-center" : ""
-          }`}
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-blue-500/30 rounded-xl hover:bg-blue-500/20 cursor-pointer border border-blue-500/10 hover:border-blue-500/40 hover:shadow-sm transition-all group mt-4 text-blue-600 ${isCollapsed ? "justify-center" : ""
+            }`}
         >
           <HelpCircle className="w-4 h-4" />
           {!isCollapsed && (
@@ -291,9 +289,8 @@ export function UserSidebar({ onWidthChange }) {
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: "/user/auth" })}
-          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-2 text-red-500 ${
-            isCollapsed ? "justify-center" : ""
-          }`}
+          className={`w-full flex items-center gap-3 p-3 duration-200 bg-red-500/30 rounded-xl hover:bg-red-500/20 cursor-pointer border border-red-500/10 hover:border-red-500/40 hover:shadow-sm transition-all group mt-2 text-red-500 ${isCollapsed ? "justify-center" : ""
+            }`}
         >
           <LogOut className="w-4 h-4" />
           {!isCollapsed && (

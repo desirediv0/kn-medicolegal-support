@@ -41,7 +41,7 @@ const sections = [
   {
     title: "Refund Process",
     items: [
-      "Refund requests must be submitted in writing to support@knmedicolegal.com within 7 days of the transaction date, except for duplicate payments which can be reported anytime.",
+      "Refund requests must be submitted in writing to knmedicolegal@gmail.com within 7 days of the transaction date, except for duplicate payments which can be reported anytime.",
       "Include the following information in your refund request: transaction ID, payment date, amount, reason for refund request, and any supporting documents.",
       "We will acknowledge receipt of your refund request within 2 business days and begin our review process.",
       "Refund requests are reviewed by our finance team, and a decision will be communicated within 7-10 business days.",
@@ -81,15 +81,15 @@ const sections = [
     items: [
       "If you are not satisfied with a refund decision, you may escalate the matter to compliance@knmedicolegal.com with detailed information and supporting documents.",
       "We are committed to resolving disputes fairly and will review escalated cases within 14 business days.",
-      "For urgent compliance matters, reach us on the 24/7 coordination desk at support@knmedicolegal.com or call +91 98765 43210.",
+      "For urgent compliance matters, reach us on the 24/7 coordination desk at knmedicolegal@gmail.com or call +91 97178 91104.",
     ],
   },
   {
     title: "Contact Information",
     items: [
-      "For refund inquiries, please contact: support@knmedicolegal.com",
+      "For refund inquiries, please contact: knmedicolegal@gmail.com",
       "For billing disputes or escalation: compliance@knmedicolegal.com",
-      "Phone Support: +91 98765 43210 (Available 24/7 for urgent matters)",
+      "Phone Support: +91 97178 91104 (Available 24/7 for urgent matters)",
       "Response Time: We acknowledge refund requests within 2 business days and aim to resolve them within 7-10 business days.",
     ],
   },
@@ -142,19 +142,19 @@ const RefundPage = () => {
             <p>
               Email:{" "}
               <a
-                href="mailto:support@knmedicolegal.com"
+                href="mailto:knmedicolegal@gmail.com"
                 className="font-semibold text-primary underline-offset-2 hover:underline"
               >
-                support@knmedicolegal.com
+                knmedicolegal@gmail.com
               </a>
             </p>
             <p className="mt-2">
               Phone:{" "}
               <a
-                href="tel:+919876543210"
+                href="tel:+919717891104"
                 className="font-semibold text-primary underline-offset-2 hover:underline"
               >
-                +91 98765 43210
+                +91 97178 91104
               </a>
             </p>
             <p className="mt-4 text-xs text-foreground/60">

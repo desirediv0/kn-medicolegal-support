@@ -38,7 +38,7 @@ const sections = [
     items: [
       "All medical records, legal briefs, and personal identifiers supplied through the portal are encrypted at rest and in transit using industry-standard encryption protocols.",
       "We restrict access to client files on a need-to-know basis and maintain audit logs for every document interaction and access event.",
-      "Clients must refrain from sharing login credentials. Any suspected unauthorized access should be reported immediately at support@knmedicolegal.com.",
+      "Clients must refrain from sharing login credentials. Any suspected unauthorized access should be reported immediately at knmedicolegal@gmail.com.",
       "All staff members and consultants are bound by strict confidentiality agreements and professional codes of conduct.",
       "We implement multi-layer security measures including firewalls, intrusion detection systems, and regular security audits.",
     ],
@@ -167,19 +167,19 @@ const PrivacyPage = () => {
             <p>
               Email:{" "}
               <a
-                href="mailto:support@knmedicolegal.com"
+                href="mailto:knmedicolegal@gmail.com"
                 className="font-semibold text-primary underline-offset-2 hover:underline"
               >
-                support@knmedicolegal.com
+                knmedicolegal@gmail.com
               </a>
             </p>
             <p className="mt-2">
               Phone:{" "}
               <a
-                href="tel:+919876543210"
+                href="tel:+919717891104"
                 className="font-semibold text-primary underline-offset-2 hover:underline"
               >
-                +91 98765 43210
+                +91 97178 91104
               </a>
             </p>
             <p className="mt-4 text-xs text-foreground/60">

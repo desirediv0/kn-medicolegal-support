@@ -18,7 +18,7 @@ const sections = [
       "Users are responsible for ensuring that all documents and information shared comply with applicable laws and regulations.",
       "Users must not use our services for any illegal, fraudulent, or unauthorized purposes.",
       "Users must respect intellectual property rights and not reproduce, distribute, or modify any content without proper authorization.",
-      "Users should report any suspected security breaches or unauthorized access immediately to support@knmedicolegal.com.",
+      "Users should report any suspected security breaches or unauthorized access immediately to knmedicolegal@gmail.com.",
     ],
   },
   {
@@ -53,7 +53,7 @@ const sections = [
     title: "Termination",
     items: [
       "We reserve the right to suspend or terminate user accounts that violate these terms or engage in fraudulent or illegal activities.",
-      "Users may terminate their account at any time by contacting support@knmedicolegal.com.",
+      "Users may terminate their account at any time by contacting knmedicolegal@gmail.com.",
       "Upon termination, users' access to the platform and services will be immediately revoked.",
       "Provisions that by their nature should survive termination will remain in effect.",
     ],
@@ -108,19 +108,19 @@ const TermsPage = () => {
             <p>
               Email:{" "}
               <a
-                href="mailto:support@knmedicolegal.com"
+                href="mailto:knmedicolegal@gmail.com"
                 className="font-semibold text-primary underline-offset-2 hover:underline"
               >
-                support@knmedicolegal.com
+                knmedicolegal@gmail.com
               </a>
             </p>
             <p className="mt-2">
               Phone:{" "}
               <a
-                href="tel:+919876543210"
+                href="tel:+919717891104"
                 className="font-semibold text-primary underline-offset-2 hover:underline"
               >
-                +91 98765 43210
+                +91 97178 91104
               </a>
             </p>
           </footer>

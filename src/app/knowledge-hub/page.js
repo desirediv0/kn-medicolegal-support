@@ -72,13 +72,7 @@ const actsData = [
             "Professional conduct regulations for registered medical practitioners under the NMC, outlining duties, ethics, and standards of practice.",
         pdfPath: "https://desirediv-storage.blr1.cdn.digitaloceanspaces.com/KN%20Medicolegal%20Support/National-Medical-Commission-Registered-Medical-Practitioner-Professional-Conduct-Regulations-2023-Dt-02-08-2023.pdf",
     },
-    {
-        title: "Jacob Mathew vs State of Punjab & Anr (2005 – Supreme Court Guidelines)",
-        year: "2005",
-        description:
-            "Supreme Court guidelines on criminal medical negligence; clarifies precautions before initiating criminal proceedings against doctors.",
-        pdfPath: "https://desirediv-storage.blr1.cdn.digitaloceanspaces.com/KN%20Medicolegal%20Support/Jacob_Mathew_vs_State_Of_Punjab_Anr_on_5_August_2005.PDF",
-    },
+
 ];
 
 const caseLawsData = [
@@ -102,6 +96,13 @@ const caseLawsData = [
         court: "Supreme Court of India",
         description: "Landmark decision defining informed consent in medical procedures.",
         pdfPath: "https://desirediv-storage.blr1.cdn.digitaloceanspaces.com/KN%20Medicolegal%20Support/Samira_Kohli_vs_Dr_Prabha_Manchanda_Anr_on_16_January_2008.PDF",
+    },
+    {
+        title: "Jacob Mathew vs State of Punjab & Anr (2005 – Supreme Court Guidelines)",
+        year: "2005",
+        description:
+            "Supreme Court guidelines on criminal medical negligence; clarifies precautions before initiating criminal proceedings against doctors.",
+        pdfPath: "https://desirediv-storage.blr1.cdn.digitaloceanspaces.com/KN%20Medicolegal%20Support/Jacob_Mathew_vs_State_Of_Punjab_Anr_on_5_August_2005.PDF",
     },
 ];
 
@@ -182,7 +183,7 @@ export default function KnowledgeHubPage() {
                         </p>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-4 md:grid-cols-2">
                         {actsData.map((act) => (
                             <div key={act.title} className="bg-white border border-gray-200 rounded-lg p-5 space-y-3">
                                 <div className="space-y-1">
@@ -232,7 +233,7 @@ export default function KnowledgeHubPage() {
                         </p>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-4 md:grid-cols-2">
                         {caseLawsData.map((caseLaw) => (
                             <div key={caseLaw.title} className="bg-white border border-gray-200 rounded-lg p-5 space-y-3">
                                 <div className="space-y-1">

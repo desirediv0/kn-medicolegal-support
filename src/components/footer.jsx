@@ -152,44 +152,21 @@ export function Footer() {
               <div className="space-y-1 text-xs">
                 <p>
                   <a
-                    href="mailto:support@knmedicolegal.com"
+                    href="mailto:knmedicolegal@gmail.com"
                     className="hover:text-primary-foreground transition-colors"
                   >
-                    support@knmedicolegal.com
+                    knmedicolegal@gmail.com
                   </a>
-                  <span className="text-white/60 ml-2">(Support)</span>
+
                 </p>
-                <p>
-                  <a
-                    href="mailto:info@knmedicolegal.com"
-                    className="hover:text-primary-foreground transition-colors"
-                  >
-                    info@knmedicolegal.com
-                  </a>
-                  <span className="text-white/60 ml-2">(General)</span>
-                </p>
-                <p>
-                  <a
-                    href="mailto:compliance@knmedicolegal.com"
-                    className="hover:text-primary-foreground transition-colors"
-                  >
-                    compliance@knmedicolegal.com
-                  </a>
-                  <span className="text-white/60 ml-2">(Compliance)</span>
-                </p>
+
+
               </div>
             </div>
             <div>
               <p className="font-medium text-white mb-2">Phone:</p>
               <div className="space-y-1 text-xs">
-                <p>
-                  <a
-                    href="tel:+919876543210"
-                    className="hover:text-primary-foreground transition-colors"
-                  >
-                    +91 98765 43210
-                  </a>
-                </p>
+
                 <p>
                   <a
                     href="tel:+919717891104"

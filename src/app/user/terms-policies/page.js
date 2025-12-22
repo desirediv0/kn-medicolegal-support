@@ -22,7 +22,7 @@ const sections = [
     items: [
       "All medical records, legal briefs, and personal identifiers supplied through the portal are encrypted at rest and in transit.",
       "We restrict access to client files on a need-to-know basis and maintain audit logs for every document interaction.",
-      "Clients must refrain from sharing login credentials. Any suspected unauthorised access should be reported immediately at support@knmedicolegal.com.",
+      "Clients must refrain from sharing login credentials. Any suspected unauthorised access should be reported immediately at knmedicolegal@gmail.com.",
     ],
   },
   {
@@ -71,12 +71,12 @@ const TermsPolicies = () => {
         <footer className="mt-12 rounded-2xl border border-primary/20 bg-primary/10 p-6 text-center text-xs text-foreground/70 md:text-sm">
           For urgent compliance matters, reach us on the 24/7 coordination desk at{" "}
           <a
-            href="mailto:support@knmedicolegal.com"
+            href="mailto:knmedicolegal@gmail.com"
             className="font-semibold text-primary underline-offset-2 hover:underline"
           >
-            support@knmedicolegal.com
+            knmedicolegal@gmail.com
           </a>{" "}
-          or call +91 98765 43210.
+          or call +91 97178 91104.
         </footer>
       </div>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
 
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/K9CEGOWvqRxCRvvvcqzxkD";
 

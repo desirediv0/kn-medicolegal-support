@@ -1164,7 +1164,7 @@ function UserContent() {
                     </span>
                     {selectedQuestion.paymentType === "CASH" && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-medium text-blue-700">
-                        💵 Cash
+                        Cash
                       </span>
                     )}
                     {selectedQuestion.paymentType === "RAZORPAY" && (

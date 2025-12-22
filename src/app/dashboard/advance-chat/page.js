@@ -113,10 +113,10 @@ const getActivityTimestamp = (question) => {
   return latest
     ? new Date(latest).getTime()
     : updated
-    ? new Date(updated).getTime()
-    : created
-    ? new Date(created).getTime()
-    : 0;
+      ? new Date(updated).getTime()
+      : created
+        ? new Date(created).getTime()
+        : 0;
 };
 
 const sortQuestionsByRecent = (list = []) =>
@@ -175,9 +175,8 @@ const StatusChip = ({ status }) => {
   );
   return (
     <span
-      className={`px-2 py-1 rounded-full text-xs font-medium ${
-        map[status] || "bg-gray-200 text-gray-700"
-      }`}
+      className={`px-2 py-1 rounded-full text-xs font-medium ${map[status] || "bg-gray-200 text-gray-700"
+        }`}
     >
       {status}
     </span>
@@ -335,11 +334,11 @@ function AdminQuestionsContent() {
           const updated = prevQuestions.map((q) =>
             q.id === questionId
               ? {
-                  ...q,
-                  messageCount: data.messages?.length ?? q.messageCount ?? 0,
-                  latestMessage: latest ?? q.latestMessage,
-                  unreadCount: 0,
-                }
+                ...q,
+                messageCount: data.messages?.length ?? q.messageCount ?? 0,
+                latestMessage: latest ?? q.latestMessage,
+                unreadCount: 0,
+              }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -562,8 +561,8 @@ function AdminQuestionsContent() {
                 selectedQuestion?.id === question.id
                   ? "bg-primary/10 border-primary/50"
                   : unread > 0
-                  ? "bg-primary/5 border-primary/30"
-                  : "bg-white/5"
+                    ? "bg-primary/5 border-primary/30"
+                    : "bg-white/5"
               )}
               onClick={() => handleQuestionSelect(question)}
             >
@@ -592,8 +591,8 @@ function AdminQuestionsContent() {
                   <span className="text-[11px] text-muted-foreground">
                     {lastActivity
                       ? `Updated ${formatDistanceToNow(new Date(lastActivity), {
-                          addSuffix: true,
-                        })}`
+                        addSuffix: true,
+                      })}`
                       : "No activity yet"}
                   </span>
                 </div>
@@ -618,21 +617,20 @@ function AdminQuestionsContent() {
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-muted-foreground">Payment:</span>
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                      question.paymentStatus === "SUCCESS"
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${question.paymentStatus === "SUCCESS"
                         ? "bg-green-100 text-green-700"
                         : question.paymentStatus === "PENDING"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : question.paymentStatus === "FAILED"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-gray-100 text-gray-700"
-                    }`}
+                          ? "bg-yellow-100 text-yellow-700"
+                          : question.paymentStatus === "FAILED"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-700"
+                      }`}
                   >
                     {question.paymentStatus?.toLowerCase()}
                   </span>
                   {question.paymentType === "CASH" && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-700">
-                      💵 Cash
+                      Cash
                     </span>
                   )}
                   {question.paymentType === "RAZORPAY" && (
@@ -644,11 +642,10 @@ function AdminQuestionsContent() {
               </div>
               <div className="text-xs text-foreground italic">
                 {question.latestMessage?.sender?.role
-                  ? `${
-                      question.latestMessage.sender.role === "ADMIN"
-                        ? "You"
-                        : "User"
-                    }: `
+                  ? `${question.latestMessage.sender.role === "ADMIN"
+                    ? "You"
+                    : "User"
+                  }: `
                   : ""}
                 <ExpandableText
                   text={lastMessagePreview}
@@ -780,10 +777,10 @@ function AdminQuestionsContent() {
           const updated = prevQuestions.map((q) =>
             q.id === selectedQuestion.id
               ? {
-                  ...q,
-                  latestMessage: message,
-                  messageCount: next.length,
-                }
+                ...q,
+                latestMessage: message,
+                messageCount: next.length,
+              }
               : q
           );
           return sortQuestionsByRecent(updated);
@@ -791,10 +788,10 @@ function AdminQuestionsContent() {
         setSelectedQuestion((prevSelected) =>
           prevSelected && prevSelected.id === selectedQuestion.id
             ? {
-                ...prevSelected,
-                latestMessage: message,
-                messageCount: next.length,
-              }
+              ...prevSelected,
+              latestMessage: message,
+              messageCount: next.length,
+            }
             : prevSelected
         );
         return next;
@@ -911,9 +908,8 @@ function AdminQuestionsContent() {
       toast.success(
         deleteAttachments
           ? deletedAttachments
-            ? `Conversation and ${deletedAttachments} attachment${
-                deletedAttachments === 1 ? "" : "s"
-              } deleted.`
+            ? `Conversation and ${deletedAttachments} attachment${deletedAttachments === 1 ? "" : "s"
+            } deleted.`
             : "Conversation deleted. No attachments found to remove."
           : "Conversation deleted."
       );
@@ -1069,8 +1065,8 @@ function AdminQuestionsContent() {
                     <span className="font-semibold text-foreground">
                       {selectedQuestion.price != null
                         ? currencyFormatter.format(
-                            Number(selectedQuestion.price)
-                          )
+                          Number(selectedQuestion.price)
+                        )
                         : "—"}
                     </span>
                   </div>
@@ -1078,15 +1074,14 @@ function AdminQuestionsContent() {
                   <div className="flex items-center gap-1.5">
                     <span className="text-muted-foreground">Payment:</span>
                     <span
-                      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${
-                        selectedQuestion.paymentStatus === "SUCCESS"
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${selectedQuestion.paymentStatus === "SUCCESS"
                           ? "bg-green-100 text-green-700"
                           : selectedQuestion.paymentStatus === "PENDING"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : selectedQuestion.paymentStatus === "FAILED"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
+                            ? "bg-yellow-100 text-yellow-700"
+                            : selectedQuestion.paymentStatus === "FAILED"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-gray-100 text-gray-700"
+                        }`}
                     >
                       {selectedQuestion.paymentStatus?.toLowerCase()}
                     </span>
@@ -1106,9 +1101,9 @@ function AdminQuestionsContent() {
               <div className="flex flex-wrap items-center gap-2 mt-2">
                 {(selectedQuestion.paymentStatus === "PENDING" &&
                   selectedQuestion.paymentType === "CASH") ||
-                (selectedQuestion.paymentStatus === "PENDING" &&
-                  (selectedQuestion.paymentType === "RAZORPAY" ||
-                    !selectedQuestion.paymentType)) ? (
+                  (selectedQuestion.paymentStatus === "PENDING" &&
+                    (selectedQuestion.paymentType === "RAZORPAY" ||
+                      !selectedQuestion.paymentType)) ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="gap-2">
@@ -1161,12 +1156,12 @@ function AdminQuestionsContent() {
                                     prev.map((q) =>
                                       q.id === question.id
                                         ? {
-                                            ...question,
-                                            price:
-                                              question.price != null
-                                                ? Number(question.price)
-                                                : null,
-                                          }
+                                          ...question,
+                                          price:
+                                            question.price != null
+                                              ? Number(question.price)
+                                              : null,
+                                        }
                                         : q
                                     )
                                   );
@@ -1205,7 +1200,7 @@ function AdminQuestionsContent() {
                                     const data = await res.json();
                                     throw new Error(
                                       data.error ||
-                                        "Failed to change payment type"
+                                      "Failed to change payment type"
                                     );
                                   }
                                   toast.success(
@@ -1229,12 +1224,12 @@ function AdminQuestionsContent() {
                                       prev.map((q) =>
                                         q.id === question.id
                                           ? {
-                                              ...question,
-                                              price:
-                                                question.price != null
-                                                  ? Number(question.price)
-                                                  : null,
-                                            }
+                                            ...question,
+                                            price:
+                                              question.price != null
+                                                ? Number(question.price)
+                                                : null,
+                                          }
                                           : q
                                       )
                                     );
@@ -1242,7 +1237,7 @@ function AdminQuestionsContent() {
                                 } catch (error) {
                                   toast.error(
                                     error?.message ||
-                                      "Failed to change payment type"
+                                    "Failed to change payment type"
                                   );
                                 }
                               }}
@@ -1271,7 +1266,7 @@ function AdminQuestionsContent() {
                                     const data = await res.json();
                                     throw new Error(
                                       data.error ||
-                                        "Failed to change payment type"
+                                      "Failed to change payment type"
                                     );
                                   }
                                   toast.success(
@@ -1294,12 +1289,12 @@ function AdminQuestionsContent() {
                                       prev.map((q) =>
                                         q.id === question.id
                                           ? {
-                                              ...question,
-                                              price:
-                                                question.price != null
-                                                  ? Number(question.price)
-                                                  : null,
-                                            }
+                                            ...question,
+                                            price:
+                                              question.price != null
+                                                ? Number(question.price)
+                                                : null,
+                                          }
                                           : q
                                       )
                                     );
@@ -1307,7 +1302,7 @@ function AdminQuestionsContent() {
                                 } catch (error) {
                                   toast.error(
                                     error?.message ||
-                                      "Failed to change payment type"
+                                    "Failed to change payment type"
                                   );
                                 }
                               }}

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Header } from "./header";
 import { Footer } from "./footer";
 import { FloatingButton } from "./floating-button";
+import { WhatsAppFloatButton } from "./whatsapp-float-button";
 
 const publicRoutes = [
   "/",
@@ -20,7 +21,7 @@ const publicRoutes = [
   "/refund-policy",
   "/cookie-policy",
   "/disclaimer",
-  "/about/expert/promod-kumar-kohli", 
+  "/about/expert/promod-kumar-kohli",
   "/about/expert/sanjay-narula",
 ];
 
@@ -44,6 +45,7 @@ export function ConditionalLayout({ children }) {
     <>
       {showHeaderFooter && <Header />}
       {children}
+      {showHeaderFooter && <WhatsAppFloatButton />}
       {showHeaderFooter && <Footer />}
       {showHeaderFooter && <FloatingButton />}
     </>

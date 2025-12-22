@@ -161,24 +161,14 @@ export function UserSidebar({ onWidthChange }) {
         {/* Primary navigation */}
         {[
           {
-            label: "General Chat",
+            label: "Medicolegal formal consultation",
             href: "/user",
             icon: <MessageCircle size={18} />,
           },
           {
-            label: "Advance Chat",
-            href: "/user/advance-chat",
-            icon: <MessageCircle size={18} className="text-primary" />,
-          },
-          {
-            label: "General Chat History",
+            label: "Chat History",
             href: "/user/history",
             icon: <Clock size={18} />,
-          },
-          {
-            label: "Advance Chat History",
-            href: "/user/advance-chat/history",
-            icon: <Clock size={18} className="text-primary" />,
           },
           {
             label: "Payment",

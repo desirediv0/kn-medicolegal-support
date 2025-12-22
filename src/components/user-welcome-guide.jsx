@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { X, MessageCircle, MessageSquare, QrCode, CheckCircle2, ArrowRight } from "lucide-react";
+import { X, MessageCircle, QrCode, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function UserWelcomeGuide({ onClose }) {
     const [currentStep, setCurrentStep] = useState(0);
@@ -16,54 +15,29 @@ export default function UserWelcomeGuide({ onClose }) {
             content: (
                 <div className="space-y-4">
                     <p className="text-gray-700 leading-relaxed">
-                        Your dashboard offers two types of chat services. Let&apos;s understand the difference between them and how to use each one.
+                        Welcome to your Medicolegal formal consultation dashboard. Let&apos;s understand how to use the service.
                     </p>
                 </div>
             ),
         },
         {
-            title: "General Chat 💬",
+            title: "Medicolegal formal consultation 💬",
             icon: <MessageCircle className="w-6 h-6 text-blue-600" />,
             content: (
                 <div className="space-y-4">
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h3 className="font-semibold text-blue-900 mb-2">What is General Chat?</h3>
+                        <h3 className="font-semibold text-blue-900 mb-2">What is Medicolegal formal consultation?</h3>
                         <ul className="space-y-2 text-sm text-blue-800 list-disc list-inside">
                             <li><strong>One-time payment:</strong> ₹1,000 (single payment)</li>
                             <li><strong>Access:</strong> Chat with medicolegal experts as many times as you like</li>
                             <li><strong>Validity:</strong> Indefinite period (lifetime access)</li>
-                            <li><strong>Note:</strong> Specific case-based complaints are NOT addressed in General Chat</li>
-                        </ul>
-                    </div>
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <h4 className="font-semibold text-gray-900 mb-2">Example:</h4>
-                        <p className="text-sm text-gray-700">
-                            Pay ₹1,000 once, and you can ask unlimited general medicolegal questions forever. However, if you have a specific complaint (like a legal notice or court case), you&apos;ll need Advance Chat instead.
-                        </p>
-                    </div>
-                </div>
-            ),
-        },
-        {
-            title: "Advance Chat ⚡",
-            icon: <MessageSquare className="w-6 h-6 text-purple-600" />,
-            content: (
-                <div className="space-y-4">
-                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                        <h3 className="font-semibold text-purple-900 mb-2">What is Advance Chat?</h3>
-                        <ul className="space-y-2 text-sm text-purple-800 list-disc list-inside">
-                            <li><strong>Payment:</strong> ₹10,000 per access</li>
-                            <li><strong>Purpose:</strong> For complaint-related medicolegal consultation</li>
-                            <li><strong>Validity:</strong> 1 month from purchase</li>
-                            <li><strong>Coverage:</strong> Civil, criminal, consumer court complaints, medical board/council proceedings, legal notices</li>
                             <li><strong>Features:</strong> Upload & download documents, all communication saved in your dashboard</li>
-                            <li><strong>Usage:</strong> Unlimited consultations for your specific complaint during the validity period</li>
                         </ul>
                     </div>
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                         <h4 className="font-semibold text-gray-900 mb-2">Example:</h4>
                         <p className="text-sm text-gray-700">
-                            If you receive a legal notice or have a consumer court case, pay ₹10,000 for Advance Chat access. You can then consult unlimited times about that specific complaint for 1 month, upload documents, and get expert guidance.
+                            Pay ₹1,000 once, and you can ask unlimited medicolegal questions forever. Upload relevant documents, get expert guidance, and all your communication history is saved.
                         </p>
                     </div>
                 </div>
@@ -75,7 +49,7 @@ export default function UserWelcomeGuide({ onClose }) {
             content: (
                 <div className="space-y-4">
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                        <h3 className="font-semibold text-green-900 mb-3">Payment via QR Code</h3>
+                        <h3 className="font-semibold text-green-900 mb-3">Payment via QR Code or Bank Transfer</h3>
                         <div className="flex flex-col sm:flex-row gap-4 items-start">
                             <div className="relative w-32 h-32 rounded-lg border-2 border-green-300 bg-white p-2 mx-auto sm:mx-0">
                                 <Image
@@ -98,14 +72,17 @@ export default function UserWelcomeGuide({ onClose }) {
                             </div>
                         </div>
                     </div>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <p className="text-sm text-blue-800 font-medium mb-2">Bank Transfer Details:</p>
+                        <div className="text-sm text-blue-700 space-y-1">
+                            <p><strong>Bank:</strong> State Bank of India</p>
+                            <p><strong>A/C No:</strong> 44717262489</p>
+                            <p><strong>IFSC:</strong> SBIN0060414</p>
+                        </div>
+                    </div>
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                         <p className="text-sm text-yellow-800">
-                            <strong>Important:</strong> After making the payment via QR code, your payment will be pending until admin approval. Once the admin verifies and approves your payment, your chat will be activated and you can start using the service.
-                        </p>
-                    </div>
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <p className="text-sm text-blue-800">
-                            <strong>Note:</strong> Online payment gateway (Razorpay) is coming soon. Currently, all payments are processed via QR code only.
+                            <strong>Important:</strong> After making the payment via QR code or bank transfer, your payment will be pending until admin approval. Once the admin verifies and approves your payment, your chat will be activated and you can start using the service.
                         </p>
                     </div>
                 </div>
@@ -115,67 +92,40 @@ export default function UserWelcomeGuide({ onClose }) {
             title: "Summary 📝",
             content: (
                 <div className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                        <Card className="p-4 border-blue-200">
-                            <div className="flex items-start gap-3">
-                                <MessageCircle className="w-5 h-5 text-blue-600 mt-0.5" />
-                                <div>
-                                    <h4 className="font-semibold text-gray-900 mb-1">General Chat</h4>
-                                    <p className="text-xs text-gray-600 mb-2">
-                                        ₹1,000 one-time
-                                    </p>
-                                    <p className="text-xs text-gray-600">
-                                        Unlimited general questions, indefinite access
-                                    </p>
-                                </div>
+                    <Card className="p-4 border-blue-200">
+                        <div className="flex items-start gap-3">
+                            <MessageCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+                            <div>
+                                <h4 className="font-semibold text-gray-900 mb-1">Medicolegal formal consultation</h4>
+                                <p className="text-xs text-gray-600 mb-2">
+                                    ₹1,000 one-time
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                    Unlimited questions, indefinite access, document upload/download
+                                </p>
                             </div>
-                        </Card>
-                        <Card className="p-4 border-purple-200">
-                            <div className="flex items-start gap-3">
-                                <MessageSquare className="w-5 h-5 text-purple-600 mt-0.5" />
-                                <div>
-                                    <h4 className="font-semibold text-gray-900 mb-1">Advance Chat</h4>
-                                    <p className="text-xs text-gray-600 mb-2">
-                                        ₹10,000 per access
-                                    </p>
-                                    <p className="text-xs text-gray-600">
-                                        For specific complaints, 1 month validity
-                                    </p>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
+                        </div>
+                    </Card>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <h4 className="font-semibold text-blue-900 mb-2">Quick Start Guide:</h4>
                         <ol className="space-y-2 text-sm text-blue-800">
                             <li className="flex items-start gap-2">
                                 <span className="font-bold">1.</span>
-                                <span>For <strong>General Chat</strong>: Click &quot;New Question&quot; button on the dashboard</span>
+                                <span>Click &quot;New Question&quot; button on the dashboard</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="font-bold">2.</span>
-                                <span>For <strong>Advance Chat</strong>: Select &quot;Advance Chat&quot; from the sidebar</span>
+                                <span>Make payment via QR code or bank transfer</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="font-bold">3.</span>
-                                <span>Make payment via QR code (scan the QR code shown during checkout)</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="font-bold">4.</span>
                                 <span>Wait for admin approval (your payment will be verified)</span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="font-bold">5.</span>
+                                <span className="font-bold">4.</span>
                                 <span>Once approved, your chat will be activated and you can start asking questions!</span>
                             </li>
                         </ol>
-                    </div>
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <h4 className="font-semibold text-gray-900 mb-2">Key Differences:</h4>
-                        <div className="text-sm text-gray-700 space-y-1">
-                            <p><strong>General Chat:</strong> For general medicolegal questions, not for specific complaints</p>
-                            <p><strong>Advance Chat:</strong> For specific complaints (legal notices, court cases, medical board proceedings)</p>
-                        </div>
                     </div>
                 </div>
             ),

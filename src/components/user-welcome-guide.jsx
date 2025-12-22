@@ -48,41 +48,68 @@ export default function UserWelcomeGuide({ onClose }) {
             icon: <QrCode className="w-6 h-6 text-green-600" />,
             content: (
                 <div className="space-y-4">
+                    {/* Payment Card */}
+                    <div className="rounded-xl border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm">
+                        <h3 className="font-semibold text-gray-800 mb-4 text-center">Payment via QR Code or Bank Transfer</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                            {/* QR Code */}
+                            <div className="flex flex-col items-center">
+                                <p className="text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">Scan to Pay</p>
+                                <div className="relative w-36 h-36 rounded-xl border-2 border-blue-200 bg-white p-2 shadow-md">
+                                    <Image
+                                        src="/sm-qr.jpeg"
+                                        alt="Payment QR Code"
+                                        fill
+                                        className="object-contain rounded-lg p-1"
+                                        sizes="144px"
+                                    />
+                                </div>
+                                <p className="text-[11px] text-gray-500 mt-2">Use any UPI app</p>
+                            </div>
+
+                            {/* Bank Details */}
+                            <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                                <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
+                                    <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <svg className="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                        </svg>
+                                    </div>
+                                    <p className="font-semibold text-gray-800 text-sm">Bank Transfer</p>
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs text-gray-500">Bank</span>
+                                        <span className="text-xs font-medium text-gray-800">State Bank of India</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs text-gray-500">A/C No.</span>
+                                        <span className="text-xs font-semibold text-gray-900 font-mono">44717262489</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs text-gray-500">IFSC</span>
+                                        <span className="text-xs font-semibold text-gray-900 font-mono">SBIN0060414</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Steps */}
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                        <h3 className="font-semibold text-green-900 mb-3">Payment via QR Code or Bank Transfer</h3>
-                        <div className="flex flex-col sm:flex-row gap-4 items-start">
-                            <div className="relative w-32 h-32 rounded-lg border-2 border-green-300 bg-white p-2 mx-auto sm:mx-0">
-                                <Image
-                                    src="/sm-qr.jpeg"
-                                    alt="Payment QR Code"
-                                    fill
-                                    className="object-contain rounded"
-                                    sizes="128px"
-                                />
-                            </div>
-                            <div className="flex-1 space-y-2 text-sm text-green-800">
-                                <p className="font-medium">Steps to Pay:</p>
-                                <ol className="list-decimal list-inside space-y-1 ml-2">
-                                    <li>Open any UPI app on your phone (PhonePe, Google Pay, Paytm, etc.)</li>
-                                    <li>Tap on &quot;Scan QR Code&quot; in your UPI app</li>
-                                    <li>Point your camera at the QR code shown above</li>
-                                    <li>Enter the payment amount and complete the transaction</li>
-                                    <li>Keep the payment receipt for your records</li>
-                                </ol>
-                            </div>
-                        </div>
+                        <p className="font-medium text-green-900 mb-2 text-sm">Steps to Pay:</p>
+                        <ol className="list-decimal list-inside space-y-1 text-xs text-green-800">
+                            <li>Open any UPI app (PhonePe, Google Pay, Paytm)</li>
+                            <li>Scan QR code or transfer to bank account</li>
+                            <li>Enter payment amount and complete transaction</li>
+                            <li>Keep payment receipt for reference</li>
+                        </ol>
                     </div>
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <p className="text-sm text-blue-800 font-medium mb-2">Bank Transfer Details:</p>
-                        <div className="text-sm text-blue-700 space-y-1">
-                            <p><strong>Bank:</strong> State Bank of India</p>
-                            <p><strong>A/C No:</strong> 44717262489</p>
-                            <p><strong>IFSC:</strong> SBIN0060414</p>
-                        </div>
-                    </div>
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <p className="text-sm text-yellow-800">
-                            <strong>Important:</strong> After making the payment via QR code or bank transfer, your payment will be pending until admin approval. Once the admin verifies and approves your payment, your chat will be activated and you can start using the service.
+
+                    {/* Important Note */}
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                        <p className="text-xs text-amber-800">
+                            <strong>Important:</strong> After payment, admin will verify and approve. Your chat will be activated once approved.
                         </p>
                     </div>
                 </div>

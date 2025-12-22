@@ -1,15 +1,29 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { UserSidebar } from "./_components/sidebar";
 import Link from "next/link";
 import Image from "next/image";
+import UserWelcomeGuide from "@/components/user-welcome-guide";
 
 const LayoutContent = ({ children }) => {
   const pathname = usePathname();
   const [, setSidebarWidth] = useState(224);
+  const [showWelcomeGuide, setShowWelcomeGuide] = useState(false);
   const hideSidebar = pathname?.startsWith("/user/auth");
+
+  // Listen for custom event to open guide manually from any page
+  useEffect(() => {
+    const handleOpenGuide = () => {
+      setShowWelcomeGuide(true);
+    };
+
+    window.addEventListener("openWelcomeGuide", handleOpenGuide);
+    return () => {
+      window.removeEventListener("openWelcomeGuide", handleOpenGuide);
+    };
+  }, []);
 
   if (hideSidebar) {
     return <div className="min-h-[100dvh] bg-background">{children}</div>;
@@ -24,9 +38,13 @@ const LayoutContent = ({ children }) => {
   ];
 
   return (
-    <div className="flex h-[100dvh] overflow-hidden bg-background">
-      <UserSidebar onWidthChange={setSidebarWidth} />
-      <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
+    <>
+      {showWelcomeGuide && (
+        <UserWelcomeGuide onClose={() => setShowWelcomeGuide(false)} />
+      )}
+      <div className="flex h-[100dvh] overflow-hidden bg-background">
+        <UserSidebar onWidthChange={setSidebarWidth} />
+        <main className="flex-1 flex flex-col min-h-[100dvh] transition-all duration-300">
         <nav className="flex items-center justify-between gap-6 bg-white text-foreground px-6 py-4 backdrop-blur-lg border-b border-foreground/10 shadow-sm mx-auto md:mx-0">
           <div className="flex items-center gap-3 justify-center">
             <Link
@@ -57,8 +75,9 @@ const LayoutContent = ({ children }) => {
           </div>
         </nav>
         <div className="flex-1 overflow-y-auto px-3 pb-6 pt-4">{children}</div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 };
 

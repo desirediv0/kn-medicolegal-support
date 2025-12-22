@@ -35,7 +35,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import UserWelcomeGuide from "@/components/user-welcome-guide";
 
 const POLL_INTERVAL = 10000;
 
@@ -360,12 +359,7 @@ function UserContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentQuestionId = searchParams.get("question");
-  const [showWelcomeGuide, setShowWelcomeGuide] = useState(false);
 
-  // Function to manually open guide
-  const openWelcomeGuide = () => {
-    setShowWelcomeGuide(true);
-  };
   const currencyFormatter = useMemo(
     () =>
       new Intl.NumberFormat("en-IN", {
@@ -546,9 +540,9 @@ function UserContent() {
       // Check if guide has been shown in this session
       const hasSeenGuideInSession = sessionStorage.getItem("userWelcomeGuideSeenInSession");
       if (!hasSeenGuideInSession) {
-        // Show guide after a short delay
+        // Show guide after a short delay by dispatching event to layout
         setTimeout(() => {
-          setShowWelcomeGuide(true);
+          window.dispatchEvent(new CustomEvent("openWelcomeGuide"));
         }, 500);
       }
     } else if (status === "unauthenticated") {
@@ -558,18 +552,6 @@ function UserContent() {
       sessionStorage.removeItem("userWelcomeGuideSeenInSession");
     }
   }, [status, fetchQuestions]);
-
-  // Listen for custom event to open guide manually
-  useEffect(() => {
-    const handleOpenGuide = () => {
-      setShowWelcomeGuide(true);
-    };
-
-    window.addEventListener("openWelcomeGuide", handleOpenGuide);
-    return () => {
-      window.removeEventListener("openWelcomeGuide", handleOpenGuide);
-    };
-  }, []);
 
   useEffect(() => {
     const loadPrice = async () => {
@@ -1032,10 +1014,6 @@ function UserContent() {
     selectedQuestion.paymentStatus === "SUCCESS";
 
   return (
-    <>
-      {showWelcomeGuide && (
-        <UserWelcomeGuide onClose={() => setShowWelcomeGuide(false)} />
-      )}
     <div className="flex flex-col gap-4 md:flex-row md:gap-6 min-h-[calc(100svh-4rem)] md:min-h-[calc(100dvh-4rem)] text-foreground">
       <div className="md:hidden sticky top-0 z-30 flex  items-center justify-between gap-3 rounded-xl border border-primary/20 bg-white/90 px-4 py-3 shadow-sm backdrop-blur">
         <div className="min-w-0">
@@ -1548,122 +1526,72 @@ function UserContent() {
       </div>
 
       <Dialog open={questionModalOpen} onOpenChange={setQuestionModalOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-xl max-h-[97vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Ask a new question</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {formattedQuestionPrice && (
-              <p className="text-sm text-gray-500">
-                Each consultation costs{" "}
-                <span className="font-semibold text-gray-700">
-                  {formattedQuestionPrice}
-                </span>{" "}
-                (payment required to start chat).
-              </p>
+              <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-2 text-center">
+                <p className="text-xs text-gray-600">Consultation Fee</p>
+                <p className="text-xl font-bold text-primary">{formattedQuestionPrice}</p>
+                <p className="text-[10px] text-gray-500">(One-time payment)</p>
+              </div>
             )}
             {questionPrice > 0 && (
               <>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">
-                    Payment Method
-                  </label>
-                  <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                    {/* <label className="flex items-center gap-2 cursor-pointer">
-                                       <input
-                                         type="radio"
-                                         name="paymentType"
-                                         value="RAZORPAY"
-                                         checked={paymentType === "RAZORPAY"}
-                                         onChange={(e) => setPaymentType(e.target.value)}
-                                         className="h-4 w-4"
-                                       />
-                                       <span className="text-sm text-gray-700">
-                                         Online (Razorpay)
-                                       </span>
-                                     </label> */}
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="paymentType"
-                        value="CASH"
-                        checked={paymentType === "CASH"}
-                        onChange={(e) => setPaymentType(e.target.value)}
-                        className="h-4 w-4"
-                      />
-                      <span className="text-sm text-gray-700">
-                        QR / Bank Transfer Payment
-                      </span>
-                    </label>
-                    <div className="flex flex-col sm:flex-row gap-4 items-start">
-                      <div className="relative h-36 w-36 rounded-md border border-blue-200 bg-white p-2">
-                        <Image
-                          src="/sm-qr.jpeg"
-                          alt="Payment QR"
-                          fill
-                          className="object-contain rounded"
-                          sizes="150px"
-                        />
-                      </div>
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
-                        <p className="font-semibold text-blue-900 mb-2">Bank Transfer Details:</p>
-                        <div className="space-y-1 text-blue-800">
-                          <p><span className="font-medium">Bank:</span> State Bank of India</p>
-                          <p><span className="font-medium">A/C No:</span> 44717262489</p>
-                          <p><span className="font-medium">IFSC:</span> SBIN0060414</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* {paymentType === "RAZORPAY" && (
-                  <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
-                    <input
-                      id="pay-immediately"
-                      type="checkbox"
-                      checked={payImmediately}
-                      onChange={(event) =>
-                        setPayImmediately(event.target.checked)
-                      }
-                      className="mt-1 h-4 w-4"
-                    />
-                    <label
-                      htmlFor="pay-immediately"
-                      className="text-sm text-left text-gray-600"
-                    >
-                      Pay immediately after submitting this question. Unchecking
-                      this will save the question as pending so you can pay
-                      later from the list.
-                    </label>
-                  </div>
-                )}
-                {paymentType === "CASH" && (
-                  <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-[1.2fr_1fr] gap-3 sm:gap-4 items-center">
-                      <div className="space-y-2">
-                        <p className="text-sm text-blue-900 font-medium">
-                          Cash payment selected.
-                        </p>
-                        <p className="text-sm text-blue-800">
-                          Scan the QR to pay via UPI. Your question will be created and
-                          admin will approve it after receiving cash/UPI confirmation.
-                          You&apos;ll be notified once approved.
-                        </p>
-                      </div>
-                      <div className="flex justify-center">
-                        <div className="relative h-32 w-32 rounded-md border border-blue-200 bg-white p-2">
+                  <p className="text-xs font-medium text-gray-600">Payment Method: <span className="text-primary">QR / Bank Transfer</span></p>
+
+                  {/* Payment Details Box */}
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                    <div className="flex flex-col sm:flex-row gap-3 items-center sm:items-start">
+                      {/* QR Code */}
+                      <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-lg border border-gray-300 p-1">
                           <Image
-                            src="/qr.jpeg"
+                            src="/sm-qr.jpeg"
                             alt="Payment QR"
-                            fill
-                            className="object-contain rounded"
-                            sizes="128px"
+                            width={150}
+                            height={150}
+                            className="w-full h-full object-contain"
                           />
                         </div>
+                        <p className="text-[10px] text-gray-500 mt-1">Scan to Pay</p>
+                      </div>
+
+                      {/* Divider - horizontal on mobile, vertical on desktop */}
+                      <div className="flex flex-row sm:flex-col items-center justify-center">
+                        <div className="w-8 sm:w-px h-px sm:h-8 bg-gray-300"></div>
+                        <span className="text-[10px] text-gray-400 font-medium px-2 sm:py-1 sm:px-0">OR</span>
+                        <div className="w-8 sm:w-px h-px sm:h-8 bg-gray-300"></div>
+                      </div>
+
+                      {/* Bank Details */}
+                      <div className="flex-1 w-full sm:w-auto">
+                        <p className="text-xs font-medium text-gray-700 mb-1.5 text-center sm:text-left">Bank Transfer</p>
+                        <div className="bg-white rounded-lg border border-gray-200 p-2 space-y-1 text-xs sm:text-sm">
+                          <div className="flex justify-between gap-2">
+                            <span className="text-gray-500">Bank:</span>
+                            <span className="font-medium text-gray-800">SBI</span>
+                          </div>
+                          <div className="flex justify-between gap-2">
+                            <span className="text-gray-500">A/C:</span>
+                            <span className="font-bold text-gray-900 font-mono text-xs sm:text-sm">44717262489</span>
+                          </div>
+                          <div className="flex justify-between gap-2">
+                            <span className="text-gray-500">IFSC:</span>
+                            <span className="font-bold text-gray-900 font-mono text-xs sm:text-sm">SBIN0060414</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    <p className="text-[10px] text-amber-600 mt-2 text-center">
+                      ⚠️ Admin will verify & approve after payment
+                    </p>
                   </div>
-                )} */}
+                </div>
+
               </>
             )}
             <div>
@@ -1728,7 +1656,6 @@ function UserContent() {
         </DialogContent>
       </Dialog>
     </div>
-    </>
   );
 }
 

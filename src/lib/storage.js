@@ -14,7 +14,7 @@ const {
   SPACES_ENDPOINT,
   SPACES_BUCKET,
   SPACES_CDN_URL,
-  UPLOAD_FOLDER = "storage",
+  UPLOAD_FOLDER = "KN Medicolegal Support",
 } = process.env;
 
 let s3Client;

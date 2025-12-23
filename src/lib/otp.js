@@ -1,7 +1,9 @@
 import { randomInt } from "crypto";
-import { hash, compare } from "bcryptjs";
+import * as bcryptjs from "bcryptjs";
 import { addMinutes, isBefore } from "date-fns";
 import { prisma } from "./prisma";
+
+const { hash, compare } = bcryptjs;
 
 const OTP_VALIDITY_MINUTES = 10;
 

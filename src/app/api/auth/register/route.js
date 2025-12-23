@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { hash } from "bcryptjs";
+import * as bcryptjs from "bcryptjs";
 import { subMinutes } from "date-fns";
+
+const { hash } = bcryptjs;
 
 export async function POST(request) {
   try {

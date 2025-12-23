@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ export function UserAuthForm({
   const callbackParam = searchParams.get("callbackUrl");
   const modeParam = searchParams.get("mode");
   const redirectTarget = buildRedirectTarget(callbackParam, defaultCallback);
-  
+
   const [mode, setMode] = useState(modeParam === "register" ? "signup" : "login");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -62,6 +62,18 @@ export function UserAuthForm({
   const [otp, setOtp] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
   const [signupData, setSignupData] = useState(null);
+  const [resendTimer, setResendTimer] = useState(0);
+  const [resendLoading, setResendLoading] = useState(false);
+
+  // Timer effect for resend OTP
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => {
+        setResendTimer(resendTimer - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
 
   // Password strength checker
   const checkPasswordStrength = (password) => {
@@ -169,6 +181,7 @@ export function UserAuthForm({
 
         setSignupData({ email, password, name, phone });
         setOtpSent(true);
+        setResendTimer(60); // Start 60 second timer
         toast.success("OTP sent to your email!");
       } else if (mode === "forgot") {
         toast.success("Password reset link sent!");
@@ -180,6 +193,40 @@ export function UserAuthForm({
       toast.error(message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (!signupData?.email || resendTimer > 0 || resendLoading) {
+      return;
+    }
+
+    setResendLoading(true);
+    try {
+      const response = await fetch("/api/otp/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: signupData.email, resend: true }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        if (response.status === 429 && data.cooldownSeconds) {
+          setResendTimer(data.cooldownSeconds);
+          throw new Error(data.error || "Please wait before resending");
+        }
+        throw new Error(data.error || "Failed to resend OTP");
+      }
+
+      setResendTimer(60); // Reset timer to 60 seconds
+      setOtp(""); // Clear current OTP input
+      toast.success("OTP resent to your email!");
+    } catch (err) {
+      console.error(err);
+      const message = err?.message || "Failed to resend OTP";
+      toast.error(message);
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -255,6 +302,8 @@ export function UserAuthForm({
     setPasswordStrength("");
     setOtpSent(false);
     setOtpVerified(false);
+    setResendTimer(0);
+    setOtp("");
     setOtp("");
     setSignupData(null);
   };
@@ -475,19 +524,40 @@ export function UserAuthForm({
               <Button
                 onClick={handleOtpVerify}
                 disabled={loading || otp.length !== 6}
+                className="w-full"
               >
                 {loading ? "Verifying..." : "Verify OTP"}
               </Button>
 
-              <button
-                onClick={() => {
-                  setOtpSent(false);
-                  setOtp("");
-                }}
-                className="text-sm text-gray-500 underline"
-              >
-                Edit Email
-              </button>
+              <div className="flex flex-col items-center gap-2 w-full">
+                <button
+                  onClick={handleResendOtp}
+                  disabled={resendTimer > 0 || resendLoading || loading}
+                  className={cn(
+                    "text-sm underline",
+                    resendTimer > 0 || resendLoading || loading
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-blue-600 hover:text-blue-700"
+                  )}
+                >
+                  {resendLoading
+                    ? "Sending..."
+                    : resendTimer > 0
+                      ? `Resend OTP in ${resendTimer}s`
+                      : "Resend OTP"}
+                </button>
+
+                <button
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtp("");
+                    setResendTimer(0);
+                  }}
+                  className="text-sm text-gray-500 underline"
+                >
+                  Edit Email
+                </button>
+              </div>
             </div>
           ) : (
             // Success Message After OTP

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { verifyOtp } from "@/lib/otp";
-import { hash } from "bcryptjs";
+import * as bcryptjs from "bcryptjs";
+const { hash } = bcryptjs;
 
 export async function PATCH(request) {
   const session = await auth();

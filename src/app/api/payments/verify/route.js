@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import crypto from "crypto";
+import * as crypto from "crypto";
 
 const { NEXT_PUBLIC_RAZORPAY_KEY_SECRET } = process.env;
 

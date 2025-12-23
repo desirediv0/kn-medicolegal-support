@@ -1,9 +1,11 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { prisma } from "./prisma";
-import { compare } from "bcryptjs";
+import * as bcryptjs from "bcryptjs";
+
+const { compare } = bcryptjs;
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -114,4 +116,6 @@ export const authOptions = {
 
 export const authHandler = NextAuth(authOptions);
 
-export const auth = () => getServerSession(authOptions);
+export async function auth() {
+  return await getServerSession(authOptions);
+}

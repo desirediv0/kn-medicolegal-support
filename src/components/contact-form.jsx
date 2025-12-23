@@ -51,14 +51,19 @@ export function ContactForm() {
         },
         body: JSON.stringify({
           ...formData,
-          subject: "Contact Form Inquiry",
+          subject: "Contact Form Inquiry (Home)",
         }),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to send message");
+        throw new Error(data?.error || "Failed to send message");
       }
 
       toast.success("Message sent successfully! We'll get back to you soon.");

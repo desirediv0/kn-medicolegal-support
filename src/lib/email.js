@@ -1,7 +1,11 @@
 import nodemailer from "nodemailer";
 
 // Prefer server-side env names; fall back to NEXT_PUBLIC_* if needed
-const FROM_EMAIL = process.env.SMTP_FROM_EMAIL || process.env.NEXT_PUBLIC_FROM_EMAIL;
+const FROM_EMAIL =
+  process.env.SMTP_FROM_EMAIL ||
+  process.env.NEXT_PUBLIC_FROM_EMAIL ||
+  process.env.SMTP_USER ||
+  process.env.NEXT_PUBLIC_SMTP_USER;
 const SMTP_HOST = process.env.SMTP_HOST || process.env.NEXT_PUBLIC_SMTP_HOST;
 const SMTP_PORT = Number(process.env.SMTP_PORT || process.env.NEXT_PUBLIC_SMTP_PORT || 587);
 const SMTP_USER = process.env.SMTP_USER || process.env.NEXT_PUBLIC_SMTP_USER;
@@ -28,12 +32,14 @@ export async function sendOtpEmail({
   subject = "Your Verification Code",
   text,
   html,
+  replyTo,
 }) {
   const transporter = createTransporter();
 
   const mailOptions = {
     from: FROM_EMAIL,
     to,
+    replyTo,
     subject,
     text:
       text ?? `Your verification code is ${otp}. It is valid for 10 minutes.`,
@@ -49,6 +55,7 @@ export async function sendOtpEmail({
       message: err?.message,
       code: err?.code,
       response: err?.response,
+      command: err?.command,
     });
     throw err;
   }

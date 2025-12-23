@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { sendOtpEmail } from "@/lib/email";
 
+const DEFAULT_ADMIN_EMAIL =
+  process.env.SMTP_FROM_EMAIL ||
+  process.env.NEXT_PUBLIC_TO_EMAIL ||
+  process.env.NEXT_PUBLIC_FROM_EMAIL ||
+  "codeshorts007@gmail.com";
+
 export async function POST(request) {
   try {
     const { name, email, phone, category, message, subject } = await request.json();
@@ -16,21 +22,18 @@ export async function POST(request) {
     let adminEmail;
     switch (category) {
       case "Information":
-        adminEmail = "codeshorts007@gmail.com";
-        break;
       case "Support":
-        adminEmail = "codeshorts007@gmail.com";
-        break;
       case "Grievance Redressal":
-        adminEmail = "codeshorts007@gmail.com";
+        adminEmail = DEFAULT_ADMIN_EMAIL;
         break;
       default:
-        adminEmail = process.env.NEXT_PUBLIC_FROM_EMAIL || "codeshorts007@gmail.com";
+        adminEmail = DEFAULT_ADMIN_EMAIL;
     }
 
     try {
       await sendOtpEmail({
         to: adminEmail,
+        replyTo: email,
         subject: subject || `Contact Form [${category}]: ${name}`,
         text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "Not provided"}\nCategory: ${category}\n\nMessage:\n${message}`,
         html: `

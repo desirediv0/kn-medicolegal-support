@@ -1,30 +1,24 @@
 import nodemailer from "nodemailer";
 
-const {
-  NEXT_PUBLIC_FROM_EMAIL,
-  NEXT_PUBLIC_SMTP_HOST,
-  NEXT_PUBLIC_SMTP_PORT = 587,
-  NEXT_PUBLIC_SMTP_USER,
-  NEXT_PUBLIC_SMTP_PASSWORD,
-} = process.env;
+// Prefer server-side env names; fall back to NEXT_PUBLIC_* if needed
+const FROM_EMAIL = process.env.SMTP_FROM_EMAIL || process.env.NEXT_PUBLIC_FROM_EMAIL;
+const SMTP_HOST = process.env.SMTP_HOST || process.env.NEXT_PUBLIC_SMTP_HOST;
+const SMTP_PORT = Number(process.env.SMTP_PORT || process.env.NEXT_PUBLIC_SMTP_PORT || 587);
+const SMTP_USER = process.env.SMTP_USER || process.env.NEXT_PUBLIC_SMTP_USER;
+const SMTP_PASSWORD = process.env.SMTP_PASSWORD || process.env.NEXT_PUBLIC_SMTP_PASSWORD;
 
-if (
-  !NEXT_PUBLIC_FROM_EMAIL ||
-  !NEXT_PUBLIC_SMTP_HOST ||
-  !NEXT_PUBLIC_SMTP_USER ||
-  !NEXT_PUBLIC_SMTP_PASSWORD
-) {
+if (!FROM_EMAIL || !SMTP_HOST || !SMTP_USER || !SMTP_PASSWORD) {
   console.warn("SMTP environment variables are missing or incomplete.");
 }
 
 const createTransporter = () =>
   nodemailer.createTransport({
-    host: NEXT_PUBLIC_SMTP_HOST,
-    port: Number(NEXT_PUBLIC_SMTP_PORT),
-    secure: Number(NEXT_PUBLIC_SMTP_PORT) === 465,
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: SMTP_PORT === 465,
     auth: {
-      user: NEXT_PUBLIC_SMTP_USER,
-      pass: NEXT_PUBLIC_SMTP_PASSWORD,
+      user: SMTP_USER,
+      pass: SMTP_PASSWORD,
     },
   });
 
@@ -38,7 +32,7 @@ export async function sendOtpEmail({
   const transporter = createTransporter();
 
   const mailOptions = {
-    from: NEXT_PUBLIC_FROM_EMAIL,
+    from: FROM_EMAIL,
     to,
     subject,
     text:
@@ -48,5 +42,14 @@ export async function sendOtpEmail({
       `<p>Your verification code is <strong>${otp}</strong>.</p><p>This code will expire in 10 minutes.</p>`,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error("Email send failed:", {
+      message: err?.message,
+      code: err?.code,
+      response: err?.response,
+    });
+    throw err;
+  }
 }

@@ -1,11 +1,20 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuthModule from "next-auth";
+import CredentialsProviderModule from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth/next";
 import { prisma } from "./prisma";
 import * as bcryptjs from "bcryptjs";
 
 const { compare } = bcryptjs;
+
+// Handle ES module nested default exports
+const NextAuth = typeof NextAuthModule === 'function'
+  ? NextAuthModule
+  : (NextAuthModule.default?.default || NextAuthModule.default || NextAuthModule);
+
+const CredentialsProvider = typeof CredentialsProviderModule === 'function'
+  ? CredentialsProviderModule
+  : (CredentialsProviderModule.default?.default || CredentialsProviderModule.default || CredentialsProviderModule);
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),

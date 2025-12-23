@@ -40,46 +40,31 @@ export default function FeePackagesPage() {
                         <p className="text-gray-600 text-sm md:text-base">Clear and transparent offerings</p>
                     </div>
 
-                    <div className="grid gap-6 md:gap-8 md:grid-cols-3">
+                    <div className="grid gap-6 md:gap-8 md:grid-cols-2">
                         {/* Free Registration Card */}
                         <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-semibold text-gray-900">Free Registration</h3>
-                                <span className="text-sm font-semibold text-gray-900">₹0</span>
+                                <h3 className="text-lg font-semibold text-gray-900 capitalize">Free Registration</h3>
+                                <span className="text-sm font-semibold text-green-500">Free</span>
                             </div>
                             <p className="text-sm text-gray-700 leading-relaxed">
                                 Registration on this site is free. It permits you to access the contents of the Knowledge Hub, which has important medicolegal information and is updated periodically.
                             </p>
-                            <p className="text-xs text-gray-600 mt-2">
-                                <strong>Validity:</strong> Lifetime
-                            </p>
                         </div>
 
-                        {/* General Chat Card */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-semibold text-gray-900">General Chat</h3>
-                                <span className="text-sm font-semibold text-gray-900">₹1,000 (one-time)</span>
-                            </div>
-                            <p className="text-sm text-gray-700 leading-relaxed">
-                                Login credentials are obtained through a one-time payment of Rs 1000/-. It allows you to chat with the medicolegal experts as many times as you like, for an indefinite period. However, specific case-based complaints are not addressed on this chat.
-                            </p>
-                            <p className="text-xs text-gray-600 mt-2">
-                                <strong>Validity:</strong> Indefinite
-                            </p>
-                        </div>
 
-                        {/* Advanced Chat Card */}
+
+                        {/* Case specific formal medicolegal consultation Card */}
                         <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-semibold text-gray-900">Advanced Chat</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 capitalize">Case specific formal medicolegal consultation</h3>
                                 <span className="text-sm font-semibold text-gray-900">₹10,000</span>
                             </div>
                             <p className="text-sm text-gray-700 leading-relaxed">
-                                This is the communication for complaint-related medicolegal consultation. Login credentials for this are obtained through payment of Rs 10,000/-. This permits you to have online and/or offline chat or consultation on a medicolegal complaint (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice). This consultation is permitted any number of times for a specific complaint, for a period of one month. This also has the privilege of uploading & downloading documents. All the communication related to the particular case is accessible on the Dashboard of the login person.
+                                For complaint-related cases (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice)
                             </p>
                             <p className="text-xs text-gray-600 mt-2">
-                                <strong>Validity:</strong> 1 Month
+                                <strong>Validity:</strong> 30 days
                             </p>
                         </div>
                     </div>

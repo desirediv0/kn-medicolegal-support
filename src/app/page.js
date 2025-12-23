@@ -86,7 +86,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">How You Can Engage With Us</h2>
             <p className="text-sm md:text-base text-gray-700">Clear, straightforward options for medico-legal support.</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid sm:grid-cols-2  gap-4 md:gap-6">
             {[
               {
                 id: 1,
@@ -101,24 +101,12 @@ export default function Home() {
                       ? "/user"
                       : "/user/auth?mode=register",
               },
+
               {
                 id: 2,
-                title: "Chat Subscription – ₹1,000",
-                description: "General medico-legal discussions",
-                validity: "Validity: Indefinite",
-                cta: "Start Chat",
-                href:
-                  profileData.role === "ADMIN"
-                    ? "/dashboard/questions"
-                    : profileData.role === "USER"
-                      ? "/user"
-                      : "/user/payment",
-              },
-              {
-                id: 3,
-                title: "Advanced Chat – ₹10,000",
-                description: "Case-specific medico-legal consultation",
-                validity: "Validity: 1 Month",
+                title: "Case specific formal medicolegal consultation – ₹10,000",
+                description: "For complaint-related cases (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice)",
+                validity: "Validity: 30 days",
                 cta: "Consult Now",
                 href:
                   profileData.role === "ADMIN"

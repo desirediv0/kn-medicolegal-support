@@ -55,7 +55,7 @@ export function WhatsAppFloatButton() {
                             <DialogTitle className="text-2xl">Join WhatsApp Group</DialogTitle>
                         </div>
                         <DialogDescription>
-                            Connect with medicolegal experts and fellow healthcare professionals
+                            Join our WhatsApp group for general medicolegal guidance and discussions
                         </DialogDescription>
                     </DialogHeader>
 
@@ -66,12 +66,13 @@ export function WhatsAppFloatButton() {
                                 <Info className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
                                 <div className="flex-1">
                                     <h3 className="font-semibold text-gray-900 mb-2">
-                                        Medicolegal WhatsApp Group for Medical Fraternity
+                                        WhatsApp Group - General Medicolegal Guidance Only
                                     </h3>
+                                    <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                                        This WhatsApp group is <strong>ONLY for general medicolegal guidance</strong> and is meant for <strong>medical fraternity discussions</strong>.
+                                    </p>
                                     <p className="text-sm text-gray-700 leading-relaxed">
-                                        This group is <strong>exclusively for medical professionals</strong> (doctors,
-                                        hospital administrators, and healthcare providers) to discuss general medicolegal
-                                        issues and seek guidance from experts.
+                                        <strong>Important:</strong> <span className="text-red-600 font-semibold">No individual case handling is done here.</span> This group is for general discussions and knowledge sharing among medical professionals.
                                     </p>
                                 </div>
                             </div>
@@ -82,64 +83,62 @@ export function WhatsAppFloatButton() {
                             <div className="flex items-start gap-3 mb-3">
                                 <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
                                 <h3 className="font-semibold text-gray-900">
-                                    What You Can Discuss
+                                    What This Group Is For
                                 </h3>
                             </div>
                             <ul className="space-y-2 text-sm text-gray-700 ml-8">
                                 <li className="flex items-start gap-2">
                                     <span className="text-green-600 mt-1">•</span>
-                                    <span>General medicolegal queries and best practices</span>
+                                    <span><strong>General medicolegal guidance</strong> and best practices</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-green-600 mt-1">•</span>
-                                    <span>Discussion on documentation and compliance</span>
+                                    <span><strong>Medical fraternity discussions</strong> on medicolegal topics</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-green-600 mt-1">•</span>
-                                    <span>Chat with medicolegal experts</span>
+                                    <span>Chat with experts on <strong>general issues only</strong></span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-green-600 mt-1">•</span>
-                                    <span>Knowledge sharing with peers</span>
+                                    <span>Knowledge sharing with fellow medical professionals</span>
                                 </li>
                             </ul>
                         </div>
 
                         {/* What it's NOT for - Disclaimer Box */}
-                        <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-lg p-4">
+                        <div className="bg-red-50 border-l-4 border-red-500 rounded-r-lg p-4">
                             <div className="flex items-start gap-3 mb-3">
-                                <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                                <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
                                 <h3 className="font-semibold text-gray-900">
-                                    Important: What This Group Does NOT Entertain
+                                    Explicit Disclaimer: What This Group Does NOT Entertain
                                 </h3>
                             </div>
                             <div className="ml-8 space-y-2">
-                                <p className="text-sm font-medium text-gray-900 mb-2">
-                                    This group is <strong>NOT</strong> for:
+                                <p className="text-sm font-medium text-red-900 mb-3">
+                                    The following are <strong>NOT entertained</strong> on this WhatsApp group:
                                 </p>
                                 <ul className="space-y-2 text-sm text-gray-700">
                                     <li className="flex items-start gap-2">
-                                        <span className="text-amber-600 mt-1">✗</span>
-                                        <span><strong>Court notices</strong> or legal proceedings</span>
+                                        <span className="text-red-600 mt-1 font-bold">✗</span>
+                                        <span><strong>Court notices</strong> - Not handled here</span>
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-amber-600 mt-1">✗</span>
-                                        <span><strong>Medical Council notices</strong> or disciplinary matters</span>
+                                        <span className="text-red-600 mt-1 font-bold">✗</span>
+                                        <span><strong>Medical Council notices</strong> - Not handled here</span>
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-amber-600 mt-1">✗</span>
-                                        <span><strong>Police notices</strong> or FIR-related queries</span>
+                                        <span className="text-red-600 mt-1 font-bold">✗</span>
+                                        <span><strong>Police notices</strong> - Not handled here</span>
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-amber-600 mt-1">✗</span>
-                                        <span><strong>Individual complaints</strong> or specific legal case discussions</span>
+                                        <span className="text-red-600 mt-1 font-bold">✗</span>
+                                        <span><strong>Individual case handling</strong> - Not done on WhatsApp</span>
                                     </li>
                                 </ul>
-                                <p className="text-xs text-amber-800 mt-3 pt-3 border-t border-amber-200">
-                                    <strong>Note:</strong> For formal consultations on specific cases, notices, or legal
-                                    matters, please use our <a href="/contact" className="underline font-medium">contact form</a> or
-                                    email us directly at{" "}
-                                    <a href="mailto:knmedicolegal@gmail.com" className="underline font-medium">
+                                <p className="text-xs text-red-800 mt-4 pt-3 border-t border-red-200 font-medium">
+                                    <strong>For formal consultations:</strong> Use our <a href="/contact" className="underline font-semibold">contact form</a> or email{" "}
+                                    <a href="mailto:knmedicolegal@gmail.com" className="underline font-semibold">
                                         knmedicolegal@gmail.com
                                     </a>
                                 </p>
@@ -151,7 +150,7 @@ export function WhatsAppFloatButton() {
                             <div className="flex items-center gap-3 mb-4">
                                 <Users className="h-5 w-5 text-gray-700" />
                                 <h3 className="font-semibold text-gray-900">
-                                    How It Works
+                                    How It Works - Clear Steps
                                 </h3>
                             </div>
                             <div className="space-y-3">
@@ -178,8 +177,8 @@ export function WhatsAppFloatButton() {
                                         3
                                     </div>
                                     <div className="flex-1 pt-0.5">
-                                        <p className="text-sm font-medium text-gray-900">Start Chatting with Experts</p>
-                                        <p className="text-xs text-gray-600 mt-1">Connect with medicolegal experts and peers</p>
+                                        <p className="text-sm font-medium text-gray-900">Chat with experts on general issues only</p>
+                                        <p className="text-xs text-gray-600 mt-1">Connect with medicolegal experts for general guidance discussions</p>
                                     </div>
                                 </div>
                             </div>

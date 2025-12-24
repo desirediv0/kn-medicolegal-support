@@ -113,7 +113,7 @@ export function PricingCard({ onPurchase, loading = false }) {
         {/* Comparison */}
         <div className="pt-4 border-t">
           <p className="text-xs text-center text-muted-foreground">
-            Already have <span className="font-medium">General Chat</span> for basic queries.
+            For general guidance, join our <span className="font-medium">WhatsApp Group</span> (free).
             <br />
             Upgrade to <span className="font-medium text-primary">Advance Chat</span> for premium support.
           </p>

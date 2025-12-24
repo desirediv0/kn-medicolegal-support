@@ -95,10 +95,10 @@ function UserHistoryContent() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">
-            General Chat History
+            Consultation History
           </h1>
           <p className="text-sm text-gray-500">
-            Review all your previous General Chat questions and reopen conversations if needed.
+            Review all your previous formal medicolegal consultations and reopen conversations if needed.
           </p>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -114,7 +114,7 @@ function UserHistoryContent() {
         <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle>My Conversations</CardTitle>
           <Button variant="outline" size="sm" asChild>
-            <Link href="/user">Back to General Chat</Link>
+            <Link href="/user">Back to Consultations</Link>
           </Button>
         </CardHeader>
         <CardContent className="space-y-4">

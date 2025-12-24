@@ -31,22 +31,22 @@ export async function POST(request) {
     }
 
     try {
-      await sendOtpEmail({
-        to: adminEmail,
+    await sendOtpEmail({
+      to: adminEmail,
         replyTo: email,
-        subject: subject || `Contact Form [${category}]: ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "Not provided"}\nCategory: ${category}\n\nMessage:\n${message}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
-          <p><strong>Category:</strong> ${category}</p>
-          <p><strong>Subject:</strong> ${subject || "General Inquiry"}</p>
-          <h3>Message:</h3>
-          <p>${message.replace(/\n/g, "<br>")}</p>
-        `,
-      });
+      subject: subject || `Contact Form [${category}]: ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "Not provided"}\nCategory: ${category}\n\nMessage:\n${message}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
+        <p><strong>Category:</strong> ${category}</p>
+        <p><strong>Subject:</strong> ${subject || "General Inquiry"}</p>
+        <h3>Message:</h3>
+        <p>${message.replace(/\n/g, "<br>")}</p>
+      `,
+    });
     } catch (err) {
       console.error("Contact email send failed:", err?.message || err);
       return NextResponse.json(

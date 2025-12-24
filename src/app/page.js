@@ -86,49 +86,40 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">How You Can Engage With Us</h2>
             <p className="text-sm md:text-base text-gray-700">Clear, straightforward options for medico-legal support.</p>
           </div>
-          <div className="grid sm:grid-cols-2  gap-4 md:gap-6">
-            {[
-              {
-                id: 1,
-                title: "Free Registration",
-                description: "Access to the contents of Knowledge Hub.",
-                validity: "Validity: Lifetime",
-                cta: "Register Free",
-                href:
-                  profileData.role === "ADMIN"
-                    ? "/dashboard"
-                    : profileData.role === "USER"
-                      ? "/user"
-                      : "/user/auth?mode=register",
-              },
-
-              {
-                id: 2,
-                title: "Case specific formal medicolegal consultation – ₹10,000",
-                description: "For complaint-related cases (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice)",
-                validity: "Validity: 30 days",
-                cta: "Consult Now",
-                href:
-                  profileData.role === "ADMIN"
-                    ? "/dashboard/advance-chat"
-                    : profileData.role === "USER"
-                      ? "/user/advance-chat"
-                      : "/user/advance-chat",
-              },
-            ].map((item) => (
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
+            {/* New User Registration CTA */}
+            {!profileData.name && (
               <Link
-                key={item.id}
-                href={item.href}
-                className="block rounded-lg border border-gray-200 bg-white p-4 md:p-5 space-y-2 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+                href="/user/auth?mode=register"
+                className="flex-1 block rounded-lg border-2 border-gray-900 bg-white p-6 md:p-8 space-y-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-colors"
               >
-                <h3 className="text-base font-semibold text-gray-900">{item.title}</h3>
-                <p className="text-sm text-gray-700">{item.description}</p>
-                <p className="text-xs text-gray-600">{item.validity}</p>
-                <span className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors">
-                  {item.cta}
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">New User Registration</h3>
+                <p className="text-sm md:text-base text-gray-700">Create your account to access Knowledge Hub and get started with medicolegal support.</p>
+                <p className="text-xs text-gray-600">Free • Lifetime Access</p>
+                <span className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors">
+                  Register Now
                 </span>
               </Link>
-            ))}
+            )}
+
+            {/* Case Consultation */}
+            <Link
+              href={
+                profileData.role === "ADMIN"
+                  ? "/dashboard/advance-chat"
+                  : profileData.role === "USER"
+                    ? "/user/advance-chat"
+                    : "/user/advance-chat"
+              }
+              className="flex-1 block rounded-lg border border-gray-200 bg-white p-6 md:p-8 space-y-3 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+            >
+              <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Case specific formal medicolegal consultation – ₹10,000</h3>
+              <p className="text-sm md:text-base text-gray-700">For complaint-related cases (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice)</p>
+              <p className="text-xs text-gray-600">Validity: 30 days</p>
+              <span className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors">
+                Consult Now
+              </span>
+            </Link>
           </div>
         </div>
       </section>

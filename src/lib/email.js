@@ -49,7 +49,7 @@ export async function sendOtpEmail({
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
   } catch (err) {
     console.error("Email send failed:", {
       message: err?.message,

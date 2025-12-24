@@ -139,6 +139,21 @@ export function UserAuthForm({
       return;
     }
 
+    if (mode === "signup" && enableSignup) {
+      if (!phone || phone.trim() === "") {
+        setError("Phone number is required");
+        toast.error("Phone number is required");
+        return;
+      }
+      // Basic phone validation - at least 10 digits
+      const phoneDigits = phone.replace(/\D/g, "");
+      if (phoneDigits.length < 10) {
+        setError("Please enter a valid phone number (at least 10 digits)");
+        toast.error("Please enter a valid phone number (at least 10 digits)");
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       if (mode === "login") {
@@ -438,14 +453,20 @@ export function UserAuthForm({
 
                 {mode === "signup" && enableSignup && (
                   <Field>
-                    <FieldLabel htmlFor="phone">Phone</FieldLabel>
+                    <FieldLabel htmlFor="phone">
+                      Phone Number <span className="text-red-500">*</span>
+                    </FieldLabel>
                     <Input
                       id="phone"
                       name="phone"
                       type="tel"
-                      placeholder="Optional phone number"
+                      placeholder="Enter your phone number"
+                      required
                       disabled={loading}
                     />
+                    <FieldDescription className="text-xs text-gray-500">
+                      Required for account verification and support
+                    </FieldDescription>
                   </Field>
                 )}
 

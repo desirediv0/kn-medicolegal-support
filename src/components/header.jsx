@@ -99,11 +99,11 @@ export function Header() {
               href={
                 profileData.role === "ADMIN"
                   ? "/dashboard"
-                  : "/user"
+                  : "/user/dashboard"
               }
-              className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-4 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm font-semibold text-white shadow-md shadow-primary/30 transition hover:shadow-lg hover:scale-105 whitespace-nowrap"
             >
-              {profileData && profileData?.name?.split(" ")[0]}
+              Dashboard
             </Link>
           ) : (
             <>
@@ -186,12 +186,12 @@ export function Header() {
                     href={
                       profileData.role === "ADMIN"
                         ? "/dashboard"
-                        : "/user"
+                        : "/user/dashboard"
                     }
                     onClick={closeMenu}
-                    className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-4 py-2.5 text-sm font-medium text-primary shadow-lg shadow-primary-foreground/20 transition hover:shadow-xl w-full uppercase tracking-wider"
+                    className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/30 transition hover:shadow-lg w-full"
                   >
-                    {profileData && profileData?.name?.split(" ")[0]}
+                    Dashboard
                   </Link>
                 ) : (
                   <>

@@ -60,6 +60,25 @@ export default function Home() {
               <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-3xl">
                 Structured medicolegal guidance for documentation, compliance, litigation preparedness, and response to legal notices, court proceedings, and medical council matters.
               </p>
+
+              {/* Dashboard/Login CTA */}
+              <div className="flex flex-wrap items-center gap-3 pt-4">
+                {profileData?.name ? (
+                  <Link
+                    href={profileData.role === "ADMIN" ? "/dashboard" : "/user/dashboard"}
+                    className="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors shadow-md hover:shadow-lg"
+                  >
+                    {profileData.role === "ADMIN" ? "Go to Dashboard" : "Go to Dashboard"}
+                  </Link>
+                ) : (
+                  <Link
+                    href="/user/auth"
+                    className="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors shadow-md hover:shadow-lg"
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
             </div>
 
             {/* Right Column - Contextual Image */}

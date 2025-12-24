@@ -15,6 +15,7 @@ import {
   MessageCircle,
   QrCode,
   HelpCircle,
+  LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -161,6 +162,11 @@ export function UserSidebar({ onWidthChange }) {
         {/* Primary navigation */}
         {[
           {
+            label: "Dashboard",
+            href: "/user/dashboard",
+            icon: <LayoutDashboard size={18} />,
+          },
+          {
             label: "Medicolegal formal consultation",
             href: "/user",
             icon: <MessageCircle size={18} />,
@@ -183,9 +189,11 @@ export function UserSidebar({ onWidthChange }) {
           },
         ].map((item) => {
           const isActive =
-            item.href === "/user"
-              ? pathname === "/user"
-              : pathname.startsWith(item.href);
+            item.href === "/user/dashboard"
+              ? pathname === "/user/dashboard"
+              : item.href === "/user"
+                ? pathname === "/user" && pathname !== "/user/dashboard"
+                : pathname === item.href || (item.href !== "/user" && pathname.startsWith(item.href + "/"));
           return (
             <button
               key={item.label}

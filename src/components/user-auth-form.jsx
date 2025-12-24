@@ -171,16 +171,22 @@ export function UserAuthForm({
 
         toast.success("Logged in successfully!");
 
-        if (result?.url) {
-          router.replace(result.url);
-        } else {
-          try {
-            const session = await getSession();
-            const role = session?.user?.role;
-            router.replace(role === "ADMIN" ? "/dashboard" : redirectTarget);
-          } catch {
-            router.replace(buildRedirectTarget(defaultCallback, "/user"));
+        // Wait a bit for session to be available
+        await new Promise(resolve => setTimeout(resolve, 200));
+
+        try {
+          const session = await getSession();
+          const role = session?.user?.role;
+
+          if (role === "ADMIN") {
+            router.replace("/dashboard");
+          } else {
+            // Redirect to user dashboard instead of questions page
+            router.replace("/user/dashboard");
           }
+        } catch {
+          // Fallback redirect
+          router.replace("/user/dashboard");
         }
       } else if (mode === "signup") {
         const response = await fetch("/api/otp/send", {
@@ -297,7 +303,8 @@ export function UserAuthForm({
 
       const session = await getSession();
       const role = session?.user?.role;
-      router.replace(role === "ADMIN" ? "/dashboard" : redirectTarget);
+      // Redirect to dashboard after registration
+      router.replace(role === "ADMIN" ? "/dashboard" : "/user/dashboard");
       setSignupData(null);
       setOtp("");
     } catch (err) {

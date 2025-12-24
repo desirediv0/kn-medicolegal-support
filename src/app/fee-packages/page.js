@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 
 export default function FeePackagesPage() {
     return (
@@ -608,6 +609,69 @@ export default function FeePackagesPage() {
                                     <span className="font-medium">{/* YES/NO */}</span>
                                 </li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Payment Information Section */}
+            <section className="py-12 border-b border-gray-200">
+                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
+                    <div className="mb-8">
+                        <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+                            Payment Information
+                        </h2>
+                        <p className="text-gray-600 text-sm md:text-base">
+                            Make payments via QR code or bank transfer
+                        </p>
+                    </div>
+
+                    <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8">
+                        <div className="grid md:grid-cols-2 gap-8">
+                            {/* QR Code Payment Section */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">SCAN TO PAY</h3>
+                                <div className="relative w-full max-w-sm aspect-square bg-white rounded-lg border-2 border-gray-200 p-4 mx-auto">
+                                    <div className="relative w-full h-full">
+                                        <Image
+                                            src="/qr.jpeg"
+                                            alt="Payment QR Code"
+                                            fill
+                                            className="object-contain rounded-lg"
+                                            priority
+                                            sizes="(max-width: 768px) 100vw, 400px"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="text-center space-y-2">
+                                    <p className="text-sm font-medium text-gray-900">UPI ID: drsanjaynarula@sbi</p>
+                                    <p className="text-xs text-gray-600">Use any UPI app</p>
+                                </div>
+                            </div>
+
+                            {/* Bank Transfer Section */}
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                    <h3 className="text-lg font-semibold text-gray-900">Bank Transfer</h3>
+                                </div>
+                                <div className="bg-gray-50 rounded-lg p-6 space-y-4">
+                                    <div>
+                                        <p className="text-xs font-medium text-gray-600 mb-1">Bank</p>
+                                        <p className="text-sm font-semibold text-gray-900">State Bank of India</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-medium text-gray-600 mb-1">A/C No.</p>
+                                        <p className="text-sm font-semibold text-gray-900">44717262489</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-medium text-gray-600 mb-1">IFSC</p>
+                                        <p className="text-sm font-semibold text-gray-900">SBIN0060414</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -140,6 +140,14 @@ export function UserAuthForm({
     }
 
     if (mode === "signup" && enableSignup) {
+      // Validate Name
+      if (!name || name.trim() === "") {
+        setError("Name is required");
+        toast.error("Name is required");
+        return;
+      }
+
+      // Validate Phone
       if (!phone || phone.trim() === "") {
         setError("Phone number is required");
         toast.error("Phone number is required");
@@ -355,18 +363,24 @@ export function UserAuthForm({
               <FieldGroup>
                 {mode === "signup" && enableSignup && (
                   <Field>
-                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <FieldLabel htmlFor="name">
+                      Name <span className="text-red-500">*</span>
+                    </FieldLabel>
                     <Input
                       id="name"
                       name="name"
+                      type="text"
                       placeholder="Enter your full name"
+                      required
                       disabled={loading}
                     />
                   </Field>
                 )}
 
                 <Field>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldLabel htmlFor="email">
+                    Email <span className="text-red-500">*</span>
+                  </FieldLabel>
                   <Input
                     id="email"
                     name="email"
@@ -380,7 +394,9 @@ export function UserAuthForm({
                 {(mode === "signup" || mode === "login") && (
                   <Field>
                     <div className="flex items-center">
-                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                      <FieldLabel htmlFor="password">
+                        Password <span className="text-red-500">*</span>
+                      </FieldLabel>
                       {mode === "login" && (
                         <button
                           type="button"
@@ -445,7 +461,7 @@ export function UserAuthForm({
                 {mode === "signup" && enableSignup && (
                   <Field>
                     <FieldLabel htmlFor="confirmPassword">
-                      Confirm Password
+                      Confirm Password <span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
                       id="confirmPassword"

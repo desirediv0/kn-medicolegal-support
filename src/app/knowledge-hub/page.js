@@ -154,19 +154,23 @@ export default function KnowledgeHubPage() {
 
                     <div className="grid gap-6 md:grid-cols-2">
                         {coreTopics.map((topic) => (
-                            <div key={topic.title} className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
+                            <div key={topic.title} className="bg-white border border-gray-200 rounded-lg p-6 space-y-3 ">
                                 <h3 className="text-lg font-semibold text-gray-900">{topic.title}</h3>
                                 <div className="space-y-2 text-sm text-gray-700 leading-relaxed">
-                                    {topic.body.map((line, idx) => (
-                                        <p key={idx}>{line}</p>
-                                    ))}
+                                    <p>{topic.body[0]}</p>
                                 </div>
-                                <Link
-                                    href={`/knowledge-hub/topic/${topic.slug}`}
-                                    className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
-                                >
-                                    Read more →
-                                </Link>
+                                {session ? (
+                                    <Link
+                                        href={`/knowledge-hub/topic/${topic.slug}`}
+                                        className="inline-block text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                                    >
+                                        Read more →
+                                    </Link>
+                                ) : (
+                                    <Link href={'/user/auth?mode=register'} className="text-sm text-green-600 italic hover:underline font-semibold">
+                                        Please register to access the full article
+                                    </Link>
+                                )}
                             </div>
                         ))}
                     </div>

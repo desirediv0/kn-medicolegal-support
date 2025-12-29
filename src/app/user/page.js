@@ -1162,7 +1162,7 @@ function UserContent() {
                     >
                       {selectedQuestion.paymentStatus?.toLowerCase()}
                     </span>
-                    {selectedQuestion.paymentType === "CASH" && (
+                    {/* {selectedQuestion.paymentType === "CASH" && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-medium text-blue-700">
                         Cash
                       </span>
@@ -1171,7 +1171,8 @@ function UserContent() {
                       <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[11px] font-medium text-purple-700">
                         💳 Online
                       </span>
-                    )}
+                    )} */}
+
                   </div>
                 </div>
               </div>

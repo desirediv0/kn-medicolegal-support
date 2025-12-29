@@ -123,20 +123,14 @@ export default function Home() {
 
             {/* Case Consultation */}
             <Link
-              href={
-                profileData.role === "ADMIN"
-                  ? "/dashboard/advance-chat"
-                  : profileData.role === "USER"
-                    ? "/user/advance-chat"
-                    : "/user/advance-chat"
-              }
+              href="/fee-packages#payment-section"
               className="flex-1 block rounded-lg border border-gray-200 bg-white p-6 md:p-8 space-y-3 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
             >
               <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Case specific formal medicolegal consultation – ₹10,000</h3>
               <p className="text-sm md:text-base text-gray-700">For complaint-related cases (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice)</p>
               <p className="text-xs text-gray-600">Validity: 30 days</p>
               <span className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors">
-                Consult Now
+                Pay Now
               </span>
             </Link>
           </div>

@@ -614,7 +614,7 @@ function AdminQuestionsContent() {
                   >
                     {question.paymentStatus?.toLowerCase()}
                   </span>
-                  {question.paymentType === "CASH" && (
+                  {/* {question.paymentType === "CASH" && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-700">
                       Cash
                     </span>
@@ -623,7 +623,7 @@ function AdminQuestionsContent() {
                     <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-medium text-purple-700">
                       💳 Online
                     </span>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="text-xs text-foreground italic">
@@ -1059,7 +1059,7 @@ function AdminQuestionsContent() {
                     >
                       {selectedQuestion.paymentStatus?.toLowerCase()}
                     </span>
-                    {selectedQuestion.paymentType === "CASH" && (
+                    {/* {selectedQuestion.paymentType === "CASH" && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-medium text-blue-700">
                         Cash
                       </span>
@@ -1068,7 +1068,7 @@ function AdminQuestionsContent() {
                       <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[11px] font-medium text-purple-700">
                         💳 Online
                       </span>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>

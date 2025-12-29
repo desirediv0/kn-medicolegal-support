@@ -67,6 +67,12 @@ export default function FeePackagesPage() {
                             <p className="text-xs text-gray-600 mt-2">
                                 <strong>Validity:</strong> 30 days
                             </p>
+                            <button
+                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="w-full inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
+                            >
+                                Pay Now
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -104,16 +110,34 @@ export default function FeePackagesPage() {
                             <h3 className="text-base font-semibold text-gray-900 mb-1">Category I (Basic)</h3>
                             <p className="text-lg font-bold text-gray-900">₹15,000</p>
                             <p className="text-xs text-gray-600">per annum</p>
+                            <button
+                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
+                            >
+                                Pay Now
+                            </button>
                         </div>
                         <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
                             <h3 className="text-base font-semibold text-gray-900 mb-1">Category II (Premier)</h3>
                             <p className="text-lg font-bold text-gray-900">₹25,000</p>
                             <p className="text-xs text-gray-600">per annum</p>
+                            <button
+                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
+                            >
+                                Pay Now
+                            </button>
                         </div>
                         <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
                             <h3 className="text-base font-semibold text-gray-900 mb-1">Category III (Comprehensive)</h3>
                             <p className="text-lg font-bold text-gray-900">₹35,000</p>
                             <p className="text-xs text-gray-600">per annum</p>
+                            <button
+                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors"
+                            >
+                                Pay Now
+                            </button>
                         </div>
                     </div>
 
@@ -615,7 +639,7 @@ export default function FeePackagesPage() {
             </section>
 
             {/* Payment Information Section */}
-            <section className="py-12 border-b border-gray-200">
+            <section id="payment-section" className="py-12 border-b border-gray-200">
                 <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">
                     <div className="mb-8">
                         <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
@@ -706,19 +730,51 @@ export default function FeePackagesPage() {
                                 <tbody className="divide-y divide-gray-200">
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">Hospitals with less than 50 beds</td>
-                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200">₹20,000 per month</td>
+                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200 flex items-center justify-between">
+                                            <span>₹20,000 per month</span>
+                                            <button
+                                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                                className="ml-4 inline-flex items-center justify-center px-3 py-1 text-xs font-semibold text-white bg-gray-900 rounded hover:bg-gray-800 transition-colors"
+                                            >
+                                                Pay Now
+                                            </button>
+                                        </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">Hospitals with 51 to 100 beds</td>
-                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200">₹30,000 per month</td>
+                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200 flex items-center justify-between">
+                                            <span>₹30,000 per month</span>
+                                            <button
+                                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                                className="ml-4 inline-flex items-center justify-center px-3 py-1 text-xs font-semibold text-white bg-gray-900 rounded hover:bg-gray-800 transition-colors"
+                                            >
+                                                Pay Now
+                                            </button>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 text-sm text-gray-700">Hospitals with 100 to 200 beds</td>
-                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200">₹40,000 per month</td>
+                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200 flex items-center justify-between">
+                                            <span>₹40,000 per month</span>
+                                            <button
+                                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                                className="ml-4 inline-flex items-center justify-center px-3 py-1 text-xs font-semibold text-white bg-gray-900 rounded hover:bg-gray-800 transition-colors"
+                                            >
+                                                Pay Now
+                                            </button>
+                                        </td>
                                     </tr>
                                     <tr className="bg-gray-50">
                                         <td className="px-4 py-3 text-sm text-gray-700">Hospitals with more than 200 beds</td>
-                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200">₹50,000 per month</td>
+                                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 border-l border-gray-200 flex items-center justify-between">
+                                            <span>₹50,000 per month</span>
+                                            <button
+                                                onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                                                className="ml-4 inline-flex items-center justify-center px-3 py-1 text-xs font-semibold text-white bg-gray-900 rounded hover:bg-gray-800 transition-colors"
+                                            >
+                                                Pay Now
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

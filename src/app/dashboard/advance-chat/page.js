@@ -618,17 +618,17 @@ function AdminQuestionsContent() {
                   <span className="text-muted-foreground">Payment:</span>
                   <span
                     className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${question.paymentStatus === "SUCCESS"
-                        ? "bg-green-100 text-green-700"
-                        : question.paymentStatus === "PENDING"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : question.paymentStatus === "FAILED"
-                            ? "bg-red-100 text-red-700"
-                            : "bg-gray-100 text-gray-700"
+                      ? "bg-green-100 text-green-700"
+                      : question.paymentStatus === "PENDING"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : question.paymentStatus === "FAILED"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-gray-100 text-gray-700"
                       }`}
                   >
                     {question.paymentStatus?.toLowerCase()}
                   </span>
-                  {question.paymentType === "CASH" && (
+                  {/* {question.paymentType === "CASH" && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-700">
                       Cash
                     </span>
@@ -637,7 +637,7 @@ function AdminQuestionsContent() {
                     <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-medium text-purple-700">
                       💳 Online
                     </span>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="text-xs text-foreground italic">
@@ -1075,17 +1075,17 @@ function AdminQuestionsContent() {
                     <span className="text-muted-foreground">Payment:</span>
                     <span
                       className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${selectedQuestion.paymentStatus === "SUCCESS"
-                          ? "bg-green-100 text-green-700"
-                          : selectedQuestion.paymentStatus === "PENDING"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : selectedQuestion.paymentStatus === "FAILED"
-                              ? "bg-red-100 text-red-700"
-                              : "bg-gray-100 text-gray-700"
+                        ? "bg-green-100 text-green-700"
+                        : selectedQuestion.paymentStatus === "PENDING"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : selectedQuestion.paymentStatus === "FAILED"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-700"
                         }`}
                     >
                       {selectedQuestion.paymentStatus?.toLowerCase()}
                     </span>
-                    {selectedQuestion.paymentType === "CASH" && (
+                    {/* {selectedQuestion.paymentType === "CASH" && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-medium text-blue-700">
                         Cash
                       </span>
@@ -1094,7 +1094,7 @@ function AdminQuestionsContent() {
                       <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-[11px] font-medium text-purple-700">
                         Online
                       </span>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>

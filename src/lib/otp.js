@@ -15,7 +15,7 @@ export function generateOtp() {
 
 export async function createOtp(email) {
   const otp = generateOtp();
-  const otpHash = await hash(otp, 10);
+  const otpHash = await hash(otp, 6);
   const expiresAt = addMinutes(new Date(), OTP_VALIDITY_MINUTES);
 
   await prisma.emailOtp.create({

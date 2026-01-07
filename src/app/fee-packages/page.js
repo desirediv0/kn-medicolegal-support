@@ -65,7 +65,13 @@ export default function FeePackagesPage() {
                                 For complaint-related cases (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice)
                             </p>
                             <p className="text-xs text-gray-600 mt-2">
-                                <strong>Validity:</strong> 30 days
+                                <strong>Validity:</strong> 30 days • Any number of consultations - online or offline - during the 30 days period
+                            </p>
+                            <p className="text-xs text-gray-600">
+                                <strong>Features:</strong> Case specific consultation as well as uploading & downloading of documents
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                <strong>Note:</strong> Drafting of documents, file audit, medicolegal research on contentious issues etc. is extra depending on the complexity of the case which will be mutually decided during the consultations.
                             </p>
                             <button
                                 onClick={() => document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' })}

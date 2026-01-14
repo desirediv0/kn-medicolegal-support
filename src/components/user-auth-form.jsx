@@ -64,6 +64,8 @@ export function UserAuthForm({
   const [signupData, setSignupData] = useState(null);
   const [resendTimer, setResendTimer] = useState(0);
   const [resendLoading, setResendLoading] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   // Timer effect for resend OTP
   useEffect(() => {
@@ -165,8 +167,64 @@ export function UserAuthForm({
     setLoading(true);
     try {
       if (mode === "login") {
+        // First check login credentials with our API for proper error messages
+        const checkResponse = await fetch("/api/auth/login-check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim().toLowerCase(),
+            password,
+            portal,
+          }),
+        });
+
+        const checkData = await checkResponse.json();
+
+        if (!checkResponse.ok) {
+          // Handle specific error codes
+          if (checkData.code === "EMAIL_NOT_FOUND") {
+            setError("No account found with this email");
+            toast.error("No account found with this email");
+            return;
+          }
+          
+          if (checkData.code === "INVALID_PASSWORD") {
+            setError("Incorrect password");
+            toast.error("Incorrect password");
+            return;
+          }
+          
+          // Handle unverified email - send OTP and show verification UI
+          if (checkData.code === "EMAIL_NOT_VERIFIED") {
+            const unverifiedEmail = checkData.email || email.trim().toLowerCase();
+            
+            // Send OTP for verification
+            const otpResponse = await fetch("/api/otp/send", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: unverifiedEmail, type: "verify" }),
+            });
+
+            if (!otpResponse.ok) {
+              const data = await otpResponse.json();
+              throw new Error(data.error || "Failed to send verification OTP");
+            }
+
+            // Set signup data for verification flow (password needed for auto-login after verify)
+            setSignupData({ email: unverifiedEmail, password, isVerification: true });
+            setOtpSent(true);
+            setResendTimer(60);
+            setError("");
+            toast.info("Please verify your email. OTP sent to your email!");
+            return;
+          }
+          
+          throw new Error(checkData.error || "Login failed");
+        }
+
+        // Now do actual NextAuth signIn
         const result = await signIn("credentials", {
-          email : email.trim().toLowerCase(),
+          email: email.trim().toLowerCase(),
           password,
           redirect: false,
           callbackUrl: redirectTarget,
@@ -197,23 +255,51 @@ export function UserAuthForm({
           router.replace("/user/dashboard");
         }
       } else if (mode === "signup") {
+        // Step 1: First register the user (emailVerified will be null)
+        const registerRes = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, name, phone }),
+        });
+
+        if (!registerRes.ok) {
+          const data = await registerRes.json();
+          throw new Error(data.error || "Failed to create account");
+        }
+
+        // Step 2: Send OTP for email verification
+        const otpRes = await fetch("/api/otp/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, type: "verify" }),
+        });
+
+        if (!otpRes.ok) {
+          const data = await otpRes.json();
+          throw new Error(data.error || "Failed to send OTP");
+        }
+
+        setSignupData({ email, password, name, phone, isVerification: true });
+        setOtpSent(true);
+        setResendTimer(60);
+        toast.success("Account created! OTP sent to your email for verification.");
+      } else if (mode === "forgot") {
+        // Send OTP for password reset
         const response = await fetch("/api/otp/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email, type: "reset" }),
         });
 
         if (!response.ok) {
           const data = await response.json();
-          throw new Error(data.error || "Failed to send OTP");
+          throw new Error(data.error || "Failed to send reset OTP");
         }
 
-        setSignupData({ email, password, name, phone });
+        setSignupData({ email, isPasswordReset: true });
         setOtpSent(true);
-        setResendTimer(60); // Start 60 second timer
-        toast.success("OTP sent to your email!");
-      } else if (mode === "forgot") {
-        toast.success("Password reset link sent!");
+        setResendTimer(60);
+        toast.success("OTP sent to your email for password reset!");
       }
     } catch (err) {
       console.error(err);
@@ -260,40 +346,106 @@ export function UserAuthForm({
   };
 
   const handleOtpVerify = async () => {
+    console.log("=== handleOtpVerify called ===");
+    console.log("OTP:", otp);
+    console.log("signupData:", signupData);
+    
     if (otp.length !== 6) {
       toast.error("Please enter 6-digit OTP");
       return;
     }
     if (!signupData?.email) {
-      toast.error("Start signup again");
+      toast.error("Start the process again");
       setOtpSent(false);
       setOtp("");
       return;
     }
     setLoading(true);
     try {
+      console.log("Calling OTP verify API...");
       const verifyRes = await fetch("/api/otp/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: signupData.email.trim().toLowerCase(), otp }),
       });
 
+      console.log("OTP verify response status:", verifyRes.status);
+      
       if (!verifyRes.ok) {
         const data = await verifyRes.json();
+        console.log("OTP verify failed:", data);
         throw new Error(data.error || "Invalid OTP");
       }
 
+      console.log("OTP verified successfully!");
+      console.log("signupData.isPasswordReset:", signupData.isPasswordReset);
+      console.log("signupData.isVerification:", signupData.isVerification);
+
+      // Case 1: Password Reset Flow
+      if (signupData.isPasswordReset) {
+        setOtpVerified(true);
+        toast.success("OTP verified! Now set your new password.");
+        return;
+      }
+
+      // Case 2: Existing user verification (from login)
+      if (signupData.isVerification) {
+        console.log("Calling verify-email API...");
+        // Just mark email as verified via API
+        const verifyEmailRes = await fetch("/api/auth/verify-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: signupData.email.trim().toLowerCase() }),
+        });
+
+        if (!verifyEmailRes.ok) {
+          const data = await verifyEmailRes.json();
+          throw new Error(data.error || "Failed to verify email");
+        }
+
+        setOtpVerified(true);
+        toast.success("Email verified successfully!");
+
+        // Auto login
+        const loginRes = await signIn("credentials", {
+          email: signupData.email.trim().toLowerCase(),
+          password: signupData.password,
+          redirect: false,
+          callbackUrl: redirectTarget,
+          portal: "user",
+        });
+
+        if (loginRes?.error) {
+          throw new Error(loginRes.error || "Unable to sign you in");
+        }
+
+        const session = await getSession();
+        const role = session?.user?.role;
+        router.replace(role === "ADMIN" ? "/dashboard" : "/user/dashboard");
+        setSignupData(null);
+        setOtp("");
+        return;
+      }
+
+      // Case 3: New signup flow - register account
+      console.log("=== REGISTERING NEW USER ===");
+      console.log("Calling register API with:", signupData);
+      
       const registerRes = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signupData),
       });
 
+      console.log("Register response status:", registerRes.status);
+
       if (!registerRes.ok) {
         const data = await registerRes.json();
+        console.log("Register failed:", data);
         throw new Error(data.error || "Failed to create account");
       }
 
+      console.log("User registered successfully!");
       setOtpVerified(true);
       toast.success("OTP verified successfully! Account created.");
 
@@ -316,7 +468,7 @@ export function UserAuthForm({
       setSignupData(null);
       setOtp("");
     } catch (err) {
-      console.error(err);
+      console.error("Error in handleOtpVerify:", err);
       const message = err?.message || "Invalid OTP, please try again";
       toast.error(message);
     } finally {
@@ -336,6 +488,63 @@ export function UserAuthForm({
     setOtp("");
     setOtp("");
     setSignupData(null);
+    setNewPassword("");
+    setConfirmNewPassword("");
+  };
+
+  const handlePasswordReset = async () => {
+    if (!newPassword || !confirmNewPassword) {
+      setError("Please fill in both password fields");
+      toast.error("Please fill in both password fields");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setError("Password must be at least 6 characters");
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      setError("Passwords do not match");
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (!signupData?.email) {
+      setError("Session expired. Please try again.");
+      toast.error("Session expired. Please try again.");
+      changeMode("forgot");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: signupData.email.trim().toLowerCase(),
+          newPassword,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to reset password");
+      }
+
+      toast.success("Password reset successfully! Please login.");
+      changeMode("login");
+    } catch (err) {
+      console.error(err);
+      const message = err?.message || "Failed to reset password";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -602,6 +811,68 @@ export function UserAuthForm({
                   Edit Email
                 </button>
               </div>
+            </div>
+          ) : signupData?.isPasswordReset ? (
+            // Password Reset Form After OTP Verification
+            <div className="flex flex-col gap-4">
+              <h3 className="text-lg font-semibold text-center">
+                Set New Password
+              </h3>
+              <Field>
+                <FieldLabel htmlFor="newPassword">
+                  New Password <span className="text-red-500">*</span>
+                </FieldLabel>
+                <div className="relative">
+                  <Input
+                    id="newPassword"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter new password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="confirmNewPassword">
+                  Confirm New Password <span className="text-red-500">*</span>
+                </FieldLabel>
+                <Input
+                  id="confirmNewPassword"
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  disabled={loading}
+                />
+              </Field>
+              {error && (
+                <p className="text-red-500 text-sm text-center">{error}</p>
+              )}
+              <Button
+                onClick={handlePasswordReset}
+                disabled={loading || !newPassword || !confirmNewPassword}
+                className="w-full"
+              >
+                {loading ? "Resetting..." : "Reset Password"}
+              </Button>
+              <button
+                onClick={() => changeMode("login")}
+                className="text-sm text-gray-500 underline text-center"
+              >
+                Back to Login
+              </button>
             </div>
           ) : (
             // Success Message After OTP

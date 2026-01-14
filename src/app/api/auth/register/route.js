@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import * as bcryptjs from "bcryptjs";
-import { subMinutes } from "date-fns";
 
 const { hash } = bcryptjs;
 
@@ -16,7 +15,7 @@ export async function POST(request) {
       );
     }
 
-    const normalizedEmail = email.toLowerCase();
+    const normalizedEmail = email.toLowerCase().trim();
 
     const existingUser = await prisma.user.findUnique({
       where: { email: normalizedEmail },
@@ -29,33 +28,16 @@ export async function POST(request) {
       );
     }
 
-    const otpRecord = await prisma.emailOtp.findFirst({
-      where: {
-        email: normalizedEmail,
-        consumed: true,
-        createdAt: {
-          gte: subMinutes(new Date(), 15),
-        },
-      },
-      orderBy: { createdAt: "desc" },
-    });
-
-    if (!otpRecord) {
-      return NextResponse.json(
-        { error: "OTP verification required" },
-        { status: 403 }
-      );
-    }
-
     const hashedPassword = await hash(password, 12);
 
+    // Create user with emailVerified = null (will be verified after OTP)
     await prisma.user.create({
       data: {
         email: normalizedEmail,
         name,
         password: hashedPassword,
         phone,
-        emailVerified: new Date(),
+        // emailVerified is null - user needs to verify via OTP
       },
     });
 
@@ -68,4 +50,5 @@ export async function POST(request) {
     );
   }
 }
+
 

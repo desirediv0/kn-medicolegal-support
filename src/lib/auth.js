@@ -40,18 +40,26 @@ export const authOptions = {
         const portal = credentials.portal ?? "user";
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials.email.toLowerCase() },
         });
 
-        if (!user?.password) {
-          throw new Error("Invalid credentials");
+        // Check if user exists
+        if (!user) {
+          throw new Error("EMAIL_NOT_FOUND");
+        }
+
+        // Check if user has password (might be OAuth user)
+        if (!user.password) {
+          throw new Error("EMAIL_NOT_FOUND");
         }
 
         const isValid = await compare(credentials.password, user.password);
 
         if (!isValid) {
-          throw new Error("Invalid credentials");
+          throw new Error("INVALID_PASSWORD");
         }
+
+        // Note: Email verification is checked in login-check API before reaching here
 
         if (portal === "user" && user.role === "ADMIN") {
           throw new Error("Admin accounts must use the admin portal to sign in");

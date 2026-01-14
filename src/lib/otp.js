@@ -26,6 +26,8 @@ export async function createOtp(email) {
 }
 
 export async function verifyOtp(email, otp) {
+  console.log("Verifying OTP for:", email, "Input OTP:", otp);
+
   const record = await prisma.emailOtp.findFirst({
     where: {
       email: email.toLowerCase(),
@@ -33,6 +35,8 @@ export async function verifyOtp(email, otp) {
     },
     orderBy: { createdAt: "desc" },
   });
+
+  console.log("Found record:", record);
 
   if (!record) {
     return { valid: false, reason: "OTP not found" };
@@ -42,7 +46,14 @@ export async function verifyOtp(email, otp) {
     return { valid: false, reason: "OTP expired" };
   }
 
+  // Check if otp field exists
+  if (!record.otp) {
+    console.log("OTP field is null/empty in database record");
+    return { valid: false, reason: "OTP not found in database" };
+  }
+
   // Direct string comparison - no hashing
+  console.log("Comparing:", record.otp, "with", otp);
   if (record.otp !== otp) {
     return { valid: false, reason: "Invalid OTP" };
   }
@@ -54,3 +65,4 @@ export async function verifyOtp(email, otp) {
 
   return { valid: true };
 }
+

@@ -6,22 +6,23 @@ const { Pool } = pg;
 
 const globalForPrisma = globalThis;
 
-// Create connection pool
-const pool = new Pool({
+// Prevent multiple instances of Pool and Adapter in development
+const pool = globalForPrisma.pool || new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// Create adapter
-const adapter = new PrismaPg(pool);
+const adapter = globalForPrisma.adapter || new PrismaPg(pool);
 
 export const prisma =
-  globalForPrisma.prisma ??
+  globalForPrisma.prisma ||
   new PrismaClient({
     adapter,
     log: ["error", "warn"],
   });
 
 if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.pool = pool;
+  globalForPrisma.adapter = adapter;
   globalForPrisma.prisma = prisma;
 }
 

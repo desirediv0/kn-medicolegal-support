@@ -166,7 +166,7 @@ export function UserAuthForm({
     try {
       if (mode === "login") {
         const result = await signIn("credentials", {
-          email,
+          email : email.trim().toLowerCase(),
           password,
           redirect: false,
           callbackUrl: redirectTarget,
@@ -275,7 +275,7 @@ export function UserAuthForm({
       const verifyRes = await fetch("/api/otp/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: signupData.email, otp }),
+        body: JSON.stringify({ email: signupData.email.trim().toLowerCase(), otp }),
       });
 
       if (!verifyRes.ok) {
@@ -298,7 +298,7 @@ export function UserAuthForm({
       toast.success("OTP verified successfully! Account created.");
 
       const loginRes = await signIn("credentials", {
-        email: signupData.email,
+        email: signupData.email.trim().toLowerCase(),
         password: signupData.password,
         redirect: false,
         callbackUrl: redirectTarget,

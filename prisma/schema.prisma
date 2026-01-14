@@ -6,7 +6,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
 enum Role {
   USER
   ADMIN
@@ -55,10 +54,10 @@ model User {
   settings  Setting[]
 
   // Advance Chat relations
-  advanceQuestions       AdvanceQuestion[] @relation("AdvanceQuestionUser")
-  advanceAnswers         AdvanceQuestion[] @relation("AdvanceQuestionAdmin")
-  advanceMessages        AdvanceMessage[]
-  advanceChatAccess      AdvanceChatAccess[]
+  advanceQuestions          AdvanceQuestion[]    @relation("AdvanceQuestionUser")
+  advanceAnswers            AdvanceQuestion[]    @relation("AdvanceQuestionAdmin")
+  advanceMessages           AdvanceMessage[]
+  advanceChatAccess         AdvanceChatAccess[]
   advanceChatPricingUpdates AdvanceChatPricing[]
 }
 
@@ -105,7 +104,7 @@ model VerificationToken {
 model EmailOtp {
   id        String   @id @default(cuid())
   email     String
-  otpHash   String
+  otp       String
   expiresAt DateTime
   consumed  Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -205,7 +204,7 @@ model AdvanceChatAccess {
   id                String        @id @default(cuid())
   userId            String
   purchaseDate      DateTime      @default(now())
-  expiryDate        DateTime?     // null for lifetime access
+  expiryDate        DateTime? // null for lifetime access
   paymentStatus     PaymentStatus @default(PENDING)
   amount            Decimal       @db.Decimal(10, 2)
   razorpayOrderId   String?       @unique
@@ -238,8 +237,8 @@ model AdvanceQuestion {
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
-  user     User              @relation("AdvanceQuestionUser", fields: [userId], references: [id])
-  admin    User?             @relation("AdvanceQuestionAdmin", fields: [adminId], references: [id])
+  user     User             @relation("AdvanceQuestionUser", fields: [userId], references: [id])
+  admin    User?            @relation("AdvanceQuestionAdmin", fields: [adminId], references: [id])
   messages AdvanceMessage[]
 
   @@index([userId])
@@ -261,8 +260,8 @@ model AdvanceMessage {
   isInternal Boolean  @default(false)
   isRead     Boolean  @default(false)
 
-  question    AdvanceQuestion      @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  sender      User                 @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  question    AdvanceQuestion     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  sender      User                @relation(fields: [senderId], references: [id], onDelete: Cascade)
   attachments AdvanceAttachment[]
 
   @@index([questionId, createdAt])

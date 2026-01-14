@@ -1,9 +1,6 @@
 import { randomInt } from "crypto";
-import * as bcryptjs from "bcryptjs";
 import { addMinutes, isBefore } from "date-fns";
 import { prisma } from "./prisma";
-
-const { hash, compare } = bcryptjs;
 
 const OTP_VALIDITY_MINUTES = 10;
 
@@ -15,13 +12,12 @@ export function generateOtp() {
 
 export async function createOtp(email) {
   const otp = generateOtp();
-  const otpHash = await hash(otp, 3);
   const expiresAt = addMinutes(new Date(), OTP_VALIDITY_MINUTES);
 
   await prisma.emailOtp.create({
     data: {
       email: email.toLowerCase(),
-      otpHash,
+      otp,
       expiresAt,
     },
   });
@@ -46,9 +42,8 @@ export async function verifyOtp(email, otp) {
     return { valid: false, reason: "OTP expired" };
   }
 
-  const matches = await compare(otp, record.otpHash);
-
-  if (!matches) {
+  // Direct string comparison - no hashing
+  if (record.otp !== otp) {
     return { valid: false, reason: "Invalid OTP" };
   }
 

@@ -98,46 +98,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How You Can Engage With Us */}
-      <section className="bg-white border-t border-gray-200 py-10 md:py-12">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16 space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">How You Can Engage With Us</h2>
-            <p className="text-sm md:text-base text-gray-700">Clear, straightforward options for medico-legal support.</p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
-            {/* New User Registration CTA */}
-            {!profileData.name && (
-              <Link
-                href="/user/auth?mode=register"
-                className="flex-1 block rounded-lg border-2 border-gray-900 bg-white p-6 md:p-8 space-y-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-colors"
-              >
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">New User Registration</h3>
-                <p className="text-sm md:text-base text-gray-700">Create your account to access Knowledge Hub and get started with medicolegal support.</p>
-                <p className="text-xs text-gray-600">Free • Lifetime Access</p>
-                <span className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors">
-                  Register Now
-                </span>
-              </Link>
-            )}
-
-            {/* Case Consultation */}
-            <Link
-              href="/fee-packages#payment-section"
-              className="flex-1 block rounded-lg border border-gray-200 bg-white p-6 md:p-8 space-y-3 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
-            >
-              <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Case specific formal medicolegal consultation – ₹10,000</h3>
-              <p className="text-sm md:text-base text-gray-700">For complaint-related cases (civil, criminal, or consumer court complaint, or medical board or medical council proceedings, or a legal notice)</p>
-              <p className="text-xs text-gray-600">Validity: 30 days • Any number of consultations - online or offline - during the 30 days period</p>
-              <p className="text-xs text-gray-500">Drafting of documents, file audit, medicolegal research on contentious issues etc. is extra depending on the complexity of the case.</p>
-              <span className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 transition-colors">
-                Pay Now
-              </span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Philosophy Strip */}
       <section className="border-t border-gray-200 bg-gray-50">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-16">

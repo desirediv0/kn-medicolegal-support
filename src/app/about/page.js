@@ -98,7 +98,7 @@ export default function AboutPage() {
       </section>
 
       {/* Long Description */}
-      <section className="bg-white">
+      <section className="bg-white border-b border-gray-200">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-10 py-12 md:py-16">
           <div className="space-y-6 max-w-4xl text-gray-800 leading-relaxed">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">Our Approach</h2>
@@ -111,6 +111,43 @@ export default function AboutPage() {
             <p className="text-base md:text-lg">
               Every engagement is handled with confidentiality and professionalism—aimed at protecting patient safety and clinician credibility.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Our USP Section */}
+      <section className="bg-gray-50">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-10 py-12 md:py-16">
+          <div className="space-y-6">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">Our USP</h2>
+            <p className="text-gray-700 max-w-3xl">
+              What sets KN Medicolegal Support apart from others in the field.
+            </p>
+
+            <div className="grid gap-4 md:gap-6">
+              {[
+                "Our experts have an excellent medical practice background and a long medicolegal experience",
+                "Our experts are into Medicolegal field by choice and not out of some compulsions",
+                "For us, the interests of the doctors do not clash with the interests of the insurance company, which has indemnified the doctor/hospital",
+                "Our experts have a long experience with MLC cases, RTI issues and cases related to PNDT, MTP, ART and Professional misconduct",
+                "One of our experts has a rich experience of District Medical Negligence Board and drafting of its reports",
+                "Our experts are backed by long practice in private Nursing Homes, Corporate Hospitals, and Government hospitals, with experience in surgery, hospital administration, medical education, and healthcare policy initiatives",
+                "We also provide 'emergency' medicolegal services, if the doctor/hospital is in urgent need of emergency medico-legal support",
+                "We have advocates on the panel, some of whom are dedicated medicolegal advocates"
+              ].map((usp, index) => (
+                <div
+                  key={index}
+                  className="flex items-start gap-4 bg-white border border-gray-200 rounded-lg p-4 md:p-5"
+                >
+                  <div className="flex-shrink-0 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                    {index + 1}
+                  </div>
+                  <p className="text-gray-800 text-sm md:text-base leading-relaxed pt-1">
+                    {usp}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
